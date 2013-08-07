@@ -1,0 +1,3 @@
+This directory contains files of various commands that may be useful
+to import into the bash history (via 'history -a <filename>', see
+'help history' for more information).

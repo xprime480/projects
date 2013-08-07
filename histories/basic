@@ -1,0 +1,25 @@
+./cds72.py compliance_detail_store_72_b.csv 
+./exponential.py 1 1024 0.6 25 |  less
+./rhapper.py five-star.sql four-star.sql older.sql newest.sql > script3.sql
+./testme.py test001.sql 
+cp /cygdrive/c/Users/I809989/AppData/Roaming/Real/rhapsody/1.sqlite/local3.seb ./test.seb
+history -n ./history
+history -w 
+python -m SimpleHTTPServer 8883 &
+python -m datagen roo3.dgs --trace
+python -m pdb datagen.py roo.dgs
+python -m unittest parsertest.ExpressionParserTest.test_integer
+scp i809989@usphlvm1902.phl.sap.corp:/home/i809989/tmp/* .
+sqlite3 -init $HOME/.sqliterc local3.seb 
+ssh -Y i809989@usphlhanapio01.phl.sap.corp
+ssh -Y i809989@usphlhanapio02.phl.sap.corp
+ssh -Y i809989@usphlvm1902.phl.sap.corp
+ssh -Y pioadm@usphlhanapio01.phl.sap.corp
+ssh -Y sp3adm@usphlhanapio01.phl.sap.corp
+ssh -Y system@usphlhanapio01.phl.sap.corp
+ssh -Y usphlhanapio02.phl.sap.corp
+startxwin
+cd tools/datagen/
+emacs&
+clear
+history -a ./history 
