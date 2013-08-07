@@ -1,0 +1,17 @@
+
+readwrite  : store_key, product_key, time_key, price
+readonly   : q0, beta
+generated  : units
+temporary  : temp1
+
+store_key   : integer
+product_key : integer
+time_key    : date format '%Y-%m-%d'
+q0          : double
+beta        : double
+price       : double
+units       : float format '%6.2f' as q0 + -beta * price + gauss(0, 1)
+temp1       : integer as 3
+
+input  : 'input1.csv'
+output : 'output1.csv' 

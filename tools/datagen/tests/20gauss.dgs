@@ -1,0 +1,9 @@
+
+readonly   : n
+generated  : x
+
+n   : integer
+x   : float as gauss(0, 1)
+
+input  : '20in.csv'
+

@@ -1,0 +1,13 @@
+
+readwrite  : x
+generated  : a,b,c,v
+
+x   : integer
+a   : integer range 1 100 17
+b   : date format '%Y-%m-%d' range '2001-01-01' '2001-01-31' 7
+c   : double format '%6.2f' range 11.5 35.9 11.775
+v   : float format '%6.2f' as x + gauss(a, 1)
+
+input  : 'input3.csv'
+output : 'output3.csv' 
+

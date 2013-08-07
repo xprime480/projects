@@ -1,0 +1,16 @@
+
+readwrite  : store_key, product_key, time_key, price
+readonly   : q0, beta
+generated  : time_key, units
+
+store_key   : integer
+product_key : integer
+time_key    : date format '%Y-%m-%d' range '2001-01-01' '2001-01-31'
+q0          : double
+beta        : double
+price       : double
+units       : float format '%6.2f' as q0 + -beta * price + gauss(0, 1)
+
+input  : 'input2.csv'
+output : 'output2.csv' 
+
