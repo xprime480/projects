@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#CURRENT_PROJECT=${CURRENT_PROJECT:-newdatalayer}
+#export WORK_ROOT=${PROJECTS}/${CURRENT_PROJECT}
+#
+#alias wr='cd ${WORK_ROOT}'
+#alias supp='cd ${WORK_ROOT}/share/support'
+#alias kapp='cd ${WORK_ROOT}/share/libkhiapp'
+#alias finlib='cd ${WORK_ROOT}/financial/libfin3'
+#alias fingen='cd ${WORK_ROOT}/financial/generic'
+#alias finbin='cd ${WORK_ROOT}/financial/bin'
+#alias sgo='./servers restart'
+#alias sstop='./servers stop'
+#
+#function project () {
+#
+#  export CURRENT_PROJECT=$1
+#  if [ ${CURRENT_PROJECT} = "fsgeneric" ]; then
+#    export WORK_ROOT=/mnt/researchdata/mdavis/${CURRENT_PROJECT}
+#  else    
+#    export WORK_ROOT=${PROJECTS}/${CURRENT_PROJECT}
+#  fi
+#
+#  cd ${WORK_ROOT}/
+#  if [ -f .localrc ]; then
+#     source .localrc
+#  fi
+#}
+#
+##TORAPROG=`which tora`
+##alias tora='(cd ~/sql ; /usr/X11R6/bin/tora &)'
+#alias sg='set | grep '
+
+alias colorize='printf "\033]11;#%s\007"'
+alias blue='colorize bbddff'
+
+#alias myps='ps -ef | grep ^I809989'
+#alias semclean="ipcs | sed -n /Semaphore/,/^$/p | grep I809989 | cut -f 2 -d' ' | xargs -n1 -r ipcrm -s "
+#
+#export DBCONN='--dbConnection wamu_heloc/wamu_heloc@fspilot'
+
+EMACS_EXE=/usr/bin/emacs
+alias ema='${EMACS_EXE} -geometry 80x550+650+40 -f bookmark-bmenu-list'
+
+
+alias ghelp='git --help'
+alias gcommit='git commit -a'
+alias gdiff='git diff'
+alias gpush='git push origin master'
+alias gstatus='git status'
+alias gadd='git add'

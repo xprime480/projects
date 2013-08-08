@@ -1,0 +1,5 @@
+
+if [ -d ${HOME}/ODBC ]; then
+   export ODBCSYSINI=${HOME}/ODBC
+   export ODBCINI=${HOME}/ODBC
+fi
