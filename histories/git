@@ -1,0 +1,15 @@
+git --help
+git --help add
+git --help checkout
+git --help commit
+git clone ~/projects.git/
+git clone ~/projects.git/ random_test
+git commit --amend --reset-author
+git commit -a -m 'Write outliers data to csv file'
+git config --global user.email mi.davis@sap.com
+git config --global user.name "Mike Davis"
+git diff makedata.py 
+git init --bare
+git push origin master
+git rm -f *.py
+git status

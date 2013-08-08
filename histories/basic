@@ -2,7 +2,11 @@
 ./exponential.py 1 1024 0.6 25 |  less
 ./rhapper.py five-star.sql four-star.sql older.sql newest.sql > script3.sql
 ./testme.py test001.sql 
+cd tools/datagen/
+clear
 cp /cygdrive/c/Users/I809989/AppData/Roaming/Real/rhapsody/1.sqlite/local3.seb ./test.seb
+emacs&
+history -a ./history 
 history -n ./history
 history -w 
 python -m SimpleHTTPServer 8883 &
@@ -19,7 +23,3 @@ ssh -Y sp3adm@usphlhanapio01.phl.sap.corp
 ssh -Y system@usphlhanapio01.phl.sap.corp
 ssh -Y usphlhanapio02.phl.sap.corp
 startxwin
-cd tools/datagen/
-emacs&
-clear
-history -a ./history 
