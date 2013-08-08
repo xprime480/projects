@@ -12,23 +12,17 @@ def chunker(seq, n) :
 
     SEQ is any iterable.
     N   is the number of items to pull from SEQ for each chunk.
+
+    The last chunk may be shorter than N.
     """
     s = iter(seq)
     more = True
-    while more :
-        v = []
-        for i in range(n) :
-            try :
-                v.append(s.next())
-            except StopIteration :
-                more = False
-                break
+    items = [s for s in seq]
 
-        if len(v) == 0 :
-            return
-        yield iter(v)
-
-    return
+    while len(items) > 0 :
+        v = items[:n]
+        items = items[n:]
+        yield list(v)
 
 def agg_seq(seq, n, agg) :
     """Create a new sequence by applying AGG to N-sized chunks of SEQ.
@@ -43,20 +37,22 @@ def agg_seq(seq, n, agg) :
         yield agg(x)
 
 def flatten(seqs) :
-    """Transform a sequence of sequences it into a flat sequence.
+    """Recursively transform a sequence of sequences it into a sequence.
 
-    SEQS is any sequence of sequences.
+    SEQS is any sequence.
     """
-    while True :
-        for e in seqs :
-            if type(e) in (tuple,list) :
-                for i in flatten(e) :
-                    yield i
-            else :
-                yield e
-            
-    return
-    
+
+    for s in seqs :
+        if type(s) == str :
+            yield s
+        else :
+            try :
+                x = iter(s)
+                for v in flatten(x) :
+                    yield v
+            except TypeError as e :
+                yield s
+
 def bestof(seq,n,k) :
     """Sort chunks of a sequence and return a subset of each chunk.
 
@@ -67,7 +63,19 @@ def bestof(seq,n,k) :
     Each chunk of N items is sorted and the largest (by the sort)
     K items are returned.
     """
-    for s in chunker(seq, k) :
-        for x in sorted(s)[-n:] :
-            yield x
+    for s in chunker(seq, n) :
+        yield sorted(s)[-k:]
+
+if __name__ == '__main__' :
+    import random
+    print (list(chunker(range(5), 3)))
+    print (list(chunker(range(100), 10)))
+    print (list(agg_seq(range(100), 10, lambda x : sum(x[:2]))))
+    print (list(flatten([range(3), 3.14159, range(2)])))
+    print (list(flatten(['testing'])))
+    x = list(range(100))
+    random.shuffle(x)
+    print (list(bestof(x, 10, 2)))
+
+    print ('OK, that went well')
 
