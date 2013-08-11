@@ -83,18 +83,18 @@ def tokenize(input) :
                         yield (m,o)
                         rest = r
                     else :
-                        print 'Cannot tokenize: ', rest
+                        print('Cannot tokenize: ', rest)
                         break
 
     return
 
 
 if __name__ == '__main__'  :
-    print ops.match("+")
-    print kws.match("set")
-    print kws.match("settle")
-    print list(tokenize(""))
-    print list(tokenize("2+2"))
-    print list(tokenize("exp 3 5"))
-    print list(tokenize("dogfish99"))
-    print list(tokenize("..."))
+    print(ops.match("+"))
+    print(kws.match("set"))
+    print(kws.match("settle"))
+    print(list(tokenize("")))
+    print(list(tokenize("2+2")))
+    print(list(tokenize("exp 3 5")))
+    print(list(tokenize("dogfish99")))
+    print(list(tokenize("...")))
