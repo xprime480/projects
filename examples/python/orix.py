@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 class TestNewStyle(object) :
 
@@ -20,10 +20,10 @@ class TestNewStyle(object) :
 
 
 Q = TestNewStyle()
-print Q.catfish
-print Q.hotdog
-print Q.spam
-print Q.Spam
+print(Q.catfish)
+print(Q.hotdog)
+print(Q.spam)
+print(Q.Spam)
 TestNewStyle.allowable_attrs.append('hotdog')
-print Q.HotDog
+print(Q.HotDog)
 
