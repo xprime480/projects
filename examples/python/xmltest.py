@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 from xml.sax import saxutils
@@ -8,9 +8,14 @@ class Name(object):
         self.forename = forename
         self.surname = surname
 
-names = [Name("Andrew", "Dalke"),
-         Name("John", "Smith"),
-         Name(u"\N{LATIN CAPITAL LETTER A WITH RING ABOVE}sa", "Svensson"),]
+names = [
+    Name("Andrew", "Dalke"),
+    Name("John", "Smith"),
+    Name("Asa", "Svensson"),
+]
+
+# BUG:
+# "Asa" is supposed to be: "\N{LATIN CAPITAL LETTER A WITH RING ABOVE}sa"
 
 gen = saxutils.XMLGenerator(sys.stdout, "utf-8")
 gen.startDocument()
