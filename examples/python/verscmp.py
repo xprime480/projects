@@ -1,4 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+
+def components( v ) :
+    """split a string into its numeric, dot-separated components"""
+
+    return [ int( x ) for x in v.split( '.' ) ]
 
 
 def verscmp( x, y ) :
@@ -12,14 +18,17 @@ def verscmp( x, y ) :
             l = l[ : -1 ]
         return l
 
-    def vers_components( v ) :
-        """split a string into its numeric, dot-separated components"""
-        return [ int( x ) for x in v.split( '.' ) ]
+    def cmp(a, b) :
+        """return -1,0,or +1 as a < == or > b.
 
-    xs = strip_trailing_zeros( vers_components( x ) )
-    ys = strip_trailing_zeros( vers_components( y ) )
+        Python3 no longer supports cmp."""
+
+        return ((a>b) - (a<b))
+
+    xs = strip_trailing_zeros( components( x ) )
+    ys = strip_trailing_zeros( components( y ) )
     ml = min( len( xs ), len( ys ) )
-    cs = [ cmp( xs[ i ], ys[ i ] ) for i in range( ml ) ]
+    cs = [ cmp(xs[ i ], ys[ i ]) for i in range( ml ) ]
     if 0 in cs :
         cs.remove( 0 )
     return len( cs ) > 0 and cs[0] or cmp( len( xs ), len( ys ) )
@@ -82,8 +91,8 @@ if '__main__' == __name__ :
             """ensure that verscmp works correctly with sort"""
             t = [ self.v1, self.v10, self.v20, self.v11, self.v111,
                   self.v12, self.vbig ]
-            t.sort( verscmp )
-            for i in xrange( len( t ) - 2 ) :
+            t.sort( key=components )
+            for i in range( len( t ) - 2 ) :
                 self.assertNotEqual( 1, verscmp( t[ i ], t[ i+1 ] ) )
 
     unittest.main()
