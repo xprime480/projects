@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from itertools import *
 from math import sqrt
 from mymath import *
