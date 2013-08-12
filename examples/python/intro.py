@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+import collections
 
 class ABC(object) :
     def __init__(self) :
@@ -8,7 +10,7 @@ class ABC(object) :
         rep = ''
         for x in dir(self) :
             a = getattr(self, x)
-            if len(x) >= 2 and 'r_' == x[:2] and callable(a) :
+            if len(x) >= 2 and 'r_' == x[:2] and isinstance(a, collections.Callable) :
                 t = a()
                 if t :
                     rep += str(t)
@@ -41,7 +43,7 @@ class Q(ABC) :
         return str(self.v)
 
 
-print Z()
-print Zed()
-print Q(1)
-print Q({})
+print(Z())
+print(Zed())
+print(Q(1))
+print(Q({}))
