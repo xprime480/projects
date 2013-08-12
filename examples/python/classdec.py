@@ -10,10 +10,10 @@ g = seq()
 
 def trace(f) :
     def tracer(*args) :
-        s = g.next()
-        print 'in', s, f
-        v = apply(f, args)
-        print 'out', s
+        s = next(g)
+        print('in', s, f)
+        v = f(*args)
+        print('out', s)
         return v
     return tracer
 
@@ -22,7 +22,7 @@ class S(object) :
         self.i = i
 
     def __new__(cls, i) :
-        print 'creating a', cls
+        print('creating a', cls)
         o = super(S, cls).__new__(cls)
         o.__init__(i)
         return o
@@ -31,7 +31,7 @@ class S(object) :
         return str(self.i)
 
     def __repr__(self) :
-        return `self`
+        return repr(self)
 
     @trace
     def op(self, op, arg) :
@@ -43,7 +43,7 @@ class T(S) :
 
 s = S(2)
 t = T(7)
-print s,t
-print s.op('+', 3)
-print s.op('*', 7)
-print t.op('*', s.op('-', 1))
+print(s,t)
+print(s.op('+', 3))
+print(s.op('*', 7))
+print(t.op('*', s.op('-', 1)))
