@@ -1,5 +1,5 @@
 
-EXE = wchar boing tov tol ptrscan sim2 qsim trie anonseq
+EXE = wchar boing tov tol ptrscan sim2 qsim trie anonseq anonseqlazy
 
 $(EXE) : % : %.cpp
 	g++ -std=c++11 -g -o $@ $<
