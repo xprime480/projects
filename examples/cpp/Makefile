@@ -1,5 +1,5 @@
 
-EXE = wchar boing tov tol
+EXE = wchar boing tov tol ptrscan
 
 $(EXE) : % : %.cpp
 	g++ -std=c++0x -g -o $@ $<
