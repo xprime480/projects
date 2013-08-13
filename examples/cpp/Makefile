@@ -1,5 +1,5 @@
 
-EXE = wchar boing
+EXE = wchar boing tov
 
 $(EXE) : % : %.cpp
 	g++ -std=c++0x -g -o $@ $<
