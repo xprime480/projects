@@ -1,8 +1,13 @@
 
-EXE = wchar boing tov tol ptrscan
+EXE = wchar boing tov tol ptrscan sim2
 
 $(EXE) : % : %.cpp
-	g++ -std=c++0x -g -o $@ $<
+	g++ -std=c++11 -g -o $@ $<
 
 test : $(EXE)
 	@-for exe in $(EXE) ; do echo '*** Testing: ' $${exe} ; ./$${exe} ; done
+
+clean :
+	@-rm *.exe
+
+
