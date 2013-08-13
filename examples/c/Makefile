@@ -1,10 +1,9 @@
 
-EXE = fvd redex
+EXE = fvd redex var
 
 $(EXE) : % : %.c
 	gcc -o $@ $<
 
 test : $(EXE)
-	./fvd
-	./redex
+	@-for exe in $(EXE) ; do echo $${exe} ; ./$${exe} ; done
 
