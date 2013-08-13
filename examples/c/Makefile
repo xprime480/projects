@@ -1,8 +1,10 @@
 
-fvd : fvd.c
-	gcc -o fvd fvd.c
+EXE = fvd redex
 
+$(EXE) : % : %.c
+	gcc -o $@ $<
 
-test :
+test : $(EXE)
 	./fvd
+	./redex
 
