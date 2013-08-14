@@ -1,5 +1,5 @@
 
-from Tkinter import Tk,Button,Canvas,LAST,FLAT
+from tkinter import Tk,Button,Canvas,LAST,FLAT
 
 class Goofy(Tk) :
     """Goofy widget that knows how to draw:
@@ -8,6 +8,13 @@ class Goofy(Tk) :
     - a grid of dots
     - various sizes of bullseye logos
     """
+
+    colors = [
+        "red", "yellow", "blue",
+        "green", "purple", "orange",
+        "black", "white", "grey"
+    ]
+
     
     def __init__(self, button=True) :
         """Draw a button if requested and a blank canvas"""
@@ -22,19 +29,14 @@ class Goofy(Tk) :
         self.c = Canvas(bg="white")
         self.c.pack()
 
-        self.colors = ["red", "yellow", "blue",
-                       "green", "purple", "orange",
-                       "black", "white", "grey"]
-
-
     def make_dot_grid(self, size, spacing) :
         """Make a grid"""
 
-        xcount = 1 + int(self.c.cget("width"))  / spacing
-        ycount = 1 + int(self.c.cget("height")) / spacing
+        xcount = int(1 + int(self.c.cget("width"))  / spacing)
+        ycount = int(1 + int(self.c.cget("height")) / spacing)
         
-        for x in xrange(xcount) :
-            for y in xrange(ycount) :
+        for x in range(xcount) :
+            for y in range(ycount) :
                 self.c.create_oval(x * spacing,
                                    y * spacing,
                                    x * spacing + size,
