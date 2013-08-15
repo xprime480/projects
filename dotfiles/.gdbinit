@@ -10,3 +10,5 @@ def prs
   print /s $1.c_str()
 end
 
+
+set auto-load safe-path /
