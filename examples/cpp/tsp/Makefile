@@ -1,25 +1,14 @@
 
-SRC  = tspmain.cpp TSP.cpp Point2D.cpp
-OBJS = $(SRC:.cpp=.o)
-EXE  = tsp
 
-CPP_FLAGS = -std=c++11 -Wall -Werror -g
+BASEDIR = $(shell pwd)/..
+MYEXE     = tsp
+TEST_ARGS = problem2
 
-all : $(EXE)
+include $(BASEDIR)/generic.mk
 
-include ../mk_deps.mk
+ltest : test
+	tail -1 $(TEST_ARGS).out
 
-$(EXE) : $(OBJS)
-	g++ $(CPP_FLAGS) -o $@ $+
+lclean : clean
+	-rm *.out
 
-$(OBJS) : %.o : %.cpp
-	g++ $(CPP_FLAGS) -c $<
-
-clean :
-	-rm *.o *.exe *~ *.d
-
-TEST = problem4
-
-test : $(EXE)
-	./tsp $(TEST)
-	tail -1 $(TEST).out
