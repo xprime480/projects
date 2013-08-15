@@ -1,20 +1,22 @@
 
-SRC = tspmain.cpp TSP.cpp Point2D.cpp
-OBJ = $(SRC:.cpp=.o)
-EXE = tsp
+SRC  = tspmain.cpp TSP.cpp Point2D.cpp
+OBJS = $(SRC:.cpp=.o)
+EXE  = tsp
 
-CFLAGS = -std=c++11 -Wall -Werror -g
+CPP_FLAGS = -std=c++11 -Wall -Werror -g
 
 all : $(EXE)
 
-$(EXE) : $(OBJ)
-	g++ $(CFLAGS) -o $@ $+
+include ../mk_deps.mk
 
-$(OBJ) : %.o : %.cpp
-	g++ $(CFLAGS) -c $<
+$(EXE) : $(OBJS)
+	g++ $(CPP_FLAGS) -o $@ $+
+
+$(OBJS) : %.o : %.cpp
+	g++ $(CPP_FLAGS) -c $<
 
 clean :
-	-rm *.o *.exe *~
+	-rm *.o *.exe *~ *.d
 
 TEST = problem4
 
