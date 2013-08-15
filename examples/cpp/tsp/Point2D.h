@@ -1,4 +1,5 @@
 
+#include <fstream>
 
 struct Point2D {
   int x;
