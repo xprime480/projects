@@ -1,9 +1,9 @@
 
 
-BASEDIR     = $(shell pwd)/..
-MYEXE       = tsp
-TEST_ARGS   = problem2
-CLEAN_FILES = *.out
+BASEDIR      = $(shell pwd)/..
+MYEXE        = tsp
+TEST_ARGS   ?= problem2
+CLEAN_FILES  = *.out
 
 include $(BASEDIR)/generic.mk
 
