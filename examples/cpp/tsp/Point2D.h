@@ -7,4 +7,8 @@ struct Point2D {
   
   static bool makePoint(Point2D & point);
   static bool makePoint(Point2D & point, std::ifstream & pointSource);
+
+  static void writePoint(Point2D const & point, 
+			 std::ofstream & pointDestination);
+
 };

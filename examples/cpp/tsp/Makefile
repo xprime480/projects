@@ -16,6 +16,8 @@ $(OBJ) : %.o : %.cpp
 clean :
 	-rm *.o *.exe *~
 
-test : $(EXE)
-	./tsp problem1
+TEST = problem4
 
+test : $(EXE)
+	./tsp $(TEST)
+	tail -1 $(TEST).out

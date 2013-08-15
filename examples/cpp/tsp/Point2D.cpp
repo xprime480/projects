@@ -20,3 +20,10 @@ bool Point2D::makePoint(Point2D & point, std::ifstream & pointSource)
 
   return (bool) pointSource;
 }
+
+void Point2D::writePoint(Point2D const & point, 
+			 std::ofstream & pointDestination)
+{
+  pointDestination << point.x << " " << point.y << std::endl;
+}
+
