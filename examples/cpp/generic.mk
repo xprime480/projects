@@ -13,7 +13,7 @@ include $(BASEDIR)/mk_deps.mk
 $(OBJS) : %.o : %.cpp
 	$(CPP) $(CPP_FLAGS) -c -o $@ $<
 
-$(MYEXE): $(DEPS) $(OBJS)
+$(MYEXE): $(EXTRA_TARGET) $(DEPS) $(OBJS)
 	$(CPP) $(CPP_FLAGS) $(LINK_FLAGS) -o $(MYEXE) $(OBJS) $(EXTRA_LIBS)
 
 test : $(MYEXE)
