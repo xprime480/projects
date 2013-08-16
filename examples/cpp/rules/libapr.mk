@@ -4,6 +4,8 @@ LIB        = libapr.a
 
 include $(BASEDIR)/generic.mk
 
-lib : $(OBJS)
+lib : $(LIB)
+
+$(LIB) : $(OBJS)
 	-rm $(LIB)
 	ar cr $(LIB) $+
