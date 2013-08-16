@@ -16,7 +16,7 @@ $(OBJS) : %.o : %.cpp
 $(MYEXE): $(EXTRA_TARGET) $(DEPS) $(OBJS)
 	$(CPP) $(CPP_FLAGS) $(LINK_FLAGS) -o $(MYEXE) $(OBJS) $(EXTRA_LIBS)
 
-test : $(MYEXE)
+test : $(MYEXE) $(LOCAL_TEST)
 	./$(MYEXE) $(TEST_ARGS)
 
 clean :
