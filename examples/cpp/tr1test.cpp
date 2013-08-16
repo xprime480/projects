@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <tr1/tuple>
+#include <tuple>
 
 template<int i, typename... T>
 class Foo
@@ -64,8 +64,8 @@ int main(int argc, char ** argv)
   printValue<IsIntegral<unsigned char> >();
   printValue<IsIntegral<double> >();
 
-  std::tr1::tuple<int, char**> x(argc, argv);
-  std::cout << std::tr1::get<0>(x) << std::endl;
-  std::cout << (*std::tr1::get<1>(x)) << std::endl;
+  std::tuple<int, char**> x(argc, argv);
+  std::cout << std::get<0>(x) << std::endl;
+  std::cout << (*std::get<1>(x)) << std::endl;
   return 0;
 }
