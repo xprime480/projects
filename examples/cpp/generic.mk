@@ -4,9 +4,9 @@ all : $(MYEXE)
 
 BASEDIR    ?= .
 OBJS       ?= $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-CPP        ?= g++
-CPP_FLAGS  ?= -std=c++11 -Wall -Werror -g
-LINK_FLAGS ?= -L$(BASEDIR)/lib
+CPP         = g++
+CPP_FLAGS   = -std=c++11 -Wall -Werror -g
+LINK_FLAGS  = -L$(BASEDIR)/lib
 
 include $(BASEDIR)/mk_deps.mk
 
