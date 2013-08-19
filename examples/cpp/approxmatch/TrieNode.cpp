@@ -2,21 +2,9 @@
 #include <cstring>
 
 #include "TrieNode.h"
+#include "strdup.h"
 
 using namespace std;
-
-char * strdup(char const * s) 
-{
-  if ( ! s ) {
-    return 0;
-  }
-
-  size_t len = strlen(s);
-  char * news = (char *) malloc(1 + len);
-  strcpy(news, s);
-
-  return news;
-}
 
 TrieNode::TrieNode()
   : key(0)
