@@ -1,0 +1,25 @@
+#count drop 50000000 take 100000000 naturals
+[1 2 3]
+take 5 drop 15 naturals
+take 20 hamming
+take 20 ghamming [3 7 11]
+take 20 ghamming [3 4 5]
+
+take 20 repeat 1
+take 20 whatsit take 2 repeat 1
+whatsit take 2 repeat 1
+count whatsit take 2 repeat 1
+minmax whatsit take 2 repeat 1
+
+take 10 recurse 15 whatsit take 2 repeat 2
+
+take 20 fibonacci
+take 20 (* 3 _) fibonacci
+takewhile (< _ 1000) (* 3 _) fibonacci
+    while (< _ 1000) (* 3 _) fibonacci
+
+append take 5 fibonacci take 5 naturals
+append take 1 repeat 2 take 1 repeat 1
+
+take 10 recurse 3 whatsit take 2 repeat 1
+
