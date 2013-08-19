@@ -20,5 +20,5 @@ test : $(MYEXE) $(LOCAL_TEST)
 	./$(MYEXE) $(TEST_ARGS)
 
 clean :
-	-rm *.o *.exe *~ *.d $(CLEAN_FILES)
+	-rm *.o *.exe *~ *.d $(CLEAN_FILES) *.a
 
