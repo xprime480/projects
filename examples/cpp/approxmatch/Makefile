@@ -8,3 +8,10 @@ LOCAL_TEST = local_test
 local_test : all
 	time ./trietest ~/tmp/randomwords.txt en_
 	time ./trietest ~/tmp/randomwords.txt 10freedesktop
+	./approxmatch kittle bittle
+	./approxmatch was saw
+	./approxmatch sdfkasdfdkfsdf ''
+	./approxmatch abcdef abcdez
+	./approxmatch abc xyz
+	./approxmatch abcdefghijklmnopqurstu abcdefghijklmnopqurstu
+	./approxmatch qwertyuiop asdfghjkl
