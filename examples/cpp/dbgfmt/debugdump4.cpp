@@ -270,7 +270,7 @@ void test4()
 void test5()
 {
   typedef std::pair<int, std::string> test_type;
-  test_type v = test_type::pair(3, "Some very very long and boring text");
+  auto v = test_type(3, "Some very very long and boring text");
   char const * h[] = { "index", "clue", 0 };
   char const * f = "dump3_5.txt";
   test(f, h, v);

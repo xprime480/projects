@@ -138,7 +138,7 @@ public:
   void format(Buffer & buf, std::string const & s)
   {
     char t[32];
-    snprintf(t, 21, "%-20s", s.c_str());
+    sprintf(t, "%-20s", s.substr(0, 20).c_str());
     t[21] = t[22] = ' ';
     t[23] = '\0';
     buf.append(t);

@@ -6,6 +6,8 @@
 #include <stack>
 #include <iostream>
 
+#include "strdup.h"
+
 static size_t const BUFMAX = 1024;
 
 class Buffer

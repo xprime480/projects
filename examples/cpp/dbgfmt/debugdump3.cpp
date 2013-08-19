@@ -33,8 +33,8 @@ struct NullOrEof<T, true>
 template<typename T, bool X=false>
 struct FormatBuilder00
 {
-  typedef T                                              value_type;
-  typedef ItemFormatter<value_type>                      car_type;
+  typedef          T                                     value_type;
+  typedef          ItemFormatter<value_type>             car_type;
   typedef typename NullOrEof<value_type, X>::type        cdr_type;
   typedef DebugFormatter<value_type, car_type, cdr_type> formatter_type;
 
@@ -81,16 +81,17 @@ struct FormatBuilder01
   }
 };
 
-template<typename T, typename M1, typename M2, bool X=false>
+template<typename T, typename U, typename M1, typename M2, bool X=false>
 struct FormatBuilder02
 {
   typedef T                                               value_type;
-  typedef StructFormatter<value_type, M1>                 car_type;
-  typedef FormatBuilder01<T, M2, X>                       builder_type;
+  typedef U                                               data_type;
+  typedef StructFormatter<data_type, M1>                  car_type;
+  typedef FormatBuilder01<U, M2, X>                       builder_type;
   typedef typename builder_type::formatter_type           cdr_type;
   typedef DebugFormatter<value_type, car_type, cdr_type>  formatter_type;
-  typedef M1 T::*                                         pm1_type;
-  typedef M2 T::*                                         pm2_type;
+  typedef M1 U::*                                         pm1_type;
+  typedef M2 U::*                                         pm2_type;
 
   formatter_type build(pm1_type pm1, pm2_type pm2)
   {
@@ -177,7 +178,7 @@ void test(char const * outfile,
   typedef          T                                       value_type;
   typedef          M1                                      mem_1_type;
   typedef          M2                                      mem_2_type;
-  typedef          FormatBuilder02<value_type, mem_1_type, mem_2_type, true> 
+  typedef          FormatBuilder02<value_type, value_type, mem_1_type, mem_2_type, true> 
                                                            builder_type;
   typedef typename builder_type::formatter_type            formatter_type;
   typedef          TestEnv<formatter_type>                 test_env_type;
@@ -200,9 +201,10 @@ void test(char const * outfile,
 	  M2 U::* pm2)
 {
   typedef          T                                       value_type;
+  typedef          U                                       data_type;
   typedef          M1                                      mem_1_type;
   typedef          M2                                      mem_2_type;
-  typedef          FormatBuilder02<value_type, mem_1_type, mem_2_type, true> 
+  typedef          FormatBuilder02<value_type, data_type, mem_1_type, mem_2_type, true> 
                                                            builder_type;
   typedef typename builder_type::formatter_type            formatter_type;
   typedef          TestEnv<formatter_type>                 test_env_type;
@@ -269,8 +271,8 @@ void test4()
 
 void test5()
 {
-  typedef std::pair<int, std::string> test_type;
-  test_type v = test_type::pair(3, "Some very very long and boring text");
+  char const * const txt = "Some very very long and boring text";
+  auto v = std::pair<int, std::string>(3, txt);
   char const * h[] = { "index", "clue", 0 };
   char const * f = "dump3_5.txt";
   test(f, h, v);
@@ -290,6 +292,7 @@ void test6()
 
 void test7()
 {
+#if 0
   typedef std::vector<Point> test_type;
   test_type v;
   for ( int i = 1 ; i <= 10 ; ++i ) {
@@ -301,6 +304,7 @@ void test7()
   char const * h[] = { "X", "Y", 0 };
   char const * f = "dump3_7.txt";
   test(f, h, v, &Point::x, &Point::y);
+#endif
 }
 
 int main(int argc, char ** argv)
@@ -312,7 +316,6 @@ int main(int argc, char ** argv)
   test5();
   test6();
   test7();
-
 
   return 0;
 }

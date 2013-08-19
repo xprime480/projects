@@ -1,14 +1,5 @@
 
-OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+EXE_LIST = Buffer debugdump3 debugdump4
 
-MYEXE = Buffer debugdump4
-
-all : $(MYEXE)
-
-include ../mk_deps.mk
-
-$(OBJS) : %.o : %.cpp
-	g++ $(CFLAGS) -c  -g -o $@ $<
-
-$(MYEXE) : % : $(DEPS) %.o
-	g++ -o $@ $<
+% :
+	for x in $(EXE_LIST) ; do MYEXE=$${x} make -f exe.mk $@ ; done

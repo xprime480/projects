@@ -9,8 +9,8 @@ public:
   typedef typename formatter_type::value_type value_type;
 
   TestEnv(formatter_type & _fmt,
-	   char const * fname, 
-	   char const ** headers)
+	  char const * fname, 
+	  char const ** headers)
     : fmt(_fmt)
     , of(fname)
     , buf(makeStreamBuffer(of))

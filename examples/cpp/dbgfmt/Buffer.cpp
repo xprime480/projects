@@ -4,6 +4,8 @@
 #include <fstream>
 #include <memory>
 
+#include "strdup.h"
+
 #include "Buffer.h"
 
 template<typename OS>
