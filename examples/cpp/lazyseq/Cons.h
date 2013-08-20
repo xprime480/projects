@@ -34,7 +34,7 @@ public:
     if ( ! _cdr ) {
       TRACEALLOC(cdr);
     }
-    addref(cdr);
+    this->addref(cdr);
   }
 
   /**
@@ -42,7 +42,7 @@ public:
    */
   virtual ~Cons()
   {
-    deref(cdr);
+    this->deref(cdr);
   }
   
   /**

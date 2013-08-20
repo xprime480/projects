@@ -33,9 +33,9 @@ public:
   Dropper(LazySeq<T> * src, size_t n)
     : source(src)
   {
-    addref(source);
+    this->addref(source);
     while ( source && ! source->empty && n > 0 ) {
-      source = cdr(source);
+      source = this->cdr(source);
       --n;
     }
 
@@ -53,7 +53,7 @@ public:
    */
   virtual ~Dropper()
   {
-    deref(source);
+    this->deref(source);
     source = 0;
   }
 

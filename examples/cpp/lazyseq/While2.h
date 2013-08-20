@@ -34,7 +34,7 @@ public:
     , vals(_vals)
   {
     LazySeqStat::addref(cond);
-    addref(vals);
+    this->addref(vals);
 
     if ( ! cond || cond->empty || ! vals || vals->empty ) {
       return;
@@ -52,7 +52,7 @@ public:
   virtual ~While2()
   {
     LazySeqStat::deref(cond);
-    deref(vals);
+    this->deref(vals);
   }
 
   /**

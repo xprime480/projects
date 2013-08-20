@@ -36,8 +36,8 @@ public:
     , first(_first)
     , second(_second)
   {
-    addref(first);
-    addref(second);
+    this->addref(first);
+    this->addref(second);
 
     if ( first && ! first->empty ) {
       this->head = first->head;
@@ -54,8 +54,8 @@ public:
    */
   virtual ~Appender()
   {
-    deref(second);
-    deref(first);
+    this->deref(second);
+    this->deref(first);
   }
 
   /**

@@ -30,7 +30,7 @@ public:
     , n(_n)
     , seq(_seq)
   {
-    addref(seq);
+    this->addref(seq);
     if ( seq && ! seq->empty ) {
       this->head = n * seq->head;
       this->empty = false;
@@ -42,7 +42,7 @@ public:
    */
   virtual ~Times()
   {
-    deref(seq);
+    this->deref(seq);
     seq = 0;
   }
 

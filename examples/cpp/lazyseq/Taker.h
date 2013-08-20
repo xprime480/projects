@@ -31,7 +31,7 @@ public:
     , source(src)
     , max(n)
   {
-    addref(source);
+    this->addref(source);
     if ( source && (! source->empty) && (max > 0) ) {
       this->head = source->head;
       this->empty = false;
@@ -46,7 +46,7 @@ public:
    */
   virtual ~Taker()
   {
-    deref(source);
+    this->deref(source);
     source = 0;
   }
 

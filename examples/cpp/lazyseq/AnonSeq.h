@@ -38,18 +38,18 @@ public:
     : LazySeq<T>()
     , source(src)
   {
-    addref(source);
+    this->addref(source);
     if ( (! source) || source->empty ) {
       return;
     }
 
     T count = 1;
     value = source->head;
-    source = cdr(source);
+    source = this->cdr(source);
 
     while ( source && ! source->empty && source->head == value ) {
       ++count;
-      source = cdr(source);
+      source = this->cdr(source);
     }
 
     this->head = count;
@@ -63,7 +63,7 @@ public:
    */
   virtual ~AnonSeq()
   {
-    deref(source);
+    this->deref(source);
     source = 0;
   }
 
@@ -82,9 +82,9 @@ public:
 
     LazySeq<T> * y = new AnonSeq<T>(source);
     TRACEALLOC(y);
-    addref(y);
+    this->addref(y);
     LazySeq<T> * z = new Cons<T>(value, y);
-    deref(y);
+    this->deref(y);
     TRACEALLOC(z);
     return z;
   }

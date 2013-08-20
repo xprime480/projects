@@ -29,8 +29,8 @@ public:
     , min(0)
     , max(0)
   {
-    addref(a);
-    addref(b);
+    this->addref(a);
+    this->addref(b);
 
     if ( (! a || a->empty) && (! b || b->empty) ) {
       this->empty = true;
@@ -52,8 +52,8 @@ public:
       setValues(b, a);
     }
 
-    deref(a);
-    deref(b);
+    this->deref(a);
+    this->deref(b);
   }
   
   /**
@@ -61,8 +61,8 @@ public:
    */
   ~Merge()
   {
-    deref(min);
-    deref(max);
+    this->deref(min);
+    this->deref(max);
     min = 0;
     max = 0;
   }
@@ -103,8 +103,8 @@ private:
     this->head = less->head;
     min  = less;
     max  = more;
-    addref(min);
-    addref(max);
+    this->addref(min);
+    this->addref(max);
     this->empty = false;
   }
 };

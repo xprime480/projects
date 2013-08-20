@@ -31,8 +31,8 @@ public:
     , seq1(_s1)
     , seq2(_s2)
   {
-    addref(seq1);
-    addref(seq2);
+    this->addref(seq1);
+    this->addref(seq2);
 
     if ( ! seq1 || seq1->empty ) {
       return;
@@ -50,8 +50,8 @@ public:
    */
   virtual ~Transformer2()
   {
-    deref(seq1);
-    deref(seq2);
+    this->deref(seq1);
+    this->deref(seq2);
   }
 
   /**

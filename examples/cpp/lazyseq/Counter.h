@@ -25,12 +25,12 @@ public:
   Counter(LazySeq<T> * src)
     : LazySeq<T>(0, false)
   {
-    addref(src);
+    this->addref(src);
     while ( src && (! src->empty) ) {
       this->head += 1;
-      src = cdr(src);
+      src = this->cdr(src);
     }
-    deref(src);
+    this->deref(src);
   }
 
   /**
