@@ -163,8 +163,8 @@ class Taker : public LazySeq
 public:
   Taker(LazySeq & src, size_t n)
     : source(src)
-    , taken(0)
     , max(n)
+    , taken(0)
   {
   }
 
@@ -382,6 +382,7 @@ int timetest()
   delete w;
   delete z;
   delete y;
+  return 0;
 }
 
 int hammingtest()
@@ -407,6 +408,8 @@ int hammingtest()
     delete z;
     delete y;
   }
+
+  return 0;
 }
 
 int main(int argc, char ** argv)

@@ -39,6 +39,7 @@ public:
     t.x = 10*i + 7;
     t.y = 7*i  + 10;
     ++i;
+    return 0;
   }
 
 private:

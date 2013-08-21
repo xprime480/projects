@@ -27,8 +27,8 @@ public:
 
   template <typename U>
   cache_key(extractor_type e, U const & par)
-    : extractor(e)
-    , attr_1(par.attr_1)
+    : attr_1(par.attr_1)
+    , extractor(e)
   {
   }
   

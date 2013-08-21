@@ -164,8 +164,8 @@ class Taker : public LazySeq
 public:
   Taker(LazySeq & src, size_t n)
     : source(src)
-    , taken(0)
     , max(n)
+    , taken(0)
   {
   }
 
@@ -293,6 +293,7 @@ int timetest()
   cout << "Count = " << LazySeqUtils::count(*z) << endl;
   delete z;
   delete y;
+  return 0;
 }
 
 int main(int argc, char ** argv)

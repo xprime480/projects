@@ -3,10 +3,6 @@
 #include <iostream>
 #include <memory>
 
-//
-// Not compilable
-//
-
 struct BargyBase
 {
   virtual void call() = 0;
@@ -41,7 +37,6 @@ Bargy < T > * make_bargy( Bargy < T > * t )
   return new Bargy< T >( *t );
 }
 
-
 class Argy
 {
 public:
@@ -52,11 +47,6 @@ public:
   {
   }
 
-  Argy( Argy const & a )
-    : name ( a.name ) 
-    , sb ( make_bargy( a.sb.get() ) )
-  {
-  }
 
   void operator()()
   {
@@ -66,10 +56,9 @@ public:
 
 private:
   std::string const name;
-  std::auto_ptr<BargyBase> sb;
-
-  Argy & operator=( Argy const & );
+  std::shared_ptr<BargyBase> sb;
 };
+
 
 void somefunc()
 {
@@ -92,11 +81,20 @@ private:
   T val;
 };
 
+template <typename T>
+Functor<T> make_functor(T const & value) 
+{
+  return Functor<T>(value);
+}
+
 int main( int argc, char ** argv )
 {
+  double      a2Val(3.33);
+  std::string a3Val("The rain in spain");
+
   Argy    a1( "a1", somefunc );
-  Argy    a2( "a2", Functor< double >( 3.33 ) );
-  Argy    a3( "a3", Functor< std::string >( "The rain in spain" ) );
+  Argy    a2( "a2", make_functor( a2Val ) );
+  Argy    a3( "a3", make_functor( a3Val ) );
   Argy    a4 = a3;
 
   a1();

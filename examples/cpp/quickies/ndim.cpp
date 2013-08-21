@@ -37,12 +37,12 @@ int main()
   size_t const MAX_POINT( 1000 );
   size_t const MAX_DIM( 50 );
 
-  for ( int i = 0 ; i < MAX_POINT ; ++i ) {
+  for ( size_t i = 0 ; i < MAX_POINT ; ++i ) {
     Key_3D key;
     key.key[ 0 ] = rand() % MAX_DIM;
     key.key[ 1 ] = rand() % MAX_DIM;
     key.key[ 2 ] = rand() % MAX_DIM;
-    vals[ key ] = i;
+    vals[ key ] = int(i);
     std::cout << i << ": " << key << "\n";
   }
 

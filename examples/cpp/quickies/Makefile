@@ -1,12 +1,11 @@
 
-BASEDIR=${HOME}/working/examples/cpp
+EXE_LIST   ?= $(patsubst %.cpp,%,$(wildcard *.cpp))
+LOCAL_TEST  = local_test
 
-CFLAGS += -std=c++11 -I${BASEDIR}/include -L${BASEDIR}/lib
+% :
+	for x in $(EXE_LIST) ; do MYEXE=$${x} make -f exe.mk $@ ; done
 
-% : %.cpp
-	make -C ${BASEDIR}/utils all
-	g++ $(CFLAGS) -g -o $@ $< -lutils
+local_test : all
+	for x in $(EXE_LIST) ; do  ./$${x} ; done
 
-clean :
-	-rm *.exe *~
 
