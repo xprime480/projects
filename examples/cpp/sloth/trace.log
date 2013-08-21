@@ -1,0 +1,1790 @@
+ creating 0x62fcc0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+ creating 0x62fd30
+nop decref
+incref on 0x62fd30; count is now 1
+nop decref
+incref on 0x62fd30; count is now 2
+decref on 0x62fd30; count is 2 -> 1
+incref on 0x62fd30; count is now 2
+decref on 0x62fd30; count is 2 -> 1
+Form::isMessage accessing impl 0x62fd30
+ creating 0x62ffa0
+incref on 0x62ffa0; count is now 1
+incref on 0x62ffa0; count is now 2
+decref on 0x62ffa0; count is 2 -> 1
+Form::isMessage accessing impl 0x62ffa0
+incref on 0x62ffa0; count is now 2
+Form::hasIntValue accessing impl 0x62ffa0
+Form::getIntValue accessing impl 0x62ffa0
+decref on 0x62ffa0; count is 2 -> 1
+decref on 0x62ffa0; count is 1 -> 0
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62fd30; count is now 2
+decref on 0x62fd30; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+incref on 0x62fd30; count is now 2
+nop incref
+nop decref
+nop incref
+ creating 0x630070
+nop decref
+incref on 0x630070; count is now 1
+nop decref
+incref on 0x630070; count is now 2
+decref on 0x630070; count is 2 -> 1
+incref on 0x630070; count is now 2
+decref on 0x630070; count is 2 -> 1
+decref on 0x62fd30; count is 2 -> 1
+Form::isMessage accessing impl 0x630070
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x630070; count is now 2
+decref on 0x630070; count is 2 -> 1
+incref on 0x630070; count is now 2
+incref on 0x630070; count is now 3
+decref on 0x630070; count is 3 -> 2
+Form::isMessage accessing impl 0x630070
+ creating 0x62e900
+incref on 0x62e900; count is now 1
+incref on 0x62e900; count is now 2
+decref on 0x62e900; count is 2 -> 1
+Form::isMessage accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62e900; count is now 2
+decref on 0x62e900; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x630070; count is now 3
+decref on 0x630070; count is 3 -> 2
+nop incref
+nop decref
+nop incref
+incref on 0x630070; count is now 3
+incref on 0x62e900; count is now 2
+Form::isSequence accessing impl 0x630070
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x62fdc0
+nop decref
+incref on 0x62fdc0; count is now 1
+nop decref
+incref on 0x62fdc0; count is now 2
+decref on 0x62fdc0; count is 2 -> 1
+incref on 0x62fdc0; count is now 2
+decref on 0x62fdc0; count is 2 -> 1
+decref on 0x630070; count is 3 -> 2
+decref on 0x62e900; count is 2 -> 1
+Form::isMessage accessing impl 0x62fdc0
+ creating 0x62fed0
+incref on 0x62fed0; count is now 1
+incref on 0x62fed0; count is now 2
+decref on 0x62fed0; count is 2 -> 1
+Form::isMessage accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62fed0; count is now 2
+decref on 0x62fed0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62fdc0; count is now 2
+decref on 0x62fdc0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+incref on 0x62fdc0; count is now 2
+incref on 0x62fed0; count is now 2
+Form::isSequence accessing impl 0x62fdc0
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x62fe60
+nop decref
+incref on 0x62fe60; count is now 1
+nop decref
+incref on 0x62fe60; count is now 2
+decref on 0x62fe60; count is 2 -> 1
+incref on 0x62fe60; count is now 2
+decref on 0x62fe60; count is 2 -> 1
+decref on 0x62fdc0; count is 2 -> 1
+decref on 0x62fed0; count is 2 -> 1
+Form::isMessage accessing impl 0x62fe60
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62fe60; count is now 2
+decref on 0x62fe60; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x630070; count is now 3
+decref on 0x630070; count is 3 -> 2
+incref on 0x62fe60; count is now 2
+incref on 0x630070; count is now 3
+decref on 0x630070; count is 3 -> 2
+decref on 0x62fe60; count is 2 -> 1
+Form::isMessage accessing impl 0x630070
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x630070; count is now 3
+decref on 0x630070; count is 3 -> 2
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x62fe60; count is now 2
+decref on 0x62fe60; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+incref on 0x62fe60; count is now 2
+incref on 0x630070; count is now 3
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::isNil accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x62fd30
+ creating 0x630370
+incref on 0x630370; count is now 1
+Form::hasIntValue accessing impl 0x630370
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x630370
+Form::getIntValue accessing impl 0x62e900
+ creating 0x6303d0
+incref on 0x6303d0; count is now 1
+decref on 0x630370; count is 1 -> 0
+Form::getType accessing impl 0x6303d0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x6303d0
+Form::getIntValue accessing impl 0x62fed0
+ creating 0x630430
+ creating 0x630490
+nop incref
+decref on 0x6303d0; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630430
+Form::getBooleanValue accessing impl 0x630430
+nop decref
+incref on 0x630070; count is now 4
+incref on 0x62fe60; count is now 3
+incref on 0x630070; count is now 5
+incref on 0x62fe60; count is now 4
+decref on 0x62fe60; count is 4 -> 3
+decref on 0x630070; count is 5 -> 4
+decref on 0x630070; count is 4 -> 3
+decref on 0x62fe60; count is 3 -> 2
+nop incref
+nop decref
+nop incref
+ creating 0x6304f0
+nop decref
+incref on 0x6304f0; count is now 1
+nop decref
+incref on 0x6304f0; count is now 2
+decref on 0x6304f0; count is 2 -> 1
+incref on 0x6304f0; count is now 2
+decref on 0x6304f0; count is 2 -> 1
+decref on 0x62fe60; count is 2 -> 1
+decref on 0x630070; count is 3 -> 2
+Form::isMessage accessing impl 0x6304f0
+nop incref
+nop decref
+nop incref
+nop decref
+incref on 0x6304f0; count is now 2
+decref on 0x6304f0; count is 2 -> 1
+Form::eval accessing impl 0x6304f0
+incref on 0x6304f0; count is now 2
+Form::isSequence accessing impl 0x6304f0
+Form::isNil accessing impl 0x6304f0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::isNil accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x6304f0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::isNil accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getHead accessing impl 0x62fd30
+ creating 0x630310
+incref on 0x630310; count is now 1
+incref on 0x630310; count is now 2
+decref on 0x630310; count is 2 -> 1
+Form::eval accessing impl 0x630310
+incref on 0x630310; count is now 2
+incref on 0x630310; count is now 3
+decref on 0x630310; count is 3 -> 2
+Form::getTail accessing impl 0x6304f0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::isNil accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getTail accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getTail accessing impl 0x62fd30
+nop incref
+nop decref
+nop incref
+ creating 0x630590
+nop decref
+incref on 0x630590; count is now 1
+incref on 0x630590; count is now 2
+decref on 0x630590; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x630620
+nop decref
+incref on 0x630620; count is now 1
+Form::getTail accessing impl 0x62fe60
+Form::isNil accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x62fdc0
+Form::isNil accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x630070
+Form::isNil accessing impl 0x62fd30
+Form::getTail accessing impl 0x62fd30
+nop incref
+nop decref
+nop incref
+ creating 0x6306a0
+nop decref
+incref on 0x6306a0; count is now 1
+incref on 0x6306a0; count is now 2
+decref on 0x6306a0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x630730
+nop decref
+incref on 0x630730; count is now 1
+nop decref
+incref on 0x630730; count is now 2
+decref on 0x630730; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 2
+incref on 0x630730; count is now 2
+incref on 0x62e900; count is now 3
+Form::isSequence accessing impl 0x630730
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x6307f0
+nop decref
+incref on 0x6307f0; count is now 1
+decref on 0x62e900; count is 3 -> 2
+decref on 0x630730; count is 2 -> 1
+nop decref
+incref on 0x6307f0; count is now 2
+decref on 0x6307f0; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 2
+incref on 0x6307f0; count is now 2
+incref on 0x62fed0; count is now 3
+Form::isSequence accessing impl 0x6307f0
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x630850
+nop decref
+incref on 0x630850; count is now 1
+decref on 0x62fed0; count is 3 -> 2
+decref on 0x6307f0; count is 2 -> 1
+incref on 0x630850; count is now 2
+incref on 0x630620; count is now 2
+Form::isNil accessing impl 0x630620
+Form::isNil accessing impl 0x630590
+Form::isNil accessing impl 0x630850
+Form::isNil accessing impl 0x6307f0
+Form::isNil accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+Form::getHead accessing impl 0x630850
+Form::isNil accessing impl 0x6307f0
+Form::isNil accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+Form::getHead accessing impl 0x6307f0
+Form::isNil accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+Form::getHead accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+Form::getHead accessing impl 0x6306a0
+ creating 0x6308e0
+incref on 0x6308e0; count is now 1
+Form::hasIntValue accessing impl 0x6308e0
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x6308e0
+Form::getIntValue accessing impl 0x62e900
+ creating 0x630980
+incref on 0x630980; count is now 1
+decref on 0x6308e0; count is 1 -> 0
+Form::getType accessing impl 0x630980
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x630980
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x630980; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630490
+Form::getBooleanValue accessing impl 0x630490
+Form::getTail accessing impl 0x630620
+Form::isNil accessing impl 0x630590
+Form::getTail accessing impl 0x630590
+nop incref
+nop decref
+nop incref
+ creating 0x630a00
+nop decref
+incref on 0x630a00; count is now 1
+incref on 0x630a00; count is now 2
+decref on 0x630a00; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x630a90
+nop decref
+incref on 0x630a90; count is now 1
+decref on 0x630620; count is 2 -> 1
+incref on 0x630a90; count is now 2
+decref on 0x630a90; count is 2 -> 1
+Form::getTail accessing impl 0x630850
+Form::isNil accessing impl 0x6307f0
+Form::isNil accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x6307f0
+Form::isNil accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x630730
+Form::isNil accessing impl 0x6306a0
+Form::getTail accessing impl 0x6306a0
+nop incref
+nop decref
+nop incref
+ creating 0x630b10
+nop decref
+incref on 0x630b10; count is now 1
+incref on 0x630b10; count is now 2
+decref on 0x630b10; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x630ba0
+nop decref
+incref on 0x630ba0; count is now 1
+nop decref
+incref on 0x630ba0; count is now 2
+decref on 0x630ba0; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 3
+incref on 0x630ba0; count is now 2
+incref on 0x62e900; count is now 4
+Form::isSequence accessing impl 0x630ba0
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x630c00
+nop decref
+incref on 0x630c00; count is now 1
+decref on 0x62e900; count is 4 -> 3
+decref on 0x630ba0; count is 2 -> 1
+nop decref
+incref on 0x630c00; count is now 2
+decref on 0x630c00; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 3
+incref on 0x630c00; count is now 2
+incref on 0x62fed0; count is now 4
+Form::isSequence accessing impl 0x630c00
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x630ca0
+nop decref
+incref on 0x630ca0; count is now 1
+decref on 0x62fed0; count is 4 -> 3
+decref on 0x630c00; count is 2 -> 1
+decref on 0x630850; count is 2 -> 1
+incref on 0x630ca0; count is now 2
+decref on 0x630ca0; count is 2 -> 1
+nop decref
+Form::isNil accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::isNil accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630b10
+ creating 0x630d00
+incref on 0x630d00; count is now 1
+Form::hasIntValue accessing impl 0x630d00
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x630d00
+Form::getIntValue accessing impl 0x62e900
+ creating 0x630da0
+incref on 0x630da0; count is now 1
+decref on 0x630d00; count is 1 -> 0
+Form::getType accessing impl 0x630da0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x630da0
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x630da0; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630430
+Form::getBooleanValue accessing impl 0x630430
+nop decref
+incref on 0x630a90; count is now 2
+incref on 0x630ca0; count is now 2
+incref on 0x630a90; count is now 3
+incref on 0x630ca0; count is now 3
+decref on 0x630ca0; count is 3 -> 2
+decref on 0x630a90; count is 3 -> 2
+decref on 0x630a90; count is 2 -> 1
+decref on 0x630ca0; count is 2 -> 1
+decref on 0x630850; count is 1 -> 0
+decref on 0x630620; count is 1 -> 0
+nop incref
+nop decref
+nop incref
+ creating 0x630e00
+nop decref
+incref on 0x630e00; count is now 1
+decref on 0x6304f0; count is 2 -> 1
+incref on 0x630e00; count is now 2
+decref on 0x630e00; count is 2 -> 1
+decref on 0x630310; count is 2 -> 1
+Form::isNil accessing impl 0x630e00
+Form::isNil accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::isNil accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630e00
+Form::isNil accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::isNil accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getHead accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::getHead accessing impl 0x630a00
+ creating 0x630e60
+incref on 0x630e60; count is now 1
+incref on 0x630e60; count is now 2
+decref on 0x630e60; count is 2 -> 1
+Form::eval accessing impl 0x630e60
+incref on 0x630e60; count is now 2
+incref on 0x630310; count is now 2
+incref on 0x630e60; count is now 3
+decref on 0x630310; count is 2 -> 1
+decref on 0x630e60; count is 3 -> 2
+Form::getTail accessing impl 0x630e00
+Form::isNil accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::isNil accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getTail accessing impl 0x630a90
+Form::isNil accessing impl 0x630a00
+Form::getTail accessing impl 0x630a00
+nop incref
+nop decref
+nop incref
+ creating 0x630ef0
+nop decref
+incref on 0x630ef0; count is now 1
+incref on 0x630ef0; count is now 2
+decref on 0x630ef0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x630f80
+nop decref
+incref on 0x630f80; count is now 1
+Form::getTail accessing impl 0x630ca0
+Form::isNil accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x630c00
+Form::isNil accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x630ba0
+Form::isNil accessing impl 0x630b10
+Form::getTail accessing impl 0x630b10
+nop incref
+nop decref
+nop incref
+ creating 0x631000
+nop decref
+incref on 0x631000; count is now 1
+incref on 0x631000; count is now 2
+decref on 0x631000; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x631090
+nop decref
+incref on 0x631090; count is now 1
+nop decref
+incref on 0x631090; count is now 2
+decref on 0x631090; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 4
+incref on 0x631090; count is now 2
+incref on 0x62e900; count is now 5
+Form::isSequence accessing impl 0x631090
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x6310f0
+nop decref
+incref on 0x6310f0; count is now 1
+decref on 0x62e900; count is 5 -> 4
+decref on 0x631090; count is 2 -> 1
+nop decref
+incref on 0x6310f0; count is now 2
+decref on 0x6310f0; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 4
+incref on 0x6310f0; count is now 2
+incref on 0x62fed0; count is now 5
+Form::isSequence accessing impl 0x6310f0
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x631190
+nop decref
+incref on 0x631190; count is now 1
+decref on 0x62fed0; count is 5 -> 4
+decref on 0x6310f0; count is 2 -> 1
+incref on 0x631190; count is now 2
+incref on 0x630f80; count is now 2
+Form::isNil accessing impl 0x630f80
+Form::isNil accessing impl 0x630ef0
+Form::isNil accessing impl 0x631190
+Form::isNil accessing impl 0x6310f0
+Form::isNil accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+Form::getHead accessing impl 0x631190
+Form::isNil accessing impl 0x6310f0
+Form::isNil accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+Form::getHead accessing impl 0x6310f0
+Form::isNil accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+Form::getHead accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+Form::getHead accessing impl 0x631000
+ creating 0x631220
+incref on 0x631220; count is now 1
+Form::hasIntValue accessing impl 0x631220
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x631220
+Form::getIntValue accessing impl 0x62e900
+ creating 0x6312c0
+incref on 0x6312c0; count is now 1
+decref on 0x631220; count is 1 -> 0
+Form::getType accessing impl 0x6312c0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x6312c0
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x6312c0; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630490
+Form::getBooleanValue accessing impl 0x630490
+Form::getTail accessing impl 0x630f80
+Form::isNil accessing impl 0x630ef0
+Form::getTail accessing impl 0x630ef0
+nop incref
+nop decref
+nop incref
+ creating 0x631340
+nop decref
+incref on 0x631340; count is now 1
+incref on 0x631340; count is now 2
+decref on 0x631340; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x6313d0
+nop decref
+incref on 0x6313d0; count is now 1
+decref on 0x630f80; count is 2 -> 1
+incref on 0x6313d0; count is now 2
+decref on 0x6313d0; count is 2 -> 1
+Form::getTail accessing impl 0x631190
+Form::isNil accessing impl 0x6310f0
+Form::isNil accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x6310f0
+Form::isNil accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x631090
+Form::isNil accessing impl 0x631000
+Form::getTail accessing impl 0x631000
+nop incref
+nop decref
+nop incref
+ creating 0x631450
+nop decref
+incref on 0x631450; count is now 1
+incref on 0x631450; count is now 2
+decref on 0x631450; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x6314e0
+nop decref
+incref on 0x6314e0; count is now 1
+nop decref
+incref on 0x6314e0; count is now 2
+decref on 0x6314e0; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 5
+incref on 0x6314e0; count is now 2
+incref on 0x62e900; count is now 6
+Form::isSequence accessing impl 0x6314e0
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x631540
+nop decref
+incref on 0x631540; count is now 1
+decref on 0x62e900; count is 6 -> 5
+decref on 0x6314e0; count is 2 -> 1
+nop decref
+incref on 0x631540; count is now 2
+decref on 0x631540; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 5
+incref on 0x631540; count is now 2
+incref on 0x62fed0; count is now 6
+Form::isSequence accessing impl 0x631540
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x6315e0
+nop decref
+incref on 0x6315e0; count is now 1
+decref on 0x62fed0; count is 6 -> 5
+decref on 0x631540; count is 2 -> 1
+decref on 0x631190; count is 2 -> 1
+incref on 0x6315e0; count is now 2
+decref on 0x6315e0; count is 2 -> 1
+nop decref
+Form::isNil accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::isNil accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x631450
+ creating 0x631640
+incref on 0x631640; count is now 1
+Form::hasIntValue accessing impl 0x631640
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x631640
+Form::getIntValue accessing impl 0x62e900
+ creating 0x6316e0
+incref on 0x6316e0; count is now 1
+decref on 0x631640; count is 1 -> 0
+Form::getType accessing impl 0x6316e0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x6316e0
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x6316e0; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630430
+Form::getBooleanValue accessing impl 0x630430
+nop decref
+incref on 0x6313d0; count is now 2
+incref on 0x6315e0; count is now 2
+incref on 0x6313d0; count is now 3
+incref on 0x6315e0; count is now 3
+decref on 0x6315e0; count is 3 -> 2
+decref on 0x6313d0; count is 3 -> 2
+decref on 0x6313d0; count is 2 -> 1
+decref on 0x6315e0; count is 2 -> 1
+decref on 0x631190; count is 1 -> 0
+decref on 0x630f80; count is 1 -> 0
+nop incref
+nop decref
+nop incref
+ creating 0x631740
+nop decref
+incref on 0x631740; count is now 1
+decref on 0x630e00; count is 1 -> 0
+incref on 0x631740; count is now 2
+decref on 0x631740; count is 2 -> 1
+decref on 0x630e60; count is 2 -> 1
+Form::isNil accessing impl 0x631740
+Form::isNil accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::isNil accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x631740
+Form::isNil accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::isNil accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getHead accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::getHead accessing impl 0x631340
+ creating 0x6317a0
+incref on 0x6317a0; count is now 1
+incref on 0x6317a0; count is now 2
+decref on 0x6317a0; count is 2 -> 1
+Form::eval accessing impl 0x6317a0
+incref on 0x6317a0; count is now 2
+incref on 0x630310; count is now 2
+incref on 0x630e60; count is now 2
+incref on 0x6317a0; count is now 3
+decref on 0x630310; count is 2 -> 1
+decref on 0x630e60; count is 2 -> 1
+decref on 0x6317a0; count is 3 -> 2
+Form::getTail accessing impl 0x631740
+Form::isNil accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::isNil accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getTail accessing impl 0x6313d0
+Form::isNil accessing impl 0x631340
+Form::getTail accessing impl 0x631340
+nop incref
+nop decref
+nop incref
+ creating 0x630ec0
+nop decref
+incref on 0x630ec0; count is now 1
+incref on 0x630ec0; count is now 2
+decref on 0x630ec0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x631880
+nop decref
+incref on 0x631880; count is now 1
+Form::getTail accessing impl 0x6315e0
+Form::isNil accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x631540
+Form::isNil accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x6314e0
+Form::isNil accessing impl 0x631450
+Form::getTail accessing impl 0x631450
+nop incref
+nop decref
+nop incref
+ creating 0x631900
+nop decref
+incref on 0x631900; count is now 1
+incref on 0x631900; count is now 2
+decref on 0x631900; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x631990
+nop decref
+incref on 0x631990; count is now 1
+nop decref
+incref on 0x631990; count is now 2
+decref on 0x631990; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 6
+incref on 0x631990; count is now 2
+incref on 0x62e900; count is now 7
+Form::isSequence accessing impl 0x631990
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x6319f0
+nop decref
+incref on 0x6319f0; count is now 1
+decref on 0x62e900; count is 7 -> 6
+decref on 0x631990; count is 2 -> 1
+nop decref
+incref on 0x6319f0; count is now 2
+decref on 0x6319f0; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 6
+incref on 0x6319f0; count is now 2
+incref on 0x62fed0; count is now 7
+Form::isSequence accessing impl 0x6319f0
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x631a90
+nop decref
+incref on 0x631a90; count is now 1
+decref on 0x62fed0; count is 7 -> 6
+decref on 0x6319f0; count is 2 -> 1
+incref on 0x631a90; count is now 2
+incref on 0x631880; count is now 2
+Form::isNil accessing impl 0x631880
+Form::isNil accessing impl 0x630ec0
+Form::isNil accessing impl 0x631a90
+Form::isNil accessing impl 0x6319f0
+Form::isNil accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+Form::getHead accessing impl 0x631a90
+Form::isNil accessing impl 0x6319f0
+Form::isNil accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+Form::getHead accessing impl 0x6319f0
+Form::isNil accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+Form::getHead accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+Form::getHead accessing impl 0x631900
+ creating 0x631b20
+incref on 0x631b20; count is now 1
+Form::hasIntValue accessing impl 0x631b20
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x631b20
+Form::getIntValue accessing impl 0x62e900
+ creating 0x631bc0
+incref on 0x631bc0; count is now 1
+decref on 0x631b20; count is 1 -> 0
+Form::getType accessing impl 0x631bc0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x631bc0
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x631bc0; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630490
+Form::getBooleanValue accessing impl 0x630490
+Form::getTail accessing impl 0x631880
+Form::isNil accessing impl 0x630ec0
+Form::getTail accessing impl 0x630ec0
+nop incref
+nop decref
+nop incref
+ creating 0x631c90
+nop decref
+incref on 0x631c90; count is now 1
+incref on 0x631c90; count is now 2
+decref on 0x631c90; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x631d20
+nop decref
+incref on 0x631d20; count is now 1
+decref on 0x631880; count is 2 -> 1
+incref on 0x631d20; count is now 2
+decref on 0x631d20; count is 2 -> 1
+Form::getTail accessing impl 0x631a90
+Form::isNil accessing impl 0x6319f0
+Form::isNil accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x6319f0
+Form::isNil accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x631990
+Form::isNil accessing impl 0x631900
+Form::getTail accessing impl 0x631900
+nop incref
+nop decref
+nop incref
+ creating 0x631da0
+nop decref
+incref on 0x631da0; count is now 1
+incref on 0x631da0; count is now 2
+decref on 0x631da0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x631e30
+nop decref
+incref on 0x631e30; count is now 1
+nop decref
+incref on 0x631e30; count is now 2
+decref on 0x631e30; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 7
+incref on 0x631e30; count is now 2
+incref on 0x62e900; count is now 8
+Form::isSequence accessing impl 0x631e30
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x631e90
+nop decref
+incref on 0x631e90; count is now 1
+decref on 0x62e900; count is 8 -> 7
+decref on 0x631e30; count is 2 -> 1
+nop decref
+incref on 0x631e90; count is now 2
+decref on 0x631e90; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 7
+incref on 0x631e90; count is now 2
+incref on 0x62fed0; count is now 8
+Form::isSequence accessing impl 0x631e90
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x631f30
+nop decref
+incref on 0x631f30; count is now 1
+decref on 0x62fed0; count is 8 -> 7
+decref on 0x631e90; count is 2 -> 1
+decref on 0x631a90; count is 2 -> 1
+incref on 0x631f30; count is now 2
+decref on 0x631f30; count is 2 -> 1
+nop decref
+Form::isNil accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::isNil accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x631da0
+ creating 0x631f90
+incref on 0x631f90; count is now 1
+Form::hasIntValue accessing impl 0x631f90
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x631f90
+Form::getIntValue accessing impl 0x62e900
+ creating 0x632030
+incref on 0x632030; count is now 1
+decref on 0x631f90; count is 1 -> 0
+Form::getType accessing impl 0x632030
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x632030
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x632030; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630430
+Form::getBooleanValue accessing impl 0x630430
+nop decref
+incref on 0x631d20; count is now 2
+incref on 0x631f30; count is now 2
+incref on 0x631d20; count is now 3
+incref on 0x631f30; count is now 3
+decref on 0x631f30; count is 3 -> 2
+decref on 0x631d20; count is 3 -> 2
+decref on 0x631d20; count is 2 -> 1
+decref on 0x631f30; count is 2 -> 1
+decref on 0x631a90; count is 1 -> 0
+decref on 0x631880; count is 1 -> 0
+nop incref
+nop decref
+nop incref
+ creating 0x632090
+nop decref
+incref on 0x632090; count is now 1
+decref on 0x631740; count is 1 -> 0
+incref on 0x632090; count is now 2
+decref on 0x632090; count is 2 -> 1
+decref on 0x6317a0; count is 2 -> 1
+Form::isNil accessing impl 0x632090
+Form::isNil accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::isNil accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x632090
+Form::isNil accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::isNil accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getHead accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::getHead accessing impl 0x631c90
+ creating 0x6320f0
+incref on 0x6320f0; count is now 1
+incref on 0x6320f0; count is now 2
+decref on 0x6320f0; count is 2 -> 1
+Form::eval accessing impl 0x6320f0
+incref on 0x6320f0; count is now 2
+incref on 0x6320f0; count is now 3
+decref on 0x6320f0; count is 3 -> 2
+Form::getTail accessing impl 0x632090
+Form::isNil accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::isNil accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getTail accessing impl 0x631d20
+Form::isNil accessing impl 0x631c90
+Form::getTail accessing impl 0x631c90
+nop incref
+nop decref
+nop incref
+ creating 0x632170
+nop decref
+incref on 0x632170; count is now 1
+incref on 0x632170; count is now 2
+decref on 0x632170; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632200
+nop decref
+incref on 0x632200; count is now 1
+Form::getTail accessing impl 0x631f30
+Form::isNil accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x631e90
+Form::isNil accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x631e30
+Form::isNil accessing impl 0x631da0
+Form::getTail accessing impl 0x631da0
+nop incref
+nop decref
+nop incref
+ creating 0x632280
+nop decref
+incref on 0x632280; count is now 1
+incref on 0x632280; count is now 2
+decref on 0x632280; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632310
+nop decref
+incref on 0x632310; count is now 1
+nop decref
+incref on 0x632310; count is now 2
+decref on 0x632310; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 8
+incref on 0x632310; count is now 2
+incref on 0x62e900; count is now 9
+Form::isSequence accessing impl 0x632310
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x632370
+nop decref
+incref on 0x632370; count is now 1
+decref on 0x62e900; count is 9 -> 8
+decref on 0x632310; count is 2 -> 1
+nop decref
+incref on 0x632370; count is now 2
+decref on 0x632370; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 8
+incref on 0x632370; count is now 2
+incref on 0x62fed0; count is now 9
+Form::isSequence accessing impl 0x632370
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x632410
+nop decref
+incref on 0x632410; count is now 1
+decref on 0x62fed0; count is 9 -> 8
+decref on 0x632370; count is 2 -> 1
+incref on 0x632410; count is now 2
+incref on 0x632200; count is now 2
+Form::isNil accessing impl 0x632200
+Form::isNil accessing impl 0x632170
+Form::isNil accessing impl 0x632410
+Form::isNil accessing impl 0x632370
+Form::isNil accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+Form::getHead accessing impl 0x632410
+Form::isNil accessing impl 0x632370
+Form::isNil accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+Form::getHead accessing impl 0x632370
+Form::isNil accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+Form::getHead accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+Form::getHead accessing impl 0x632280
+ creating 0x6324a0
+incref on 0x6324a0; count is now 1
+Form::hasIntValue accessing impl 0x6324a0
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x6324a0
+Form::getIntValue accessing impl 0x62e900
+ creating 0x632540
+incref on 0x632540; count is now 1
+decref on 0x6324a0; count is 1 -> 0
+Form::getType accessing impl 0x632540
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x632540
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x632540; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630490
+Form::getBooleanValue accessing impl 0x630490
+Form::getTail accessing impl 0x632200
+Form::isNil accessing impl 0x632170
+Form::getTail accessing impl 0x632170
+nop incref
+nop decref
+nop incref
+ creating 0x6325c0
+nop decref
+incref on 0x6325c0; count is now 1
+incref on 0x6325c0; count is now 2
+decref on 0x6325c0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632650
+nop decref
+incref on 0x632650; count is now 1
+decref on 0x632200; count is 2 -> 1
+incref on 0x632650; count is now 2
+decref on 0x632650; count is 2 -> 1
+Form::getTail accessing impl 0x632410
+Form::isNil accessing impl 0x632370
+Form::isNil accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x632370
+Form::isNil accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x632310
+Form::isNil accessing impl 0x632280
+Form::getTail accessing impl 0x632280
+nop incref
+nop decref
+nop incref
+ creating 0x6326d0
+nop decref
+incref on 0x6326d0; count is now 1
+incref on 0x6326d0; count is now 2
+decref on 0x6326d0; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632760
+nop decref
+incref on 0x632760; count is now 1
+nop decref
+incref on 0x632760; count is now 2
+decref on 0x632760; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 9
+incref on 0x632760; count is now 2
+incref on 0x62e900; count is now 10
+Form::isSequence accessing impl 0x632760
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x6327c0
+nop decref
+incref on 0x6327c0; count is now 1
+decref on 0x62e900; count is 10 -> 9
+decref on 0x632760; count is 2 -> 1
+nop decref
+incref on 0x6327c0; count is now 2
+decref on 0x6327c0; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 9
+incref on 0x6327c0; count is now 2
+incref on 0x62fed0; count is now 10
+Form::isSequence accessing impl 0x6327c0
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x632860
+nop decref
+incref on 0x632860; count is now 1
+decref on 0x62fed0; count is 10 -> 9
+decref on 0x6327c0; count is 2 -> 1
+decref on 0x632410; count is 2 -> 1
+incref on 0x632860; count is now 2
+decref on 0x632860; count is 2 -> 1
+nop decref
+Form::isNil accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::isNil accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x6326d0
+ creating 0x6328c0
+incref on 0x6328c0; count is now 1
+Form::hasIntValue accessing impl 0x6328c0
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x6328c0
+Form::getIntValue accessing impl 0x62e900
+ creating 0x632960
+incref on 0x632960; count is now 1
+decref on 0x6328c0; count is 1 -> 0
+Form::getType accessing impl 0x632960
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x632960
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x632960; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630430
+Form::getBooleanValue accessing impl 0x630430
+nop decref
+incref on 0x632650; count is now 2
+incref on 0x632860; count is now 2
+incref on 0x632650; count is now 3
+incref on 0x632860; count is now 3
+decref on 0x632860; count is 3 -> 2
+decref on 0x632650; count is 3 -> 2
+decref on 0x632650; count is 2 -> 1
+decref on 0x632860; count is 2 -> 1
+decref on 0x632410; count is 1 -> 0
+decref on 0x632200; count is 1 -> 0
+nop incref
+nop decref
+nop incref
+ creating 0x6329c0
+nop decref
+incref on 0x6329c0; count is now 1
+decref on 0x632090; count is 1 -> 0
+incref on 0x6329c0; count is now 2
+decref on 0x6329c0; count is 2 -> 1
+decref on 0x6320f0; count is 2 -> 1
+Form::isNil accessing impl 0x6329c0
+Form::isNil accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::isNil accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x6329c0
+Form::isNil accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::isNil accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getHead accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::getHead accessing impl 0x6325c0
+ creating 0x632a20
+incref on 0x632a20; count is now 1
+incref on 0x632a20; count is now 2
+decref on 0x632a20; count is 2 -> 1
+Form::eval accessing impl 0x632a20
+incref on 0x632a20; count is now 2
+incref on 0x630310; count is now 2
+incref on 0x630e60; count is now 2
+incref on 0x6317a0; count is now 2
+incref on 0x6320f0; count is now 2
+incref on 0x632a20; count is now 3
+decref on 0x630310; count is 2 -> 1
+decref on 0x630e60; count is 2 -> 1
+decref on 0x6317a0; count is 2 -> 1
+decref on 0x6320f0; count is 2 -> 1
+decref on 0x632a20; count is 3 -> 2
+Form::getTail accessing impl 0x6329c0
+Form::isNil accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::isNil accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getTail accessing impl 0x632650
+Form::isNil accessing impl 0x6325c0
+Form::getTail accessing impl 0x6325c0
+nop incref
+nop decref
+nop incref
+ creating 0x632b30
+nop decref
+incref on 0x632b30; count is now 1
+incref on 0x632b30; count is now 2
+decref on 0x632b30; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632bc0
+nop decref
+incref on 0x632bc0; count is now 1
+Form::getTail accessing impl 0x632860
+Form::isNil accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x6327c0
+Form::isNil accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x632760
+Form::isNil accessing impl 0x6326d0
+Form::getTail accessing impl 0x6326d0
+nop incref
+nop decref
+nop incref
+ creating 0x632c40
+nop decref
+incref on 0x632c40; count is now 1
+incref on 0x632c40; count is now 2
+decref on 0x632c40; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x632cd0
+nop decref
+incref on 0x632cd0; count is now 1
+nop decref
+incref on 0x632cd0; count is now 2
+decref on 0x632cd0; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 10
+incref on 0x632cd0; count is now 2
+incref on 0x62e900; count is now 11
+Form::isSequence accessing impl 0x632cd0
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x632d30
+nop decref
+incref on 0x632d30; count is now 1
+decref on 0x62e900; count is 11 -> 10
+decref on 0x632cd0; count is 2 -> 1
+nop decref
+incref on 0x632d30; count is now 2
+decref on 0x632d30; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 10
+incref on 0x632d30; count is now 2
+incref on 0x62fed0; count is now 11
+Form::isSequence accessing impl 0x632d30
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x632dd0
+nop decref
+incref on 0x632dd0; count is now 1
+decref on 0x62fed0; count is 11 -> 10
+decref on 0x632d30; count is 2 -> 1
+incref on 0x632dd0; count is now 2
+incref on 0x632bc0; count is now 2
+Form::isNil accessing impl 0x632bc0
+Form::isNil accessing impl 0x632b30
+Form::isNil accessing impl 0x632dd0
+Form::isNil accessing impl 0x632d30
+Form::isNil accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+Form::getHead accessing impl 0x632dd0
+Form::isNil accessing impl 0x632d30
+Form::isNil accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+Form::getHead accessing impl 0x632d30
+Form::isNil accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+Form::getHead accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+Form::getHead accessing impl 0x632c40
+ creating 0x632e60
+incref on 0x632e60; count is now 1
+Form::hasIntValue accessing impl 0x632e60
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x632e60
+Form::getIntValue accessing impl 0x62e900
+ creating 0x632f00
+incref on 0x632f00; count is now 1
+decref on 0x632e60; count is 1 -> 0
+Form::getType accessing impl 0x632f00
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x632f00
+Form::getIntValue accessing impl 0x62fed0
+nop incref
+decref on 0x632f00; count is 1 -> 0
+Form::hasBooleanValue accessing impl 0x630490
+Form::getBooleanValue accessing impl 0x630490
+Form::getTail accessing impl 0x632bc0
+Form::isNil accessing impl 0x632b30
+Form::getTail accessing impl 0x632b30
+nop incref
+nop decref
+nop incref
+ creating 0x632f80
+nop decref
+incref on 0x632f80; count is now 1
+incref on 0x632f80; count is now 2
+decref on 0x632f80; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x633010
+nop decref
+incref on 0x633010; count is now 1
+decref on 0x632bc0; count is 2 -> 1
+incref on 0x633010; count is now 2
+decref on 0x633010; count is 2 -> 1
+Form::getTail accessing impl 0x632dd0
+Form::isNil accessing impl 0x632d30
+Form::isNil accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x632d30
+Form::isNil accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+nop incref
+nop decref
+nop incref
+nop incref
+nop decref
+nop incref
+Form::getTail accessing impl 0x632cd0
+Form::isNil accessing impl 0x632c40
+Form::getTail accessing impl 0x632c40
+nop incref
+nop decref
+nop incref
+ creating 0x633090
+nop decref
+incref on 0x633090; count is now 1
+incref on 0x633090; count is now 2
+decref on 0x633090; count is 2 -> 1
+nop incref
+nop decref
+nop incref
+ creating 0x633120
+nop decref
+incref on 0x633120; count is now 1
+nop decref
+incref on 0x633120; count is now 2
+decref on 0x633120; count is 2 -> 1
+nop decref
+incref on 0x62e900; count is now 11
+incref on 0x633120; count is now 2
+incref on 0x62e900; count is now 12
+Form::isSequence accessing impl 0x633120
+Form::isSequence accessing impl 0x62e900
+nop incref
+nop decref
+nop incref
+ creating 0x633180
+nop decref
+incref on 0x633180; count is now 1
+decref on 0x62e900; count is 12 -> 11
+decref on 0x633120; count is 2 -> 1
+nop decref
+incref on 0x633180; count is now 2
+decref on 0x633180; count is 2 -> 1
+nop decref
+incref on 0x62fed0; count is now 11
+incref on 0x633180; count is now 2
+incref on 0x62fed0; count is now 12
+Form::isSequence accessing impl 0x633180
+Form::isSequence accessing impl 0x62fed0
+nop incref
+nop decref
+nop incref
+ creating 0x633220
+nop decref
+incref on 0x633220; count is now 1
+decref on 0x62fed0; count is 12 -> 11
+decref on 0x633180; count is 2 -> 1
+decref on 0x632dd0; count is 2 -> 1
+incref on 0x633220; count is now 2
+decref on 0x633220; count is 2 -> 1
+nop decref
+Form::isNil accessing impl 0x633010
+Form::isNil accessing impl 0x632f80
+Form::isNil accessing impl 0x633220
+Form::isNil accessing impl 0x633180
+Form::isNil accessing impl 0x633120
+Form::isNil accessing impl 0x633090
+Form::getHead accessing impl 0x633220
+Form::isNil accessing impl 0x633180
+Form::isNil accessing impl 0x633120
+Form::isNil accessing impl 0x633090
+Form::getHead accessing impl 0x633180
+Form::isNil accessing impl 0x633120
+Form::isNil accessing impl 0x633090
+Form::getHead accessing impl 0x633120
+Form::isNil accessing impl 0x633090
+Form::getHead accessing impl 0x633090
+beginning gc()
+ deleting 0x62fcc0
+ deleting 0x62ffa0
+ deleting 0x630370
+ deleting 0x6303d0
+ deleting 0x630430
+ deleting 0x630490
+ deleting 0x630620
+decref on 0x630590; count is 1 -> 0
+ deleting 0x630850
+decref on 0x62fed0; count is 11 -> 10
+decref on 0x6307f0; count is 1 -> 0
+ deleting 0x6308e0
+ deleting 0x630980
+ deleting 0x630d00
+ deleting 0x630da0
+ deleting 0x630e00
+decref on 0x630ca0; count is 1 -> 0
+decref on 0x630a90; count is 1 -> 0
+ deleting 0x630f80
+decref on 0x630ef0; count is 1 -> 0
+ deleting 0x631190
+decref on 0x62fed0; count is 10 -> 9
+decref on 0x6310f0; count is 1 -> 0
+ deleting 0x631220
+ deleting 0x6312c0
+ deleting 0x631640
+ deleting 0x6316e0
+ deleting 0x631740
+decref on 0x6315e0; count is 1 -> 0
+decref on 0x6313d0; count is 1 -> 0
+ deleting 0x631880
+decref on 0x630ec0; count is 1 -> 0
+ deleting 0x631a90
+decref on 0x62fed0; count is 9 -> 8
+decref on 0x6319f0; count is 1 -> 0
+ deleting 0x631b20
+ deleting 0x631bc0
+ deleting 0x631f90
+ deleting 0x632030
+ deleting 0x632090
+decref on 0x631f30; count is 1 -> 0
+decref on 0x631d20; count is 1 -> 0
+ deleting 0x632200
+decref on 0x632170; count is 1 -> 0
+ deleting 0x632410
+decref on 0x62fed0; count is 8 -> 7
+decref on 0x632370; count is 1 -> 0
+ deleting 0x6324a0
+ deleting 0x632540
+ deleting 0x6328c0
+ deleting 0x632960
+ deleting 0x632e60
+ deleting 0x632f00
+ending gc()
+ creating 0x633280
+incref on 0x633280; count is now 1
+Form::hasIntValue accessing impl 0x633280
+Form::hasIntValue accessing impl 0x62e900
+Form::getIntValue accessing impl 0x633280
+Form::getIntValue accessing impl 0x62e900
+ creating 0x6332e0
+incref on 0x6332e0; count is now 1
+decref on 0x633280; count is 1 -> 0
+Form::getType accessing impl 0x6332e0
+Form::getType accessing impl 0x62fed0
+Form::getIntValue accessing impl 0x6332e0
+Form::getIntValue accessing impl 0x62fed0

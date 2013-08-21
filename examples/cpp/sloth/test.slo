@@ -1,0 +1,50 @@
+#!./sloth
+
+naturals 20 take dup 2 % 1 ==   swap takeif eval print
+
+printall
+quit
+
+#    while (< _ 1000) (* 3 _) fibonacci
+2                print
+2 2 + eval print
+[1 2 3]          eval print
+[1 2 3] 6 *      dup print eval print
+naturals 10 take dup print eval print
+naturals dup + 10 take eval print
+naturals dup 5 drop + 10 take eval print
+fibonacci 5 drop 10 take eval print
+1 3 gfibonacci 10 take eval print
+naturals 10 take count eval print
+fibonacci 10 drop 20 take minmax eval print
+[fibonacci 10 take] dup print eval print
+[fibonacci 10 take] dup print eval flatten eval print
+naturals 1000000 take count eval print
+fibonacci 5 take naturals 5 take append dup print eval print
+17 repeat 3 take dup print eval print
+"What do we see?" dup print eval print
+"Unterminated string
+
+# the next three lines are a single test
+:a_symbol       dup print eval print
+:a_symbol 2 set dup print eval print
+:a_symbol       dup print eval print
+
+@t print
+@f print
+[@t @f] dup print eval print
+
+[@f @f @t @f @t] naturals takeif dup print eval print
+
+[1 2 3] [3 2 1] <  eval print
+[1 2 3] [3 2 1] <= eval print
+[1 2 3] [3 2 1] == eval print
+[1 2 3] [3 2 1] != eval print
+[1 2 3] [3 2 1] >  eval print
+[1 2 3] [3 2 1] >= eval print
+
+[@t @f] ! dup print eval print
+
+naturals 20 take dup 2 % 1 ==   swap takeif eval print
+naturals 20 take dup 2 % 1 == ! swap takeif eval print
+

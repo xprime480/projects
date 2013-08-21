@@ -1,0 +1,8 @@
+#!./sloth
+
+2 0 /                       eval print
+
+2 3 + 2 * 5 -               eval print
+
+
+quit
