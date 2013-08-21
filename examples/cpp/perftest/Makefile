@@ -1,14 +1,9 @@
 
-OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+EXE_LIST   = perf_test
+LOCAL_TEST = local_test
 
-MYEXE = Test
+% :
+	for x in $(EXE_LIST) ; do MYEXE=$${x} make -f exe.mk $@ ; done
 
-all : $(MYEXE)
-
-include ../mk_deps.mk
-
-$(OBJS) : %.o : %.cpp
-	g++ $(CFLAGS) -c  -g -o $@ $<
-
-$(MYEXE): $(DEPS) $(OBJS)
-	g++ -o $(MYEXE) $(OBJS)
+local_test : all
+	./perf_test 1000

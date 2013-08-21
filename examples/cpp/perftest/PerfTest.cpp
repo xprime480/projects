@@ -27,7 +27,7 @@ namespace Test {
 
     time_t start = time(0);
 
-    for ( size_t i = 0 ; i < count ; ++i ) {
+    for ( int i = 0 ; i < count ; ++i ) {
       populate();
       compute();
       report();
@@ -43,7 +43,7 @@ namespace Test {
   {
     static bool init( false );
     if ( ! init ) {
-      srandom( time( 0 ) );
+      srand( time( 0 ) );
       init = true;
     }
   }
@@ -52,8 +52,8 @@ namespace Test {
   void PerfTest::populate()
   {
     for ( size_t i = 0 ; i < ARRSIZE ; ++i ) {
-      setX(i, 1000 * ( ((double) random()) / RAND_MAX ));
-      setY(i,    5 * ( ((double) random()) / RAND_MAX ));
+      setX(i, 1000 * ( ((double) rand()) / RAND_MAX ));
+      setY(i,    5 * ( ((double) rand()) / RAND_MAX ));
     }
   }
 
