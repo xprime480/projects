@@ -13,7 +13,7 @@ namespace parser {
   public:
     SingleCharParser(char _c);
 
-    virtual ParseResult parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
 
   private:
     std::string c;

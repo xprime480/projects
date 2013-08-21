@@ -11,15 +11,15 @@ AnyOfParser::AnyOfParser(vector<Parser *> const & _ps)
 {
 }
 
-ParseResult AnyOfParser::parse(TokenStream & tokens) const
+Expression AnyOfParser::parse(TokenStream & tokens, int flags) const
 {
   typedef vector<Parser *>::const_iterator iter;
   for ( iter i = parsers.begin() ; i != parsers.end() ; ++i ) {
-    ParseResult result = (*i)->parse(tokens);
+    Expression result = (*i)->parse(tokens, flags);
     if ( result ) {
       return result;
     }
   }
 
-  return ParseResult(false);
+  return Expression(false);
 }

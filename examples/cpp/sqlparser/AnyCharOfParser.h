@@ -12,7 +12,7 @@ namespace parser {
   public:
     AnyCharOfParser(std::string const & _cs);
 
-    virtual ParseResult parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
 
   private:
     std::string charset;

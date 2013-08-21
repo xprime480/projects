@@ -15,7 +15,7 @@ namespace parser {
   public:
     AnyOfParser(std::vector<Parser *> const & _ps);
 
-    virtual ParseResult parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
 
   private:
 

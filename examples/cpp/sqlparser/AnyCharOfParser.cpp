@@ -13,7 +13,7 @@ AnyCharOfParser::AnyCharOfParser(std::string const & _cs)
 {
 }
 
-ParseResult AnyCharOfParser::parse(TokenStream & tokens) const
+Expression AnyCharOfParser::parse(TokenStream & tokens, int flags) const
 {
   TokenStream::state_type state = tokens.getState();
 
@@ -23,14 +23,18 @@ ParseResult AnyCharOfParser::parse(TokenStream & tokens) const
        (t->getType() == Token::TOKEN_TEXT) && 
        (t->getText().size() == 1) &&
        (string::npos != charset.find(t->getText().at(0))) ) {
-    ParseResult res;
-    ParseResult txt(t->getText().c_str());
-    res.append(txt);
-    return res;
+
+    Expression results;
+    Expression txt(t->getText().c_str());
+
+    results.append(Expression(true));
+    results.append(txt);
+    results.append(txt);
+    return results;
   }
-  
+
   tokens.setState(state);
-  return ParseResult(false);
+  return Expression(false);
 }
 
 string const parser::lowercase("abcdefghijklmnopqrstuvwxyz");

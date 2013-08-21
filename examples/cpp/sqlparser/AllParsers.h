@@ -12,5 +12,6 @@
 #include "OnePlusOfParser.h"
 
 #include "SymbolStreamParser.h"
+#include "KeywordParser.h"
 
 #endif // not defined AllParsers_h

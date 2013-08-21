@@ -7,10 +7,13 @@
 
 using namespace std;
 using namespace parser;
-ParseResult SymbolStreamParser::parse(TokenStream & tokens) const
+Expression SymbolStreamParser::parse(TokenStream & tokens, int flags) const
 {
   TokenStream::state_type original = tokens.getState();
-  ParseResult final(false);
+  Expression final;
+  final.append(Expression(true));
+  final.append(Expression());
+  final.append(Expression(""));
 
   while ( true ) {
     TokenStream::state_type state = tokens.getState();
@@ -24,13 +27,16 @@ ParseResult SymbolStreamParser::parse(TokenStream & tokens) const
     }
 
     if ( t->getType() == Token::TOKEN_SYM ) {
-      final.success = true;
-      final.match += t->getText();
-      final.parts.push_back(t->getText());
+      Expression txt(t->getText().c_str());
+      final.nth(1).append(txt);
+      Expression & e = final.nth(2);
+      if ( e.size() > 0 ) {
+	e.addText(" ");
+      }
+      e.addText(txt);
     }
     else if ( t->getType() == Token::TOKEN_EOL ) {
-      final.success = true;
-      final.match += t->getText();
+      // do nothing
     }
     else {
       tokens.setState(state);
@@ -38,7 +44,7 @@ ParseResult SymbolStreamParser::parse(TokenStream & tokens) const
     }
   }
 
-  if ( ! final.success ) {
+  if ( ! final ) {
     tokens.setState(original);
   }
 

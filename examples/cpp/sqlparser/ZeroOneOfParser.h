@@ -13,7 +13,7 @@ namespace parser {
   public:
     ZeroOneOfParser(Parser * _p);
 
-    virtual ParseResult parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
 
   private:
     Parser * parser;

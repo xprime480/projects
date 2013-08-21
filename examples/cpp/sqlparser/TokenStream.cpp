@@ -11,6 +11,8 @@
 using namespace std;
 using namespace parser;
 
+/*********************** IMPLEMENTATION ***************************/
+
 TokenStream::TokenStream(CharacterStream & _c)
   : chars(_c)
   , pos(-1)
@@ -18,10 +20,13 @@ TokenStream::TokenStream(CharacterStream & _c)
 {
 }
 
+/*************************************/
+
 TokenStream::~TokenStream()
 {
-  
 }
+
+/*************************************/
 
 Token * TokenStream::get() const
 {
@@ -32,6 +37,8 @@ Token * TokenStream::get() const
   return 0;
 }
 
+/*************************************/
+
 void TokenStream::forward()
 {
   ++pos;
@@ -39,6 +46,8 @@ void TokenStream::forward()
     tokens.push_back(getNextToken());
   }
 }
+
+/*************************************/
 
 void TokenStream::back()
 {
@@ -48,10 +57,14 @@ void TokenStream::back()
   --pos;
 }
 
+/*************************************/
+
 TokenStream::state_type TokenStream::getState() const
 {
   return pos;
 }
+
+/*************************************/
 
 void TokenStream::setState(state_type state)
 {
@@ -69,51 +82,70 @@ void TokenStream::setState(state_type state)
   }
 }
 
+/*************************************/
 
 char TokenStream::peek() const
 {
   return chars.peek();
 }
 
+/*************************************/
+
 char TokenStream::getc()
 {
   return chars.getc();
 }
+
+/*************************************/
 
 void TokenStream::ungetc(char c)
 {
   return chars.ungetc(c);
 }
 
+/*************************************/
+
 bool TokenStream::eof() const
 {
   return chars.eof();
 }
+
+/*************************************/
 
 bool TokenStream::isSymbolChar(char c)
 {
   return isalpha(c) || c == '_';
 }
 
+/*************************************/
+
 bool TokenStream::isDigitChar(char c)
 {
   return isdigit(c);
 }
+
+/*************************************/
 
 bool TokenStream::isQuoteChar(char c)
 {
   return c == '\"' || c == '\'';
 }
 
+/*************************************/
+
 bool TokenStream::isEol(char c)
 {
   return c == '\n';
 }
 
+/*************************************/
+
 bool TokenStream::isSpace(char c)
 {
   return isspace(c) && ! isEol(c);
 }
+
+/*************************************/
 
 char TokenStream::skipws()
 {
@@ -125,10 +157,14 @@ char TokenStream::skipws()
   return -1;
 }
 
+/*********************** IMPLEMENTATION ***************************/
+
 NullTokenStream::NullTokenStream(CharacterStream & _c)
   :TokenStream(_c)
 {
 }
+
+/*************************************/
 
 Token * NullTokenStream::getNextToken()
 {

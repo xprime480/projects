@@ -11,11 +11,14 @@ ZeroOneOfParser::ZeroOneOfParser(Parser * _p)
 {
 }
 
-ParseResult ZeroOneOfParser::parse(TokenStream & tokens) const
+Expression ZeroOneOfParser::parse(TokenStream & tokens, int flags) const
 {
-  ParseResult result = parser->parse(tokens);
+  Expression result = parser->parse(tokens, flags);
   if ( ! result ) {
-    result = ParseResult(true);
+    result = Expression();
+    result.append(Expression(true));
+    result.append(Expression());
+    result.append(Expression(""));
   }
 
   return result;

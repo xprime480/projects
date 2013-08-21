@@ -6,25 +6,39 @@
 using namespace std;
 using namespace parser;
 
+SequenceOfParser::SequenceOfParser()
+{
+}
+
 SequenceOfParser::SequenceOfParser(vector<Parser *> const & _ps)
   : parsers(_ps)
 {
 }
 
-ParseResult SequenceOfParser::parse(TokenStream & tokens) const
+void SequenceOfParser::append(Parser * _parser)
 {
-  ParseResult final;
+  parsers.push_back(_parser);
+}
+
+Expression SequenceOfParser::parse(TokenStream & tokens, int flags) const
+{
+  Expression final;
+  final.append(Expression(true));
+  final.append(Expression());
+  final.append(Expression(""));
+
   TokenStream::state_type state = tokens.getState();
 
   typedef vector<Parser *>::const_iterator iter;
   for ( iter i = parsers.begin() ; i != parsers.end() ; ++i ) {
-    ParseResult result = (*i)->parse(tokens);
+    Expression result = (*i)->parse(tokens, flags);
     if ( result ) {
-      final.append(result);
+      final.nth(1).append(result.nth(1));
+      final.nth(2).addText(result.nth(2));
     }
     else {
       tokens.setState(state);
-      return ParseResult(false);
+      return Expression(false);
     }
   }
 

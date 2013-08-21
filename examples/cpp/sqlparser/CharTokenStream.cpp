@@ -10,10 +10,14 @@
 using namespace std;
 using namespace parser;
 
+/*********************** IMPLEMENTATION ***************************/
+
 CharTokenStream::CharTokenStream(CharacterStream & chars)
   : TokenStream(chars)
 {
 }
+
+/*************************************/
 
 Token * CharTokenStream::getNextToken()
 {

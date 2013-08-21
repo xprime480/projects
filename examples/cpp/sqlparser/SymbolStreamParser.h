@@ -10,7 +10,7 @@ namespace parser {
   class SymbolStreamParser : public Parser
   {
   public:
-    virtual ParseResult parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
   };
 }
 

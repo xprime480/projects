@@ -20,6 +20,9 @@ namespace parser {
     ParserException(std::string const & what);
   };
 
+#define PARSER_FLAGS_NONE  0
+#define PARSER_FLAGS_TRACE 1
+
   /**
    * Parser
    *
@@ -33,10 +36,11 @@ namespace parser {
      *
      * Receive input and attempt to match it against some rules.
      *
-     * @param s
+     * @param tokens a stream from which to read tokens
+     * @param flags  a set of flags to honor
      *
      */
-    virtual Expression parse(TokenStream & tokens) const = 0;
+    virtual Expression parse(TokenStream & tokens, int flags) const = 0;
 
   protected:
 
@@ -49,7 +53,7 @@ namespace parser {
   class NullParser : public Parser
   {
   public:
-    virtual Expression parse(TokenStream & tokens) const;
+    virtual Expression parse(TokenStream & tokens, int flags) const;
   };
 
 }

@@ -5,6 +5,7 @@
 #define Expression_h 1
 
 #include <vector>
+#include <iosfwd>
 
 namespace parser {
   class Expression;
@@ -20,29 +21,33 @@ namespace parser {
     } tag_type;
 
 
-    explicit Expression(bool b);
-    explicit Expression(int i);
-    explicit Expression(double d);
-    explicit Expression(char const * c);
+    Expression(bool b);
+    Expression(int i);
+    Expression(double d);
+    Expression(char const * c);
     Expression();
-    explicit Expression(Expression const & e);
+    Expression(Expression const & e);
     Expression & operator=(Expression const & e);
 
     ~Expression();
-
+    
     operator bool() const;
     operator int() const;
     operator double() const;
-    operator char*() const;
+    operator char const*() const;
 
+    void addText(char const * c);
     void append(Expression const & e);
     size_t size() const;
-    Expression const & nth(size_t i);
+    Expression const & nth(size_t i) const;
+    Expression & nth(size_t i);
+
+    std::ostream & print(std::ostream & os) const;
    
   private:
     typedef std::vector<Expression> vofe;
     tag_type tag;
-    union {
+    union ExprValue {
       bool    b;
       int     i;
       double  d;
@@ -53,5 +58,7 @@ namespace parser {
 
   extern Expression nil;
 }
+
+std::ostream & operator<<(std::ostream & os, parser::Expression const & e);
 
 #endif // not defined Expression_h

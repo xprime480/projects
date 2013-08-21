@@ -11,9 +11,13 @@ ParserException::ParserException(std::string const & what)
 {
 }
 
-ParseResult NullParser::parse(TokenStream & tokens) const
+Expression NullParser::parse(TokenStream & tokens, int flags) const
 {
-  return Expression(true);
+  Expression result;
+  result.append(Expression(true));
+  result.append(Expression(""));
+  result.append(nil);
+  return result;
 }
 
 

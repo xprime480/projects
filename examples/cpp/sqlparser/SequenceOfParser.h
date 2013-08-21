@@ -13,9 +13,12 @@ namespace parser {
   class SequenceOfParser : public Parser
   {
   public:
+    SequenceOfParser();
     SequenceOfParser(std::vector<Parser *> const & _ps);
 
-    virtual ParseResult parse(TokenStream & tokens) const;
+    void append(Parser * _parser);
+
+    virtual Expression parse(TokenStream & tokens, int flags) const;
 
   private:
     std::vector<Parser *> parsers;

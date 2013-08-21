@@ -11,10 +11,14 @@
 using namespace std;
 using namespace parser;
 
+/*********************** IMPLEMENTATION ***************************/
+
 BasicTokenStream::BasicTokenStream(CharacterStream & chars)
   : TokenStream(chars)
 {
 }
+
+/*************************************/
 
 Token * BasicTokenStream::getNextToken()
 {
@@ -52,21 +56,29 @@ Token * BasicTokenStream::getNextToken()
   return new Token(Token::TOKEN_UNKNOWN, buf);
 }
 
+/*************************************/
+
 bool BasicTokenStream::isLeftChar(char c) const
 {
   return c == '(' || c == '[' || c == '{';
 }
+
+/*************************************/
 
 bool BasicTokenStream::isRightChar(char c) const
 {
   return c == ')' || c == ']' || c == '}';
 }
 
+/*************************************/
+
 bool BasicTokenStream::isOperChar(char c) const
 {
   return (c == '+' || c == '-' || c == '*' || c == '/' ||
 	  c == '=' || c == '<' || c == '>' );
 }
+
+/*************************************/
 
 Token * BasicTokenStream::tokenizeSymbol(std::string & buf)
 {
@@ -82,6 +94,8 @@ Token * BasicTokenStream::tokenizeSymbol(std::string & buf)
   
   return new Token(Token::TOKEN_SYM, buf);
 }
+
+/*************************************/
 
 Token * BasicTokenStream::tokenizeNumeric(std::string & buf)
 {
@@ -111,6 +125,8 @@ Token * BasicTokenStream::tokenizeNumeric(std::string & buf)
   return new Token(type, buf);
 }
 
+/*************************************/
+
 Token * BasicTokenStream::tokenizeText(char delim)
 {
   string buf;
@@ -133,6 +149,8 @@ Token * BasicTokenStream::tokenizeText(char delim)
 
   return new Token(Token::TOKEN_TEXT, buf);
 }
+
+/*************************************/
 
 Token * BasicTokenStream::tokenizeOperator(std::string & buf)
 {

@@ -1,3 +1,5 @@
+// $Id: /home/I809989/test/cpp/sqlparser/sqlparser.cpp#1 $
+// $DateTime: Wed Nov  9 10:37:04 2011 $
 
 #include <iostream>
 #include <string>
@@ -9,144 +11,43 @@
 #include "FileCharacterStream.h"
 #include "StringCharacterStream.h"
 
-#include "CharTokenStream.h"
-#include "BasicTokenStream.h"
+#include "SqlTokenStream.h"
 
 #include "AllParsers.h"
+#include "SqlParser.h"
 
 using namespace std;
 using namespace parser;
 
 namespace {
 
-  void results(ParseResult const & result)
+  void results(Expression const & e)
   {
-    if ( result ) {
+    if ( e ) {
       cout << "Parse succeeded" << endl;
-      cout << results << endl;
+      cout << e.nth(1) << endl;
     }
     else {
       cout << "Parse failed" << endl;
     }
   }
 
-  void test(Parser & parser, parser::CharacterStream & data)
+  void test(Parser & parser, 
+	    parser::CharacterStream & data, 
+	    int flags = PARSER_FLAGS_TRACE)
   {
     data.reset();
-    CharTokenStream tokens(data);
+    SqlTokenStream tokens(data);
     cout << "with input " << data.debug() << endl;
 
     try {
-      ParseResult pr(parser.parse(tokens));
+      Expression pr(parser.parse(tokens, flags));
       results(pr);
     }
     catch ( ParserException e ) {
       cout << "Parse threw an exception: " << e.what() << endl;
     }
   }
-
-  void test(Parser & parser, string const & file)
-  {
-    cout << "Beginning test on file " << file << endl;
-    FileCharacterStream cs(file);
-    test(parser, cs);
-  }
-
-  void internal_test()
-  {
-    NullCharacterStream nullCs;
-    StringCharacterStream x1("x1");
-    StringCharacterStream _1x("1x");
-    StringCharacterStream z31("z31");
-    StringCharacterStream Z31("Z31");
-    StringCharacterStream abc999("abc999");
-
-    {
-      NullParser parser;
-      cout << "*** test NullParser ***" << endl;
-      test(parser, nullCs);
-      cout << endl;
-    }
-
-    {
-      cout << "*** test SequenceOfParser ***" << endl;
-      AnyCharOfParser p1(parser::lowercase);
-      AnyCharOfParser p2(parser::digits);
-      vector<Parser *> ps;
-      ps.push_back(&p1);
-      ps.push_back(&p2);
-      SequenceOfParser parser(ps);
-
-      {
-	test(parser, x1);
-	cout << endl;
-      }
-
-      {
-	test(parser, z31);
-	cout << endl;
-      }
-
-      {
-	test(parser, Z31);
-	cout << endl;
-      }
-    }
-
-    {
-      cout << "*** test ZeroOneOfParser ***" << endl;
-      AnyCharOfParser p1(parser::lowercase);
-      ZeroOneOfParser parser(&p1);
-
-      {
-	test(parser, x1);
-	cout << endl;
-      }
-
-      {
-	test(parser, z31);
-	cout << endl;
-      }
-
-      {
-	test(parser, Z31);
-	cout << endl;
-      }
-    }
-
-    {
-      cout << "*** test OnePlusOfParser ***" << endl;
-      AnyCharOfParser p1(parser::lowercase);
-      OnePlusOfParser parser(&p1);
-
-      {
-	test(parser, _1x);
-	cout << endl;
-      }
-
-      {
-	test(parser, z31);
-	cout << endl;
-      }
-
-      {
-	test(parser, abc999);
-	cout << endl;
-      }
-    }
-  }
-
-  void basic_test()
-  {
-    {
-      FileCharacterStream input("x.txt");
-      BasicTokenStream    tokens(input);
-      SymbolStreamParser parser;
-
-      results(parser.parse(tokens));
-    }
-  }
-
 
   bool grabArg(string const & name, string const & spec, string & arg)
   {
@@ -274,36 +175,21 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  auto_ptr<Parser> parser(new NullParser);
+  try {
+    SqlParser parser;
 
-  while ( --argc ) {
-    string file(*++argv);
-
-    if ( file == "--internal" ) {
-      ::internal_test();
-      continue;
+    while ( --argc ) {
+      string file(*++argv);
+      cout << "Beginning test on file " << file << endl;
+      FileCharacterStream cs(file);
+      test(parser, cs);
     }
-
-    if ( file == "--basic" ) {
-      ::basic_test();
-      continue;
-    }
-    
-
-    if ( file.substr(0,8) == "--parser" ) {
-      string parserType(file, 9);
-      try {
-	parser.reset(::makeParser(parserType));
-      }
-      catch ( runtime_error e ) {
-	cerr << e.what() << endl;
-	return 1;
-      }
-      continue;
-    }
-
-    ::test(*parser.get(), file);
-  }
   
-  return 0;
+    return 0;
+  }
+  catch ( runtime_error e ) {
+    cerr << "caught exeption " << e.what() << endl;
+  }
+    
+  return 1;
 }

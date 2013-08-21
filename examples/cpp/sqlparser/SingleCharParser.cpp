@@ -13,7 +13,7 @@ SingleCharParser::SingleCharParser(char _c)
   c += _c;
 }
 
-ParseResult SingleCharParser::parse(TokenStream & tokens) const
+Expression SingleCharParser::parse(TokenStream & tokens, int flags) const
 {
   TokenStream::state_type state = tokens.getState();
 
@@ -22,12 +22,16 @@ ParseResult SingleCharParser::parse(TokenStream & tokens) const
   if ( (t != NULL) && 
        (t->getType() == Token::TOKEN_TEXT) && 
        (t->getText() == c) ) {
-    ParseResult res;
-    ParseResult txt(t->getText().c_str());
+
+    Expression res;
+    Expression txt(t->getText().c_str());
+    res.append(Expression(true));
     res.append(txt);
+    res.append(txt);
+
     return res;
   }
   
   tokens.setState(state);
-  return ParseResult(false);
+  return Expression(false);
 }
