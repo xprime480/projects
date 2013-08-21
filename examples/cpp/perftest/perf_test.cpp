@@ -19,21 +19,23 @@ int run(int argc, char ** argv)
   return p.run(argc, argv);
 }
 
+using namespace Test;
+
 int main(int argc, char ** argv) 
 {
-//  (void) run<Test::PerfTest_PA>(argc, argv);
-//  (void) run<Test::PerfTest_PV>(argc, argv);
-//  (void) run<Test::PerfTest_AOFS>(argc, argv);
-//  (void) run<Test::PerfTest_VOFS>(argc, argv);
-//  (void) run<Test::PerfTest_AOFLS>(argc, argv);
-//  (void) run<Test::PerfTest_VOFLS>(argc, argv);
+//  (void) run<PerfTest_PA>(argc, argv);
+//  (void) run<PerfTest_PV>(argc, argv);
+//  (void) run<PerfTest_AOFS>(argc, argv);
+//  (void) run<PerfTest_VOFS>(argc, argv);
+//  (void) run<PerfTest_AOFLS>(argc, argv);
+//  (void) run<PerfTest_VOFLS>(argc, argv);
 
-  (void) run<Test::PerfTest_AOS<Test::ThinData> >(argc, argv);
-  (void) run<Test::PerfTest_AOS<Test::FatData> >(argc, argv);
-  (void) run<Test::PerfTest_AOS<Test::VeryFatData> >(argc, argv);
-  (void) run<Test::PerfTest_VOS<Test::ThinData> >(argc, argv);
-  (void) run<Test::PerfTest_VOS<Test::FatData> >(argc, argv);
-  (void) run<Test::PerfTest_VOS<Test::VeryFatData> >(argc, argv);
+  (void) run<PerfTest_AOS<ThinData> >(argc, argv);
+  (void) run<PerfTest_AOS<FatData> >(argc, argv);
+  (void) run<PerfTest_AOS<VeryFatData> >(argc, argv);
+  (void) run<PerfTest_VOS<ThinData> >(argc, argv);
+  (void) run<PerfTest_VOS<FatData> >(argc, argv);
+  (void) run<PerfTest_VOS<VeryFatData> >(argc, argv);
   
 
   return 0;

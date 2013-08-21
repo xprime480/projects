@@ -15,7 +15,7 @@ namespace Test {
     int run(int argc, char ** argv);
 
   protected:
-    static unsigned int const ARRSIZE = 100 * 1000;
+    static unsigned int const ARRSIZE = 1 * 1000;
 
     virtual void setX(int i, double v) = 0;
     virtual void setY(int i, double v) = 0;
