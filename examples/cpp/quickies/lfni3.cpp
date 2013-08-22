@@ -1,13 +1,10 @@
 
 #include <algorithm>
-#include <iterator>
-#include <iostream>
-#include <functional>
+#include <cassert>
 #include <cmath>
-
-//
-// This program does not compile currently. 
-//
+#include <functional>
+#include <iostream>
+#include <iterator>
 
 /*!
   \brief Iterator through a sequence_adapter
@@ -358,15 +355,14 @@ struct filter_iterator :
     : test(fn)
     , from(f)
     , to(t)
-    , end(false)
+    , at_the_end(false)
   {
     find_next();
     curr_value = next_value;
   }
 
   filter_iterator()
-    : end(true)
-
+    : at_the_end(true)
   {
   }
 
@@ -390,10 +386,10 @@ struct filter_iterator :
 
   bool operator==(filter_iterator const & that) const
   {
-    if ( end && that.end ) {
+    if ( at_the_end && that.at_the_end ) {
       return true;
     }
-    if ( end || that.end ) {
+    if ( at_the_end || that.at_the_end ) {
       return false;
     }
     return from == that.from;
@@ -414,15 +410,15 @@ struct filter_iterator :
 
   void find_next()
   {
-    if ( end ) { 
+    if ( at_the_end ) { 
       return;
     }
-    end = true;
+    at_the_end = true;
     while ( from != to ) {
       next_value = *from;
       ++from;
       if ( test(next_value) ) {
-	end = false;
+	at_the_end = false;
 	break;
       }
     }
@@ -432,7 +428,7 @@ private:
   test_type      test;
   base_iterator  from;
   base_iterator  to;
-  bool           end;
+  bool           at_the_end;
   value_type     curr_value;
   value_type     next_value;
 };

@@ -52,7 +52,7 @@ int main( int argc, char ** argv )
     fmt( std::cin );
   }
   else {
-    for ( size_t i = 1 ; i < argc ; ++i ) {
+    for ( int i = 1 ; i < argc ; ++i ) {
       std::ifstream f( argv[i] );
       fmt( f );
     }

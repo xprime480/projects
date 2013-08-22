@@ -86,7 +86,6 @@ namespace Utils
     generator_type gen;
   };
 
-
   template <typename _Gen>
   struct drop : public generator<typename _Gen::result_type>
   {
@@ -140,15 +139,11 @@ namespace Utils
     generator_type gen;
   };
 
-
   template <typename _Fn, typename _Gen>
   filter<_Fn, _Gen> make_filter(_Fn f, _Gen g)
   {
     return filter<_Fn, _Gen>(f, g);
   }
-
-
-
 }
 
 bool is_odd(int & i) 
@@ -171,7 +166,7 @@ int main(int main, char ** argv)
   Gen1  g1;
   Gen2  g2(29, g1);
   Gen3  g3(5, g2);
-  gen(std::ptr_fun(&is_odd), g3);
+  auto gen = Utils::make_filter(std::ptr_fun(&is_odd), g3);
 
   try {
     for ( int x = 0 ; x < 10 ; ++ x ) {

@@ -14,7 +14,7 @@ typedef vector<int> DataType;
 DataType makeRandomVector(size_t size)
 {
   DataType data;
-  for ( int i = 0 ; i < size ; ++i ) {
+  for ( size_t i = 0 ; i < size ; ++i ) {
     data.push_back(rand() % 100);
   }
   return data;

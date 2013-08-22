@@ -48,7 +48,7 @@ int main()
     max_idx *= MAX_DIM;
   }
   for ( size_t idx = 0 ; idx < max_idx ; ++idx ) {
-    if ( std::rand() % 100 >= PCT_INSERT ) {
+    if ( size_t(std::rand() % 100) >= PCT_INSERT ) {
       continue;
     }
 
@@ -73,8 +73,8 @@ int main()
   PosetIter end = poset.end();
   PointType ref = { 0 };		// initialization guarantees all 0
 
-  for ( int idx = 0 ; idx < NDIMS ; ++idx ) {
-    for ( int val = ref.idx[ idx ] ; val < MAX_DIM ; ++val ) {
+  for ( size_t idx = 0 ; idx < NDIMS ; ++idx ) {
+    for ( size_t val = ref.idx[ idx ] ; val < MAX_DIM ; ++val ) {
       if ( 0 != idx && 0 == val ) {
 	continue;		// only test the origin once.
       }
@@ -92,7 +92,7 @@ int main()
   /*
    * print all elements > a reference value
    */
-  for ( int idx = 0 ; idx < NDIMS ; ++idx ) {
+  for ( size_t idx = 0 ; idx < NDIMS ; ++idx ) {
     ref.idx[ idx ] = ( 4 * MAX_DIM ) / 5;
   }
   for ( PosetIter pos = poset.begin() ; pos != end ; ++pos ) {

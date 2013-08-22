@@ -85,7 +85,7 @@ public:
       std::swap( i, j );
     }
 
-    int p = 0;
+    size_t p = 0;
     for ( ; p < len ; ++p ) {
       if ( edges[p].ends[0] == i && edges[p].ends[1] == j ) {
 	std::cerr << "warning: multigraphs not supported\n";
@@ -124,7 +124,7 @@ private:
     }
   }
 
-  void appendEdge( int i, int j, int p )
+  void appendEdge( int i, int j, size_t p )
   {
     analyzed = false;
     if ( len == p ) {

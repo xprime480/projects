@@ -2,7 +2,7 @@
 
 void test(bool a, bool b, bool c)
 {
-  bool d =  a && b  || c;
+  bool d = (a && b) || c;
   bool e = (a && b) || c;
   bool f = a && (b || c);
   

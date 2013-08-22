@@ -37,7 +37,7 @@ struct Converter<T, string>
 };
 
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
   Converter<char, char> ccc;
   cout << ccc.convert('z') << endl;
