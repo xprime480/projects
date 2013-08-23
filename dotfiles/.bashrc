@@ -36,3 +36,6 @@ fi
 export LC_ALL=C
 export HISTCONTROL=ignoreboth
 export PS1='\u@\h: \W \$ '
+
+blue
+export http_proxy=proxy.phl.sap.corp:8080
