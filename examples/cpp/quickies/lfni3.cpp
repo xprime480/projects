@@ -349,6 +349,7 @@ struct filter_iterator :
   typedef Test                                            test_type;
   typedef typename std::iterator_traits<Iter>::value_type value_type;
   typedef typename std::iterator<std::input_iterator_tag, value_type> base_iterator;
+  typedef filter_iterator<Iter, Test> my_type;
                                    
 
   filter_iterator(Iter f, Iter t, test_type fn) 
@@ -369,6 +370,17 @@ struct filter_iterator :
   value_type operator*()
   {
     return curr_value;
+  }
+
+  my_type begin()
+  {
+    my_type tmp(*this);
+    return tmp;
+  }
+
+  my_type end()
+  {
+    return my_type();
   }
 
   filter_iterator operator++()
