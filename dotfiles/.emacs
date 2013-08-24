@@ -139,5 +139,5 @@
 (safe-require "/mnt/install/tools/ess/share/emacs/site-lisp" 'ess-site)
 
 ;; start the Emacs server, will be of help to Perforce/Emacs integration.
-;;(server-start)
+(server-start)
 
