@@ -1,9 +1,5 @@
-*.exe
 lib
-*.o
-*.d
 .gdbinit
-*.a
 *.stackdump
 
 
