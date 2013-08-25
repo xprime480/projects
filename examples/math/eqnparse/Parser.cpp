@@ -95,7 +95,7 @@ void Parser::parse_varlist()
 
 Equation * Parser::parse_eqn()
 {
-  
+  return 0;
 }
 
 void Parser::assert_eof()

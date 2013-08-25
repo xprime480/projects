@@ -1,4 +1,8 @@
-all : eqnparse
+EXE_LIST   = eqnparse
+LOCAL_TEST = local_test
 
-eqnparse : $(wildcard *.cpp) $(wildcard *.h)
-	g++ -g -o eqnparse $(wildcard *.cpp)
+% :
+	for x in $(EXE_LIST) ; do MYEXE=$${x} make -f exe.mk $@ ; done
+
+local_test : all
+	./eqnparse

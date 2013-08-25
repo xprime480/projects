@@ -7,7 +7,7 @@ class Equation
 {
 public:
   Equation();
-  ~Equation();
+  virtual ~Equation();
 
   virtual double eval_fx( ParameterSpace const & parms ) const = 0;
   virtual double eval_dx( ParameterSpace const & parms ) const;
