@@ -1,0 +1,36 @@
+.deps
+.gdbinit
+autom4te.cache
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   Equation.cpp
+#	new file:   Equation.h
+#	new file:   Makefile
+#	new file:   Makefile.am
+#	new file:   Parser.cpp
+#	new file:   Parser.h
+#	new file:   Token.cpp
+#	new file:   Token.h
+#	new file:   config.h
+#	new file:   eqnparse.cpp
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	.gitignore
+#	Makefile.in
+#	aclocal.m4
+#	bootstrap
+#	config.h.in
+#	config.log
+#	config.status
+#	configure
+#	configure.ac
+#	depcomp
+#	eqnparse
+#	install-sh
+#	missing
+#	stamp-h1
+#	../newton/
