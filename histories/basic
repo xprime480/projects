@@ -23,3 +23,7 @@ ssh -Y sp3adm@usphlhanapio01.phl.sap.corp
 ssh -Y system@usphlhanapio01.phl.sap.corp
 ssh -Y usphlhanapio02.phl.sap.corp
 startxwin
+(cd ~/working ; nohup python -m SimpleHTTPServer 8883 >> ~/logs/http.log 2>&1 &)
+gitk
+http_proxy=proxy.phl.sap.corp:8080 wget http://bing.com
+wget --proxy-user=I809989 --proxy-password=Iwnfmpw200 http://google.com
