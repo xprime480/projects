@@ -9,3 +9,5 @@ local_test : all
 	for x in $(EXE_LIST) ; do  ./$${x} ; done
 
 
+clean : 
+	make -f exe.mk clean
