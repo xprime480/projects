@@ -1,15 +1,13 @@
+#include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <iterator>
+#include <list>
 #include <map>
 #include <set>
-#include <vector>
-#include <list>
-#include <string>
-#include <iostream>
 #include <sstream>
-#include <algorithm>
-#include <iterator>
-#include <cstring>
-
-#if 0
+#include <string>
+#include <vector>
 
 /**
 Non compiling code
@@ -178,6 +176,11 @@ class NullFormatHelper
 {
 };
 
+template<typename M, typename Head, typename Tail>
+struct MapFormatter
+{
+};
+
 
 /*
  * Base case for formatting a row of data with keys
@@ -332,8 +335,8 @@ struct FormatterProperties
 template<typename K, typename V>
 struct FormatterProperties<std::map<K, V> >
 {
-  typedef FormatHelper<K, false>                              head_type;
-  typedef FormatHelper<V, IsNonMapContainer<V>::value>        tail_type;
+  typedef FormatHelper<K, false>                             head_type;
+  typedef FormatHelper<V, IsNonMapContainer<V>::value>       tail_type;
   typedef MapFormatter<std::map<K, V>, head_type, tail_type> main_type;
 };
 
@@ -383,6 +386,7 @@ void debugFormat(T const & t,
 
 void test1()
 {
+  char const * hdrs[] = { "N", "Val", 0 };
   char const * hdrs[] = { "N", "Val", 0 };
 
   std::map<int, int> m;
@@ -442,13 +446,3 @@ int main(int argc, char ** argv)
 
   return 0;
 }
-
-
-#else 
-
-int main(int argc, char ** argv) 
-{
-  return 0;
-}
-
-#endif
