@@ -2,6 +2,13 @@
 #include <iostream>
 #include <string>
 
+/*
+ * This example shows how to read from a generic stream.
+ *
+ * In this case, the stream is built from std::cin.  The input is just
+ * echoed to the output (std::cout).
+ */
+
 void f( std::istream & is ) 
 {
   char buf[ 128 ];
