@@ -9,6 +9,8 @@
 #include <iterator>
 #include <cstring>
 
+#if 0
+
 /**
 Non compiling code
  **/
@@ -440,3 +442,13 @@ int main(int argc, char ** argv)
 
   return 0;
 }
+
+
+#else 
+
+int main(int argc, char ** argv) 
+{
+  return 0;
+}
+
+#endif

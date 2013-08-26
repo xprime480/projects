@@ -13,7 +13,8 @@ void exec(std::list<X> const & xs)
 {
   std::list<X>::const_iterator iter;
   for ( iter = xs.begin() ; iter != xs.end() ; ++iter ) {
-    iter->ys.push_back(iter->ys.size());
+    // this is not const-correct 
+    // iter->ys.push_back(iter->ys.size());
   }
 }
 

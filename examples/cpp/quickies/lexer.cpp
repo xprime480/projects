@@ -85,7 +85,7 @@ void lex_string( char const *& pch, Token & token, char end )
 
 void lex_symbol( char const *& pch, Token & token )
 {
-  while ( *pch && std::isalnum( *pch ) || '_' == *pch ) {
+  while ( *pch && (std::isalnum( *pch ) || '_' == *pch) ) {
     token.text += *pch;
     ++pch;
   }
@@ -173,7 +173,7 @@ int main( int argc, char ** argv )
     lex( std::cin );
   }
   else {
-    for ( size_t i = 1 ; i < argc ; ++i ) {
+    for ( int i = 1 ; i < argc ; ++i ) {
       std::ifstream f( argv[i] );
       lex( f );
     }

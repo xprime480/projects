@@ -43,7 +43,7 @@ int main(int argc, char** argv)
   set<int> ns;
 
   if ( lim <= 10 ) {
-    for ( int i = 1 ; i <= lim ; ++i ) {
+    for ( size_t i = 1 ; i <= lim ; ++i ) {
       ns.insert(i);
     }
   }

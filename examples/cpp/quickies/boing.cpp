@@ -32,7 +32,7 @@ Z f()
 {
   Z z;
   z.x = (getpid() % 2);
-  // return z;
+  return z;
 }
 
 int main(int argc, char ** argv)

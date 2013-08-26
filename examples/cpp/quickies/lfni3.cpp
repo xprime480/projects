@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iterator>
 
+#if 0
+
 /*!
   \brief Iterator through a sequence_adapter
 */
@@ -551,3 +553,12 @@ int main(int argc, char ** argv)
 	    5),
        dout);			// test filter
 }
+
+#else 
+
+int main(int argc, char ** argv) 
+{
+  return 0;
+}
+
+#endif

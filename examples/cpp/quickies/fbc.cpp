@@ -14,9 +14,9 @@ public:
   };
 
   CLReader(int _argc, char ** _argv, Handler & _default)
-    : argc(_argc)
-    , argv(_argv) 
-    , defaultHandler(_default)
+   : defaultHandler(_default)
+   , argc(_argc)
+   , argv(_argv) 
   {
   }
 
@@ -46,6 +46,8 @@ public:
 	return false;
       }
     }
+
+    return true;
   }
 
 private:
