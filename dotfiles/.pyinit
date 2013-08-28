@@ -1,5 +1,5 @@
 ##export PYTHONHOME=$HOME/experimental/usr/local
 
-export PYTHONPATH=${HOME}/lib/python:${PYTHONPATH}
+export PYTHONPATH=${HOME}/lib/python:${HOME}/working/tools/datagen/:${PYTHONPATH}
 
 PYTHONHOME=${PYTHONHOME:-/dev/null}
