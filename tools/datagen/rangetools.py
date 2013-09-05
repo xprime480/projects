@@ -18,13 +18,15 @@ class DateRange(object) :
             raise Exception(
                 'Going back in time not supported for step = %s'% str(step))
 
+
+    def dates(self) :
+        current = self.start 
+        while current <= self.stop :
+            yield current   # .strftime(self.fmt)
+            current = current + self.step
+
     def make_gen(self) :
-        def g() :
-            current = self.start 
-            while current <= self.stop :
-                yield current   # .strftime(self.fmt)
-                current = current + self.step
-        return g
+        return self.dates
 
 
 class NumericRange(object) :
