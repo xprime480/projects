@@ -434,7 +434,7 @@ class DataGen(object) :
             self.log.write('\tenv = %s\n' % str(env))
             return False
             
-        vals  = list(rangetools.IntRange(start, stop, step).make_gen()())
+        vals  = list(rangetools.IntRange(start, stop, step).values())
         xvals = [dict([x]) for x in zip(itertools.cycle(['loop_index']), vals)]
         expanded = self.expand_output_rows(context, xvals)
 

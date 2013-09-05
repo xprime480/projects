@@ -65,7 +65,7 @@ class DataGenConfig(object) :
         else :
             raise Exception('make_range: unknown type %s' % var_type)
 
-        rv = list(cls(*args_in, fmt=var_fmt).make_gen()())
+        rv = list(cls(*args_in, fmt=var_fmt).values())
         return rv
 
     def realize_ranges(self) :
