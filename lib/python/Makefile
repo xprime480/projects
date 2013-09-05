@@ -4,6 +4,7 @@ FILES =	BeautifulSoup.py	\
 	combinator.py		\
 	datagenfile.py		\
 	logit.py		\
+	parameters.py		\
 	rangetools.py
 
 DESTDIR ?= $(HOME)/lib/python
