@@ -49,3 +49,6 @@ alias gdiff='git diff'
 alias gpush='git push origin master'
 alias gstatus='git status'
 alias gadd='git add'
+
+PY=/usr/bin/python3
+alias pdb='${PY} -m pdb '
