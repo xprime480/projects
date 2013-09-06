@@ -5,7 +5,7 @@ import sys
 
 ####################################################################
 #
-csv_dialect = 'datagen' 
+csv_dialect = 'pio' 
 csv.register_dialect(csv_dialect, skipinitialspace=True)
 
 ####################################################################
@@ -30,8 +30,8 @@ class CsvFilteringWriter(csv.DictWriter) :
 
 ####################################################################
 #
-class DataGenFile(object) :
-    """Wrapper for DataGenFile which may be existing file stream"""
+class CsvFileIo(object) :
+    """Wrapper for CsvFileIo which may be existing file stream"""
 
     def __init__(self, spec, dir_is_output, header=None) :
         self.spec          = spec

@@ -2,7 +2,7 @@
 
 FILES =	BeautifulSoup.py	\
 	combinator.py		\
-	datagenfile.py		\
+	csvfileio.py		\
 	logit.py		\
 	parameters.py		\
 	rangetools.py

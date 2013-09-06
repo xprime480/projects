@@ -13,7 +13,7 @@ import datetime
 import datagenconfig
 import rangetools
 import itertools
-import datagenfile
+import csvfileio
 
 ####################################################################
 #
@@ -265,7 +265,7 @@ class DataGen(object) :
     #
     def make_data_input(self) :
         fn = self.config.get_io(datagentoken.inpkw)
-        rv = datagenfile.DataGenFile(fn, False) 
+        rv = csvfileio.CsvFileIo(fn, False) 
         return rv
 
     ####################################################################
@@ -290,7 +290,7 @@ class DataGen(object) :
             datagentoken.rwkw,
             datagentoken.genkw
         )
-        rv = datagenfile.DataGenFile(fs, True, ov)
+        rv = csvfileio.CsvFileIo(fs, True, ov)
         return rv
         
     ####################################################################
