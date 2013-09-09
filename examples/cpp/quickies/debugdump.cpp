@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstring>
+#include <cstdio>
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -386,7 +387,6 @@ void debugFormat(T const & t,
 
 void test1()
 {
-  char const * hdrs[] = { "N", "Val", 0 };
   char const * hdrs[] = { "N", "Val", 0 };
 
   std::map<int, int> m;
