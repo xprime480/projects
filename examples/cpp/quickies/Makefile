@@ -12,3 +12,5 @@ clean :
 	make -f exe.mk $@
 
 
+clean : 
+	make -f exe.mk clean

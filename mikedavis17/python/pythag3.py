@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 
+"""Generate pythagorean triples and display some."""
+
 from math import floor, sqrt
-from mymath import gcd
-import itertools
+from gcd import gcd
 
 def triples( max ) :
+    """Generate a list of all prime pythagorean triples in range.
+
+    MAX is the largest value of the hypotenuse to allow.
+    """
     for k in range( 1, 1+max ) :
         imax = int( floor( sqrt( k*k/2.0 ) ) )
         for i in range( 1, 1+imax ) :
@@ -15,7 +20,10 @@ def triples( max ) :
 
 
 if __name__ == '__main__' :
+    """Print some sample triples.
+    """
     print(list( triples( 85 ) ))
+
     r = 0
     m = (0,0,0)
     for x in triples( 10000 ) :
@@ -24,6 +32,10 @@ if __name__ == '__main__' :
         if t > r :
             r = t
             m = x
-            print (m)
+            #print (m)
+
+    #
+    # print the most nearly "square" triple
+    #
     print (m)
     
