@@ -20,14 +20,5 @@ def db2p(db) :
     x = 10**(db/10.0)
     return x/(1+x)
 
-def main() :
-    """Execute some tests."""
-
-    for x in range(-10,11) :
-        print (logit2p(.5 * x))
-
-    print (logit2p(p2logit(0.1)))
-
-
 if __name__ == '__main__' :
-    main()
+    print ('Run logittest.py for unit tests.')

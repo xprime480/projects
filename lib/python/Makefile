@@ -8,7 +8,8 @@ FILES =	BeautifulSoup.py	\
 	rangetools.py
 
 TESTERS =	rangetoolstest.py	\
-		combinatortest.py
+		combinatortest.py	\
+		logittest.py
 
 DESTDIR ?= $(HOME)/lib/python
 
