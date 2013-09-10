@@ -35,13 +35,3 @@ class LogitTest(unittest.TestCase) :
             self.assertEqual(round(x, 8), round(db2p(p2db(x)), 8))
         for x in [0.5 * i for i in range(-20,21)] :
             self.assertEqual(round(x, 8), round(p2db(db2p(x)), 8))
-
-
-def main() :
-    """Execute some tests."""
-
-    for x in range(-10,11) :
-        print (logit2p(.5 * x))
-
-    print (logit2p(p2logit(0.1)))
-
