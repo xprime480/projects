@@ -1,24 +1,26 @@
 
 
-FILES =	BeautifulSoup.py	\
-	combinator.py		\
-	csvfileio.py		\
-	logit.py		\
-	parameters.py		\
-	rangetools.py
+FILES ?=	BeautifulSoup.py	\
+		combinator.py		\
+		csvfileio.py		\
+		logit.py		\
+		parameters.py		\
+		rangetools.py
 
-TESTERS =	rangetoolstest.py	\
+TESTS ?=	rangetoolstest.py	\
 		combinatortest.py	\
-		logittest.py
+		logittest.py		\
+		csvfileiotest.py
 
 DESTDIR ?= $(HOME)/lib/python
 
 install :
 	@for f in $(FILES) ; \
-		do diff -q $$f $(DESTDIR)/$$f >/dev/null || cp -p $$f $(DESTDIR)/$$f; \
+		do diff -q $$f $(DESTDIR)/$$f >/dev/null || \
+		( echo "Installing $$f" && cp -p $$f $(DESTDIR)/$$f ); \
 	done
 
 test :
-	@for f in $(TESTERS) ; \
+	@for f in $(TESTS) ; \
 		do echo $$f; python3 -m unittest $$f; \
 	done
