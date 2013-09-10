@@ -1,0 +1,7 @@
+
+location Panama
+date_from 2001-02-17
+date_to 2001-12-17
+
+foo 42
+foo [ date = 2001-11-14 ] 17
