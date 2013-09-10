@@ -168,67 +168,13 @@ class StringMatcher(Combinator) :
         return (None, None, input)
         
 ############################################
-
+#
 if __name__ == '__main__' :
-    cx = SingleCharMatcher('x')
-    print(cx.match("xyz"))
-    (_,_,rest) = cx.match("xxxxxy")
-    print(rest)
-
-    cy = SingleCharMatcher('y')
-    cxy = AnyOfMatcher(cx, cy)
-
-    print(cxy.match("xyz"))
-    print(cxy.match("yxz"))
-    print(cxy.match("zyx"))
-
-    cxs0 = ZeroPlusMatcher(cx)
-    print(cxs0.match("xxxxxxxyxxxx"))
-    print(cxs0.match("nonehere"))
-
-    cxs1 = OnePlusMatcher(cx)
-    print(cxs1.match("xxxxxxxyxxxx"))
-    print(cxs1.match("nonehere"))
-
-    any = AnyCharMatcher()
-    print(any.match("abc"))
-    print(any.match(""))
-    print(any.match(None))
-
-    print("=================")
-
-    all = ZeroPlusMatcher(any)
-    print(all.match("abcdef"))
-    print(all.match(""))
+    print ('')
 
 
-    digits = CharSetMatcher("0123456789")
-    print(digits.match("623x"))
-
-    num = OnePlusMatcher(digits)
-    print(num.match("623x"))
-
-    ints = IntegerMatcher()
-    print(ints.match("623x"))
-    print(ints.match("-1234623x"))
-    print(ints.match("--1"))
-
-    digits2 = CharRangeMatcher('0', '9')
-    print(digits2.match("823833xx823"))
-
-    alpha = AnyOfMatcher( CharRangeMatcher('a', 'z'),
-                          CharRangeMatcher('A', 'Z') )
-    print(alpha.match("DogBerry"))
-
-    keyword = SequenceMatcher(alpha,
-                              ZeroPlusMatcher(AnyOfMatcher(alpha, digits2)) )
-    print(keyword.match("DogBerry99$2"))
-
-    sm = StringMatcher("base")
-    print(sm.match("basecase"))
-    print(sm.match("offbase"))
-
-    print(type(keyword))
-    print(keyword.__class__)
-    print() 
+################################################################
+#
+if __name__ == '__main__' :
+    print ('Run combinatortest.py for unit tests.')
 
