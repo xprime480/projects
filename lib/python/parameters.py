@@ -27,6 +27,8 @@ class Parms(object) :
     def __init__(self, f = _master_file) :
         """Read data file and initialize parameters."""
 
+        self.initializing = True
+
         self.set_defaults()
 
         with open(f) as dat :
@@ -35,9 +37,8 @@ class Parms(object) :
                 if name != None :
                     self.put(name, context, value)
 
-        c = [k for k in self.params.keys()]
-        c.sort(key = lambda x : (- len(x), x))
-        self.contexts = c
+        self.initializing = False
+        self.update_contexts()
 
     ################################################################
     #
@@ -57,7 +58,7 @@ class Parms(object) :
     def parse_line(self, line) :
         """Convert one line into parameter format."""
 
-        line = line[:-1]
+        line = line.strip()
                 
         if len(line) == 0 :
             return None,None,None
@@ -105,8 +106,20 @@ class Parms(object) :
             if not vs in self.params[ks].keys() :
                 self.params[ks][vs] = {}
             self.params[ks][vs][name] = value
+            
+            self.update_contexts()
         else :
             self.params[()][()][name] = value
+
+    ################################################################
+    #
+    def update_contexts(self) :
+        """Collect the contexts for later lookups."""
+
+        if not self.initializing :
+            c = [k for k in self.params.keys()]
+            c.sort(key = lambda x : (- len(x), x))
+            self.contexts = c
 
     ################################################################
     #
@@ -135,12 +148,7 @@ class Parms(object) :
 
 ################################################################
 #
-def main() :
-    p = Parms()
-    print (dir(p))
-    print (p.params)
-
-################################################################
-#
 if __name__ == '__main__' :
-    main()
+    print ('Run parameterstest.py for unit tests.')
+    p = Parms()
+
