@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import unittest
 
 from csvfileio import *
@@ -16,22 +17,40 @@ class LogitTest(unittest.TestCase) :
 
     ##################################################################
     #
-    def test_logit(self) :
-        self.assertEqual(0.0, p2logit(0.5))
-        self.assertEqual(0.5, logit2p(0.0))
-        for x in [0.1 * i for i in range(1,10)] :
-            self.assertEqual(round(x, 8), round(logit2p(p2logit(x)), 8))
-        for x in [0.5 * i for i in range(-20,21)] :
-            self.assertEqual(round(x, 8), round(p2logit(logit2p(x)), 8))
+    def test_read(self) :
+        with CsvFileIo('test_in.csv', False) as rdr :
+            hdrs = rdr.fieldnames
+            rows = [r for r in rdr]
 
+        self.assertEqual(['index', 'name', 'value'], hdrs)
+        self.assertEqual(2, len(rows))
+        self.assertEqual('1',   rows[0]['index'])
+        self.assertEqual('Bob', rows[0]['name'])
+        self.assertEqual('17',  rows[0]['value'])
 
     ##################################################################
     #
-    def test_db(self) :
-        self.assertEqual(0.0, p2db(0.5))
-        self.assertEqual(0.5, db2p(0.0))
-        self.assertEqual(0.5, db2p(p2db(0.5)))
-        for x in [0.1 * i for i in range(1,10)] :
-            self.assertEqual(round(x, 8), round(db2p(p2db(x)), 8))
-        for x in [0.5 * i for i in range(-20,21)] :
-            self.assertEqual(round(x, 8), round(p2db(db2p(x)), 8))
+    def test_write(self) :
+        rows = [
+            {'a' : 1, 'b' : 'two', 'c' : 0.25 },
+            {'a' : 7, 'b' : 'six', 'c' : 0.01 }
+        ]
+        hdrs = ['a', 'c']       # skip column b
+
+        ofile = 'test_out.csv'
+
+        with CsvFileIo(ofile, True, hdrs) as wrt :
+            wrt.writeheader()
+            for r in rows :
+                wrt.writerow(r)
+
+        with CsvFileIo(ofile, False) as rdr :
+            thdrs = rdr.fieldnames
+            trows = [r for r in rdr]
+
+        self.assertEqual(hdrs, thdrs)
+        self.assertEqual(len(rows), len(trows))
+        self.assertEqual(1,    rows[0]['a'])
+        self.assertEqual(0.25, rows[0]['c'])
+
+        os.unlink(ofile)
