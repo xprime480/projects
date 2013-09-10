@@ -10,7 +10,8 @@ FILES ?=	BeautifulSoup.py	\
 TESTS ?=	rangetoolstest.py	\
 		combinatortest.py	\
 		logittest.py		\
-		csvfileiotest.py
+		csvfileiotest.py	\
+		parameterstest.py
 
 DESTDIR ?= $(HOME)/lib/python
 
