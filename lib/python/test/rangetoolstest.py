@@ -211,3 +211,13 @@ class RangeToolsTest(unittest.TestCase) :
             js = rangetools.FloatRange(1.0, 1.0, 0.0)
 
 
+    ################################################################
+    #
+    def test_pairs(self) :
+        """Test generation of pairs."""
+
+        ps = [p for p in rangetools.pairs(0)]
+        self.assertEqual([], ps)
+
+        ps = [p for p in rangetools.pairs(2)]
+        self.assertEqual([(1,2)], ps)
