@@ -151,6 +151,20 @@ class FloatRange(NumericRange) :
     def convert(self, value) :
         return float(value)
 
+
+################################################################
+#
+def pairs( n ) :
+    """Generate pairs of numbers.
+
+    Each pair (x, y) where 1 <= x,y <= N and x < y is returned.
+    """
+
+    for x in range(1, n+1) :
+        for y in range(x+1, n+1) :
+            yield (x,y)
+
+
 ################################################################
 #
 if __name__ == '__main__' :
