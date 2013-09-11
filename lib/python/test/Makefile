@@ -1,10 +1,12 @@
 
 
-TESTS ?=	rangetoolstest.py	\
-		combinatortest.py	\
-		logittest.py		\
-		csvfileiotest.py	\
-		parameterstest.py
+TESTS ?=	\
+	combinatortest.py	\
+	countingtest.py		\
+	csvfileiotest.py	\
+	logittest.py		\
+	parameterstest.py	\
+	rangetoolstest.py
 
 test :
 	@for f in $(TESTS) ; \

@@ -34,11 +34,4 @@ def choose(n, k) :
     return factorial(n) // factorial(k) // factorial(n-k)
 
 if __name__ == '__main__' :
-    print ('Testing')
-    print ('3! = ', factorial(3))
-    print ('7! = ', factorial(7))
-    print ('60! = ' , factorial(60))
-
-    print ('(3 2) = ', choose(3, 2))
-    print ('(6 3) = ', choose(6, 3))
-    print ('(8 3) = ', choose(8, 3))
+    print ('Run countingtest.py for unit tests.')
