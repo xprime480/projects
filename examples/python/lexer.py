@@ -56,35 +56,30 @@ def tokenize(input) :
     optws = pc.ZeroPlusMatcher(wschar)
     ints = pc.IntegerMatcher()
 
+    matchers = [kws, ops, identifier, ints]
+
     rest = input
     while True :
         _,_,rest = optws.match(rest)
 
         if rest == '' :
             break;
-        
-        m,o,r = kws.match(rest)
-        if m is not None :
-            yield (m,o)
-            rest = r
-        else :
-            m,o,r = ops.match(rest)
-            if m is not None :
-                yield (m,o)
-                rest = r
-            else :
-                m,_,r = identifier.match(rest)
-                if m is not None :
-                    yield (m,'ID')
-                    rest = r
-                else :
-                    m,o,r = ints.match(rest)
-                    if m is not None :
-                        yield (m,o)
-                        rest = r
-                    else :
-                        yield None
-                        rest = ''
 
+        found = False
+        for x in matchers :
+            m,o,r = x.match(rest)
+            if m is not None :
+                found = True
+                rest = r
+                if x == identifier :
+                    yield (m, 'ID')
+                else :
+                    yield (m, o)
+                break
+
+        if not found :
+            yield None
+            rest = ''
+        
 if __name__ == '__main__'  :
     print ('Run lexertest.py for test suite')
