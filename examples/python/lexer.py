@@ -35,10 +35,24 @@ upper = pc.CharRangeMatcher('A', 'Z')
 alpha = pc.AnyOfMatcher(lower, upper)
 alnum = pc.AnyOfMatcher(alpha, digit)
 
-identifier = pc.SequenceMatcher(alpha,
-                                pc.ZeroPlusMatcher(pc.AnyOfMatcher(alpha,
-                                                                   digit)) )
+class TweedIdentifier(pc.Combinator) :
+    def __init__(self) :
+        self.matcher = pc.SequenceMatcher(
+            alpha,
+            pc.ZeroPlusMatcher(
+                pc.AnyOfMatcher(
+                    alpha,
+                    digit
+            )))
 
+    def match(self, input) :
+        m,o,r = self.matcher.match(input)
+        if m is None :
+            return (m, o, r)
+        else :
+            return (m, 'ID', r)
+
+identifier = TweedIdentifier()
 
 class TweedKeyword(pc.Combinator) :
     def match(self, input) :
@@ -69,12 +83,9 @@ def tokenize(input) :
         for x in matchers :
             m,o,r = x.match(rest)
             if m is not None :
-                found = True
+                yield (m, o)
                 rest = r
-                if x == identifier :
-                    yield (m, 'ID')
-                else :
-                    yield (m, o)
+                found = True
                 break
 
         if not found :
