@@ -7,13 +7,9 @@ FILES ?=	BeautifulSoup.py	\
 		parameters.py		\
 		rangetools.py
 
-TESTS ?=	rangetoolstest.py	\
-		combinatortest.py	\
-		logittest.py		\
-		csvfileiotest.py	\
-		parameterstest.py
-
 DESTDIR ?= $(HOME)/lib/python
+
+.PHONY : install test
 
 install :
 	@for f in $(FILES) ; \
@@ -22,6 +18,4 @@ install :
 	done
 
 test :
-	@for f in $(TESTS) ; \
-		do echo $$f; python3 -m unittest $$f; \
-	done
+	make -C test test
