@@ -18,6 +18,9 @@ class CombinatorTest(unittest.TestCase) :
     ##################################################################
     #
     def test01(self) :
+        ops = TweedOperator()
+        kws = TweedKeyword()
+        
         self.assertEqual(
             ('+', 'OP', ''),
             ops.match("+")
