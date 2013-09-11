@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-def pairs( n ) :
-    for x in range(1, n+1) :
-        for y in range(x+1, n+1) :
-            yield (x,y)
+from rangetools import pairs
 
 if __name__ == '__main__' :
     from sys import argv
