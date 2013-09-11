@@ -2,6 +2,7 @@
 
 FILES ?=	BeautifulSoup.py	\
 		combinator.py		\
+		counting.py		\
 		csvfileio.py		\
 		logit.py		\
 		parameters.py		\

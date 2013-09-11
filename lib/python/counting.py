@@ -5,9 +5,9 @@ def factorial(x) :
 
     """
     if type(x) != type(1) :
-        return -1
+        return None
     if x < 0 :
-        return -1
+        return None
     if x < 2 :
         return 1
 
@@ -24,7 +24,14 @@ def choose(n, k) :
     does not matter.
     """
 
-    return factorial(n) / factorial(k) / factorial(n-k)
+    if k < 0 or n < 0 :
+        return None
+    if n < k :
+        return 0
+    if k == n : 
+        return 1
+
+    return factorial(n) // factorial(k) // factorial(n-k)
 
 if __name__ == '__main__' :
     print ('Testing')
