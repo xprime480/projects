@@ -17,5 +17,6 @@ DESTDIR ?= $(HOME)
 
 install :
 	@for f in $(FILES) ; \
-		do diff -q $$f $(DESTDIR)/$$f >/dev/null || cp -p $$f $(DESTDIR)/$$f; \
+		do diff -q $$f $(DESTDIR)/$$f >/dev/null || \
+		(echo "Installing $$f" && cp -p $$f $(DESTDIR)/$$f ); \
 	done
