@@ -1,12 +1,14 @@
 
 
-FILES ?=	BeautifulSoup.py	\
-		combinator.py		\
-		counting.py		\
-		csvfileio.py		\
-		logit.py		\
-		parameters.py		\
-		rangetools.py
+FILES ?=	\
+	BeautifulSoup.py	\
+	combinator.py		\
+	counting.py		\
+	csvfileio.py		\
+	logit.py		\
+	parameters.py		\
+	rangetools.py		\
+	verscmp.py
 
 DESTDIR ?= $(HOME)/lib/python
 

@@ -6,7 +6,8 @@ TESTS ?=	\
 	csvfileiotest.py	\
 	logittest.py		\
 	parameterstest.py	\
-	rangetoolstest.py
+	rangetoolstest.py	\
+	verscmptest.py
 
 test :
 	@for f in $(TESTS) ; \
