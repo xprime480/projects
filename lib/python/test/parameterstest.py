@@ -40,3 +40,10 @@ class ParametersTest(unittest.TestCase) :
 
         self.assertEqual(6, p.get('foo'))
         self.assertEqual(7, p.get('foo', ctx))
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()

@@ -35,3 +35,10 @@ class LogitTest(unittest.TestCase) :
             self.assertEqual(round(x, 8), round(db2p(p2db(x)), 8))
         for x in [0.5 * i for i in range(-20,21)] :
             self.assertEqual(round(x, 8), round(p2db(db2p(x)), 8))
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()

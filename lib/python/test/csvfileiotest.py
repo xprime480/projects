@@ -54,3 +54,10 @@ class LogitTest(unittest.TestCase) :
         self.assertEqual(0.25, rows[0]['c'])
 
         os.unlink(ofile)
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()

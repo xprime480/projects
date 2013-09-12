@@ -221,3 +221,10 @@ class RangeToolsTest(unittest.TestCase) :
 
         ps = [p for p in rangetools.pairs(2)]
         self.assertEqual([(1,2)], ps)
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()

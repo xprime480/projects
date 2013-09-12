@@ -33,3 +33,10 @@ class CountingTest(unittest.TestCase) :
         self.assertEqual(3,  choose(3, 2))
         self.assertEqual(20, choose(6, 3))
         self.assertEqual(56, choose(8, 3))
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()

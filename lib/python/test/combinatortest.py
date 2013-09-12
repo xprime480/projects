@@ -173,3 +173,10 @@ class CombinatorTest(unittest.TestCase) :
             (None, None, 'offbase'),
             self.sm.match("offbase")
         )
+
+################################################################
+#
+if '__main__' == __name__ :
+    """Run the unit tests."""
+
+    unittest.main()
