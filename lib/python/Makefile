@@ -5,6 +5,7 @@ FILES ?=	\
 	combinator.py		\
 	counting.py		\
 	csvfileio.py		\
+	fileutils.py		\
 	logit.py		\
 	parameters.py		\
 	rangetools.py		\
@@ -17,7 +18,7 @@ DESTDIR ?= $(HOME)/lib/python
 install :
 	@for f in $(FILES) ; \
 		do diff -q $$f $(DESTDIR)/$$f >/dev/null || \
-		( echo "Installing $$f" && cp -p $$f $(DESTDIR)/$$f ); \
+		( echo "Installing $$f" && rm -f $(DESTDIR)/$$f && cp -p $$f $(DESTDIR)/$$f ); \
 	done
 
 test :
