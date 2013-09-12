@@ -1,15 +1,6 @@
 
 
-TESTS ?=	\
-	combinatortest.py	\
-	countingtest.py		\
-	csvfileiotest.py	\
-	fileutilstest.py	\
-	logittest.py		\
-	parameterstest.py	\
-	rangetoolstest.py	\
-	verscmptest.py
-
+TESTS ?= $(wildcard *.py)
 
 test :
 	@for f in $(TESTS) ; \
