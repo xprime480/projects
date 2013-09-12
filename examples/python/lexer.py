@@ -2,24 +2,14 @@
 
 import combinator as pc
 
-operators = [
-    "+",
-    "-",
-    "/",
-    "*" ]
-
-keywords = [
-    "exp",
-    "set",
-    "unset"
-    ]
-
 class TweedOperator(pc.AnyOfMatcher) :
     def __init__(self) :
-        ops = []
-        for op in operators :
-            ops.append(pc.StringMatcher(op))
-        pc.AnyOfMatcher.__init__(self,*ops)
+        self.operators = [
+            "+",
+            "-",
+            "/",
+            "*" ]
+        super().__init__(*[pc.StringMatcher(op) for op in self.operators])
 
     def match(self, input) :
         m,o,r = pc.AnyOfMatcher.match(self, input)
@@ -53,7 +43,13 @@ class TweedKeyword(pc.Combinator) :
     """Class for matching identifiers as keywords."""
 
     def __init__(self) :
+        self.keywords = [
+            "exp",
+            "set",
+            "unset"
+        ]
         self.matcher = TweedIdentifier()
+
 
     def match(self, input) :
         """Match the keyword."""
@@ -61,7 +57,7 @@ class TweedKeyword(pc.Combinator) :
         m,o,r = self.matcher.match(input)
         if m is None :
             return (m, o, r)
-        if m in keywords :
+        if m in self.keywords :
             return (m, 'KW', r)
 
         return (None, None, input)
