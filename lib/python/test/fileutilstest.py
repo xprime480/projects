@@ -16,8 +16,10 @@ class TestOpenAnything(unittest.TestCase) :
         """Open a file and get its length"""
 
         f = 'fileutilstest.py'
-        l = len(open(f).read())
-        self.assertEqual(l, len(open_anything(f).read()))
+        with open(f) as s :
+            l = len(s.read())
+        with OmniOpener(f) as s :
+            self.assertEqual(l, len(s.read()))
 
     ################################################################
     #
@@ -25,20 +27,23 @@ class TestOpenAnything(unittest.TestCase) :
         """Open a url and get its length"""
 
         f = 'http://google.com'
-        p = b'doctype html'
-        self.assertEqual(p, open_anything(f).read(14)[2:])
+        with OmniOpener(f) as s :
+            p = b'doctype html'
+            self.assertEqual(p, s.read(14)[2:])
 
         f = 'file://localhost/etc/fstab'
-        p = b'For a description '
-        self.assertEqual(p, open_anything(f).read(20)[2:])
+        with OmniOpener(f) as s :
+            p = b'For a description '
+            self.assertEqual(p, s.read(20)[2:])
 
     ################################################################
     #
     def test_open_string(self) :
         """Open a string and get back the same"""
 
-        s = 'Lousy test string'
-        self.assertEqual(s, open_anything(s).read())
+        f = 'Lousy test string'
+        with OmniOpener(f) as s :
+            self.assertEqual(f, s.read())
 
 ################################################################
 #
