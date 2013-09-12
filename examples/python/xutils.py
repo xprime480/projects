@@ -2,26 +2,6 @@
 
 from htmlentitydefs import entitydefs
 from BeautifulSoup import BeautifulSoup
-from StringIO import StringIO
-from urllib import urlopen
-
-def open_anything(name) :
-    """Open a file, a url, or give back a stream of the original object
-
-    Stolen from an idea in ???
-    """
-    f = None
-
-    try : return open(name)
-    except : pass
-
-    try : return urlopen(name)
-    except : pass
-
-    try : return StringIO(name)
-    except : pass
-
-    return name
 
 def convertEntity(e, verbose=False):
     """Convert an html entity to the corresponding character

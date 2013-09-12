@@ -48,23 +48,5 @@ class TestBeautifulSoup(unittest.TestCase) :
         """Just test something"""
         self.assertEqual(1,1)
 
-class TestOpenAnything(unittest.TestCase) :
-    def test_open_file(self) :
-        """Open a file and get its length"""
-        f = 'xutilstest.py'
-        l = len(open(f).read())
-        self.assertEqual(l, len(open_anything(f).read()))
-
-    def test_open_url(self) :
-        """Open a url and get its length"""
-        f = 'http://khizilla'
-        p = 'DOCTYPE'
-        self.assertEqual(p, open_anything(f).read(9)[2:])
-
-    def test_open_string(self) :
-        """Open a string and get back the same"""
-        s = 'Lousy test string'
-        self.assertEqual(s, open_anything(s).read())
-
 if '__main__' == __name__ :
     unittest.main()
