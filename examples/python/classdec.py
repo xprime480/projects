@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import unittest
+
 def seq() :
     t = 1
     while True :
@@ -41,9 +43,19 @@ class T(S) :
     def __init__(self, i) :
         self.i = i+1
 
-s = S(2)
-t = T(7)
-print(s,t)
-print(s.op('+', 3))
-print(s.op('*', 7))
-print(t.op('*', s.op('-', 1)))
+class ClassDecTests(unittest.TestCase) :
+    def test_basic(self) :
+        s = S(2)
+        t = T(7)
+        
+        self.assertEqual('2', str(s));
+        self.assertEqual('8', str(t));
+        self.assertEqual( 5, s.op('+', 3))
+        self.assertEqual(14, s.op('*', 7))
+        self.assertEqual(8, t.op('*', s.op('-', 1)))
+
+def main() :
+    unittest.main()
+
+if __name__ == '__main__' :
+    main()
