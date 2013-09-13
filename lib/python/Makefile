@@ -1,15 +1,5 @@
 
-
-FILES ?=	\
-	BeautifulSoup.py	\
-	combinator.py		\
-	counting.py		\
-	csvfileio.py		\
-	fileutils.py		\
-	logit.py		\
-	parameters.py		\
-	rangetools.py		\
-	verscmp.py
+FILES ?= $(wildcard *.py)
 
 DESTDIR ?= $(HOME)/lib/python
 
