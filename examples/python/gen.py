@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 
-def sieve(k) :
-    pin = list(range(2,k))
-    pout = []
-    while pin :
-        pout.append(pin[0])
-        for p in pout :
-            pin = [x for x in pin if (x%p) != 0]
-    return pout
+from sieve import sieve
 
 def agen(i,k=3) :
     primes = sieve(k)
