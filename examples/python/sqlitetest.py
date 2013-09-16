@@ -12,14 +12,14 @@ class Sqlite3UsageTest(unittest.TestCase) :
         super().__init__(n)
     
     def test01(self) :
-        with lite.connect('test.db') as con :
+        with lite.connect(':memory:') as con :
             cur = con.cursor()    
             cur.execute('SELECT SQLITE_VERSION()')
             data = cur.fetchone()
             self.assertEqual(('3.7.17',), data)
 
     def test02(self) :
-        with lite.connect('test.db') as con :
+        with lite.connect(':memory:') as con :
             cur = con.cursor()    
             cur.execute("DROP TABLE IF EXISTS Cars")
             cur.execute("CREATE TABLE Cars(Id INT, Name TEXT, Price INT)")
@@ -54,7 +54,7 @@ class Sqlite3UsageTest(unittest.TestCase) :
 
         names = [x[1] for x in cars]
 
-        with lite.connect('test.db') as con :
+        with lite.connect(':memory:') as con :
             cur = con.cursor()    
             cur.execute("DROP TABLE IF EXISTS Cars")
             cur.execute("CREATE TABLE Cars(Id INT, Name TEXT, Price INT)")
@@ -94,7 +94,7 @@ class Sqlite3UsageTest(unittest.TestCase) :
 
 
     def test04(self) :
-        with lite.connect('test.db') as con :
+        with lite.connect(':memory:') as con :
             cur = con.cursor()  
             cur.executescript("""
                 DROP TABLE IF EXISTS Cars;
@@ -119,7 +119,7 @@ class Sqlite3UsageTest(unittest.TestCase) :
             self.assertEqual((3, 'Skoda', 9000), data)
 
     def test05(self) :
-        with lite.connect('test.db') as con :
+        with lite.connect(':memory:') as con :
             cur = con.cursor()    
             cur.execute("DROP TABLE IF EXISTS Friends")
             cur.execute("CREATE TABLE Friends(Id INTEGER PRIMARY KEY, Name TEXT);")
