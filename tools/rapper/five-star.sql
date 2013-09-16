@@ -26,3 +26,5 @@ FROM
 	)
 ORDER BY
 	Random
+;
+
