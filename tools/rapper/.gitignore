@@ -1,3 +1,7 @@
 *.seb
 *.txt
 old
+attach.sql
+new_ratings.sql
+new_tracks.sql
+
