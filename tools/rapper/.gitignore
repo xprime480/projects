@@ -4,4 +4,5 @@ old
 attach.sql
 new_ratings.sql
 new_tracks.sql
+update-ids.sql
 
