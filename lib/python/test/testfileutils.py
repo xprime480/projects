@@ -15,7 +15,7 @@ class TestOpenAnything(unittest.TestCase) :
     def test_open_file(self) :
         """Open a file and get its length"""
 
-        f = 'fileutilstest.py'
+        f = 'testfileutils.py'
         with open(f) as s :
             l = len(s.read())
         with OmniOpener(f) as s :
