@@ -7,20 +7,12 @@ import re
 import subprocess
 import sys
 
+import upfinder
+
 def find_git_root() :
     """Find the directory which is the root of the current git tree."""
 
-    curr  = os.getcwd()
-    last  = curr + os.sep + 'just something extra'
-
-    while curr != last :
-        if '.git' in os.listdir(curr) :
-            return bytes(curr, 'ascii')
-        last = curr
-        curr = os.path.abspath(last + os.sep + os.pardir)
-
-    if curr == last :
-        raise Exception('Reached the root, no git directory apparant.')
+    return bytes(upfinder.find_up('.git'), 'ascii')
 
 def get_output_for_cmd(cmd, paths=[]) :
     """Run a command and return output."""
