@@ -1,62 +1,79 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import argparse
+import itertools
+import random
 import sqlite3 as lite
 import sys
 
-def get_ids(con, sql, max_ids) :
-    cur = con.cursor()    
-    cur.execute(sql)
-    artist_track = {}
-    while len(artist_track) < max_ids :
-        try :
-            row = cur.fetchone()
-            if row == None :
-                break
-            artist_track[row[1]] = row[0]
-        except lite.Error, e: 
-            print "(1) Error %s:" % e.args[0]
+import utils
 
-    return artist_track.values()
+def update_playlist(con, ids, playlistid) :
+    """Update the playlist data."""
 
-def merge_results(con, sqlfiles) :
-    results = []
+    
+    sql = """
+    UPDATE playlist_track
+       SET track_id = ?
+     WHERE sequence = ?
+       AND playlist_id = ?
+    ;
+    """
+
+    data = list(zip(
+        ids, 
+        range(1, 1+len(ids)), 
+        itertools.repeat(playlistid)
+    ))
+
+    return utils.do_update(con, sql, data)
+
+def main() :
+    """Run the top level functionality."""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--db",
+        help="name of the database to open", 
+        default='local3.seb',
+        nargs='?'
+    )
+    parser.add_argument(
+        "--playlist",
+        help="name of the playlist to create.", 
+        nargs='?',
+    )
+    parser.add_argument(
+        "scripts",
+        help="names of scripts to run", 
+        nargs=argparse.REMAINDER
+    )
+
+    try :
+        args = parser.parse_args()
+    except IOError as e :
+        print (e)
+        return 1
+
     try:
-        for arg in sqlfiles :
-            try :
-                with open(arg) as f : 
-                    sql = ''.join(f.readlines())
-                    tracks = get_ids(con, sql, 25)
-                    results.extend(tracks)
-            except IOError, e:
-                print "(3) Error %s:" % e
-    except lite.Error, e:
-        print "(2) Error %s:" % e
+        with lite.connect(args.db) as con :
+            ids    = utils.scripts_to_ids(con, args.scripts, 25)
+            random.shuffle(ids)
 
-    return results
+            plid   = utils.find_playlist_id(con, args.playlist)
+            if not plid :
+                print('No playlist found or created')
+                return 1
 
-def to_script(ids, playlistid) :
-    size = len(ids)
-    template = "UPDATE playlist_track SET track_id = %d WHERE sequence = %d AND playlist_id = %d;"
-    return '\n'.join([template % (ids[x], x+1, playlistid) for x in xrange(size)])
+            update = update_playlist(con, ids, plid)
+            print(update, 'rows were updated.')
 
-def run_script(con, script) :
-    try:
-        before = con.total_changes
-        cur = con.cursor()
-        con.commit()
-        after = con.total_changes
-        print "%d rows updated" % (after - before)
-    except lite.Error, e:
-        print "(4) Error %s:" % e
+    except lite.Error as e:
+        print("(2) Error %s:" % e)
+        return 1
+
+    return 0
 
 if __name__ == '__main__' :
-    try:
-        with lite.connect('local3.seb') as con :
-            ids    = merge_results(con, sys.argv[1:])
-            script = to_script(ids, 5814)
-            run_script(con, script)
-    except lite.Error, e:
-        print "(2) Error %s:" % e
-        sys.exit(1)
-
+    sys.exit(main())
