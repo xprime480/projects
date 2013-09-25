@@ -4,4 +4,4 @@ __pycache__
 .Rhistory
 .RData
 *.pdf
-temp.*
+temp*.*
