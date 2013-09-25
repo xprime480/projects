@@ -61,7 +61,7 @@ def main() :
             ids    = utils.scripts_to_ids(con, args.scripts, 25)
             random.shuffle(ids)
 
-            plid   = utils.find_playlist_id(con, args.playlist)
+            plid   = utils.find_playlist_id(con, args.playlist, True)
             if not plid :
                 print('No playlist found or created')
                 return 1
