@@ -3,6 +3,8 @@
 #include <cstring>
 #include <iostream>
 
+#include "strdup.h"
+
 #include "SqliteDB.h"
 
 using namespace std;

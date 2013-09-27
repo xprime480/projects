@@ -1,18 +1,9 @@
-CPP = g++
-CC  = gcc
 
-LIBS = SqliteDB.o SqliteDbHeader.o
+EXE_LIST   = rapper
+LOCAL_TEST = local_test
 
+% :
+	for x in $(EXE_LIST) ; do MYEXE=$${x} make -f exe.mk $@ ; done
 
-all : rapper
-
-rapper : rapper.o $(LIBS)
-	$(CPP) -o $@ $^
-
-rapper.o $(LIBS) : %.o : %.cpp
-	$(CPP) -g -c $<
-
-test : rapper
-	./rapper test.seb
-
-
+local_test : all
+	./rapper random_test.sqlite
