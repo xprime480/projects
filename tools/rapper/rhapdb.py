@@ -54,7 +54,7 @@ class RhapsodySong(object) :
         return self.clean == False
 
     def __repr__(self) :
-        return '%s %s' % ( str(self.get_title()), str(self.get_artist()) )
+        return '%s %s' % ( self.get_title(), self.get_artist() )
 
 ################################################################
 #
@@ -255,18 +255,16 @@ class RhapsodyDb(object) :
     def hack_string(self, string) :
         """Fix strings however possible."""
 
-        try :
-            return str(string)
-        except Exception :
-            pass
+        #        try :
+        #            return str(string)
+        #        except Exception :
+        #            pass
 
-        def xvt(x) :
-            if x > chr(127) :
-                return ' '
-            return x
 
-        t = ''.join([xvt(x) for x in string])
-        return str(t)
+        if type(string) == type(b'') :
+            return string.decode('ascii', errors='replace')
+
+        raise Exception('Unknown type for <%s>' % (string))
 
     ################################################################
     #
