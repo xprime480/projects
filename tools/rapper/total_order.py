@@ -32,10 +32,34 @@ def get_oldest_by_stars(stars) :
 
 ################################################################
 #
-def order_randomly(tracks) :
+def get_songs_by_stars(stars) :
+    """Create a function that filters on rating and sorts by playdate."""
+
+    def fn(tracks) :
+        filterfn = lambda x : x.is_in_library() and x.get_rating() == stars
+        matches = [t for t in tracks if filterfn(t)]
+        random.shuffle(matches)
+
+        return matches
+
+    return fn
+
+################################################################
+#
+def old_songs(tracks) :
     """Randomly permute the songs."""
 
-    matches = tracks[:]
+    matches = [t for t in tracks if t.get_play_count() > 0]
+    random.shuffle(matches) 
+
+    return matches
+
+################################################################
+#
+def new_songs(tracks) :
+    """Randomly permute the songs."""
+
+    matches = [t for t in tracks if t.get_play_count() == 0]
     random.shuffle(matches) 
 
     return matches
@@ -77,7 +101,7 @@ def update_order(order, tracks, fn, count) :
 
 ################################################################
 #
-def make_total_order(db) :
+def make_total_order(db, length) :
     """Assign every track in the library a rank."""
 
     tracks = db.get_songs(lambda x : x.is_in_library())
@@ -86,13 +110,16 @@ def make_total_order(db) :
 
     order = []
 
-    while len(tracks) > 0 :
-        update_order(order, tracks, get_oldest_by_stars(5), 5)
-        update_order(order, tracks, get_oldest_by_stars(4), 5)
-        update_order(order, tracks, get_oldest_by_stars(3), 5)
-        update_order(order, tracks, get_oldest_by_stars(2), 5)
-        update_order(order, tracks, get_oldest_by_stars(1), 5)
-        update_order(order, tracks, order_randomly, 25)
+    while len(tracks) > 0 and len(order) < length :
+        for x in range(5,0,-1) :
+            update_order(order, tracks, get_oldest_by_stars(x), 5)
+
+        update_order(order, tracks, new_songs, 25)
+
+        for x in range(5,0,-1) :
+            update_order(order, tracks, get_songs_by_stars(x), 5)
+
+        
 
     size = len(order)
     for x in range(size) :
@@ -110,6 +137,13 @@ def main() :
         default='local3.seb',
         nargs='?'
     )
+    parser.add_argument(
+        "--length",
+        help="max number of songs to consider",
+        default=300,
+        nargs='?',
+        type=int
+    )
 
     try :
         args = parser.parse_args()
@@ -118,7 +152,7 @@ def main() :
         return 1
 
     with rhapdb.RhapsodyDb(args.db) as db :
-        make_total_order(db)
+        make_total_order(db, args.length)
 
     return 0
 
