@@ -7,6 +7,7 @@ import random
 import sqlite3 as lite
 import sys
 
+import rhapdb
 import utils
 
 def update_playlist(con, ids, playlistid) :
@@ -57,16 +58,31 @@ def main() :
         return 1
 
     try:
-        with lite.connect(args.db) as con :
-            ids    = utils.scripts_to_ids(con, args.scripts, 25)
-            random.shuffle(ids)
+        with rhapdb.RhapsodyDb(args.db) as db :
+            songs = []
+            fn = lambda x : random.randint(1, 100) == 1
+            for x in args.scripts :
+                more = db.get_songs(fn)
+                songs.extend(more)
+            random.shuffle(songs)
 
-            plid   = utils.find_playlist_id(con, args.playlist, True)
-            if not plid :
-                print('No playlist found or created')
-                return 1
+            ids = [x.get_id() for x in songs][:25]
 
-            update = update_playlist(con, ids, plid)
+            fn = lambda x : args.playlist == x.get_name()
+            playlists = db.get_playlists(fn)
+
+            if len(playlists) == 0 :
+                if True :
+                    playlist = rhapdb.RhapsodyPlaylist()
+                    playlist.set_name(args.playlist)
+                    plid   = db.add_playlist(playlist)
+                    if not plid :
+                        print('No playlist found or created')
+                        return 1
+            else :
+                playlist = playlists[0]
+
+            update = playlist.set_tracks(ids)
             print(update, 'rows were updated.')
 
     except lite.Error as e:
