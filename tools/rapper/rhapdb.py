@@ -30,13 +30,31 @@ class RhapsodySong(object) :
     def get_title(self) :
         return self.song['TRACK_NAME']
 
+    def get_artist(self) :
+        return self.song['ARTIST_NAME']
+
     def get_rating(self) :
         if not self.rating :
             return 0
         return self.rating['RATINGS_VALUE']
+        
+    def get_last_played(self) :
+        return self.song['LAST_PLAYED']
+
+    def get_play_count(self) :
+        t = self.song['PLAY_COUNT']
+        if not t :
+            t = 0
+        return t
+
+    def is_in_library(self) :
+        return self.song['IN_LIBRARY'] == 1
 
     def is_dirty(self) :
         return self.clean == False
+
+    def __repr__(self) :
+        return '%s %s' % ( str(self.get_title()), str(self.get_artist()) )
 
 ################################################################
 #
