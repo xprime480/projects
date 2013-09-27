@@ -119,11 +119,12 @@ def make_total_order(db, length) :
         for x in range(5,0,-1) :
             update_order(order, tracks, get_songs_by_stars(x), 5)
 
+    jitter  = [(x, x + random.randint(1,25)) for x in range(len(order))]
+    jitter.sort(key=lambda x : x[1])
         
-
     size = len(order)
     for x in range(size) :
-        order[x].set_comment('%05d ??' % (size-x))
+        order[jitter[x][0]].set_comment('%05d ??' % (size-x))
 
 ################################################################
 #
