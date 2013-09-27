@@ -4,6 +4,8 @@
 
 import sqlite3 as lite
 
+import utils
+
 
 ################################################################
 #
@@ -39,7 +41,10 @@ class RhapsodySong(object) :
         return self.rating['RATINGS_VALUE']
         
     def get_last_played(self) :
-        return self.song['LAST_PLAYED']
+        t = self.song['LAST_PLAYED']
+        if not t :
+            t = '19600117T121500'
+        return t
 
     def get_play_count(self) :
         t = self.song['PLAY_COUNT']
@@ -53,8 +58,30 @@ class RhapsodySong(object) :
     def is_dirty(self) :
         return self.clean == False
 
+    def get_comment(self) :
+        t = self.song['COMMENTS']
+        if not t :
+            t = ''
+        return t
+        
+
+    def set_comment(self, comment) :
+        new_comment = str(comment)
+        old_comment = self.get_comment()
+
+        if new_comment != old_comment :
+            self.song['COMMENTS'] = new_comment
+            self.clean = False
+
     def __repr__(self) :
-        return '%s %s' % ( self.get_title(), self.get_artist() )
+        try :
+            return '[%s] %s' % ( 
+                self.get_artist()
+                , 
+                self.get_title()
+            )
+        except UnicodeEncodeError :
+            return '? ?'
 
 ################################################################
 #
@@ -157,13 +184,7 @@ class RhapsodyDb(object) :
     def __exit__(self, type, value, traceback) :
         """Teardown for the with protocol."""
 
-        dirty_songs = self.get_songs(lambda x : x.is_dirty())
-        if dirty_songs : 
-            print(dirty_songs)
-
-        dirty_lists = self.get_playlists(lambda x : x.is_dirty())
-        if dirty_lists :
-            print(dirty_lists)
+        self.push_comments()
 
         self.con.close()
 
@@ -301,6 +322,29 @@ class RhapsodyDb(object) :
         playlist.set_id(new_id)
         self.playlists[new_id] = playlist
         return new_id
+
+    ################################################################
+    #
+    def push_comments(self) :
+        """Push comments to the database."""
+
+        sql = """
+        UPDATE track
+           SET comments = ?
+         WHERE track_id = ?
+        ;
+        """
+
+        data = [
+            (t[1].get_comment(), t[1].get_id()) 
+            for t in self.songs.items()
+            if t[1].is_dirty()
+        ]
+
+        updated = utils.do_update(self.con, sql, data)
+
+        print (updated, 'Comments updated')
+
     
 ################################################################
 #
