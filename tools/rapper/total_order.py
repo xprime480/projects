@@ -41,7 +41,6 @@ class PartialOrder(object) :
 
         self.order = []
         
-
     ################################################################
     #
     def make_order(self) :
@@ -63,10 +62,19 @@ class PartialOrder(object) :
         for x in range(size) :
             self.order[jitter[x][0]].set_comment('%05d ??' % (size-x))
 
-
     ################################################################
     #
     def add_to_list(self, fn, count) :
+        """Run the selector function and add results.
+
+        FN    is a callable that returns a list of tracks.
+        COUNT is the desired size of the final list.
+
+        A correction function is run on the results returned by FN.
+        If a given artist has multiple songs in the list, the second
+        and subsequent tracks are moved to the end of the line in
+        case the list is shortened to COUNT."""
+
         temp = fn()
         self.apply_artist_correction(temp)
         temp = temp[:count]
@@ -77,6 +85,8 @@ class PartialOrder(object) :
     ################################################################
     #
     def apply_artist_correction(self, tracks) :
+        """Move duplicate tracks by a given artist to the end of the list."""
+        
         artists_seen   = []
         tracks_at_front = []
         tracks_at_back  = []
@@ -133,7 +143,7 @@ class PartialOrder(object) :
 ################################################################
 #
 def old_songs(tracks) :
-    """Randomly permute the songs."""
+    """Get all previously played songs in random order."""
 
     matches = [t for t in tracks if t.get_play_count() > 0]
     random.shuffle(matches) 
