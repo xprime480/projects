@@ -2,6 +2,7 @@
 
 """Interface to the Rhapsody SQLite database."""
 
+import datetime
 import sqlite3 as lite
 
 import utils
@@ -42,9 +43,11 @@ class RhapsodySong(object) :
         
     def get_last_played(self) :
         t = self.song['LAST_PLAYED']
+
         if not t :
             t = '19600117T121500'
-        return t
+
+        return datetime.datetime.strptime(t, '%Y%m%dT%H%M%S')
 
     def get_play_count(self) :
         t = self.song['PLAY_COUNT']
