@@ -48,6 +48,10 @@ class PartialOrder(object) :
     def make_order(self) :
         """Assign every track in the library a rank."""
 
+        self.add_to_list(self.get_songs_by_stars(5), 20)
+
+        size = len(self.order)        
+
         while len(self.tracks) > 0 and len(self.order) < self.length :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_oldest_by_stars(x), 5)
@@ -57,7 +61,6 @@ class PartialOrder(object) :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_songs_by_stars(x), 5)
 
-                
         size = len(self.order)
         jitter  = [(x, x + random.randint(1,25)) for x in range(size)]
         jitter.sort(key=lambda x : x[1])
