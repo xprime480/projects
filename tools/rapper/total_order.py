@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import datetime
 import random
 import sys
 
@@ -38,6 +39,7 @@ class PartialOrder(object) :
         self.tracks = self.db.get_songs(lambda x : x.is_in_library())
         for track in self.tracks :
             track.set_comment('')
+        self.filter_by_last_played_date()
 
         self.order = []
         
@@ -139,6 +141,24 @@ class PartialOrder(object) :
             return matches
 
         return fn
+
+    ################################################################
+    #
+    def filter_by_last_played_date(self) :
+        """Elimnate songs that were played too recently."""
+
+        max_days = [0, 81, 27, 9, 3, 1]
+        now = datetime.datetime.now()
+        def fn(t) :
+            r = t.get_rating()
+            if r == 0 :
+                return True
+            a = (now-t.get_last_played()).days
+            return a > max_days[r]
+
+        x = [t for t in self.tracks if fn(t)]
+        self.tracks = x
+        
 
 ################################################################
 #
