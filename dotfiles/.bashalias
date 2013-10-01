@@ -49,6 +49,7 @@ alias gdiff='git diff'
 alias gpush='git push origin master'
 alias gstatus='git status'
 alias gadd='git add'
+alias fixm='fixmode.py'
 
 PY=/usr/bin/python3
 alias pdb='${PY} -m pdb '
