@@ -139,6 +139,9 @@
 (safe-require "/mnt/install/tools/ess/share/emacs/site-lisp" 'ess-site)
 
 ;; start the Emacs server, will be of help to Perforce/Emacs integration.
-(defun server-ensure-safe-dir (dir) "NOOP" t)
-(server-start)
+(if (< 1 0)
+    (progn
+      (defun server-ensure-safe-dir (dir) "NOOP" t)
+      (server-start))
+  (message "Omitting server-start"))
 
