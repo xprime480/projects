@@ -151,7 +151,7 @@ class PartialOrder(object) :
         now = datetime.datetime.now()
         def fn(t) :
             r = t.get_rating()
-            if r == 0 :
+            if r == 0 or r == 5:
                 return True
             a = (now-t.get_last_played()).days
             return a > max_days[r]
