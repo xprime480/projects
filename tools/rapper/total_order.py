@@ -63,7 +63,7 @@ class PartialOrder(object) :
         jitter  = [(x, x + random.randint(1,25)) for x in range(size)]
         jitter.sort(key=lambda x : x[1])
         for x in range(size) :
-            self.order[jitter[x][0]].set_comment('%05d ??' % (size-x))
+            self.order[jitter[x][0]].set_comment('%05d' % (size-x))
 
     ################################################################
     #
