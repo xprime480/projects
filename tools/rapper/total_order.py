@@ -50,8 +50,6 @@ class PartialOrder(object) :
 
         self.add_to_list(self.get_songs_by_stars(5), 20)
 
-        size = len(self.order)        
-
         while len(self.tracks) > 0 and len(self.order) < self.length :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_oldest_by_stars(x), 5)
