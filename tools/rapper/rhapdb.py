@@ -66,7 +66,6 @@ class RhapsodySong(object) :
         if not t :
             t = ''
         return t
-        
 
     def set_comment(self, comment) :
         new_comment = str(comment)
@@ -78,13 +77,19 @@ class RhapsodySong(object) :
 
     def __repr__(self) :
         try :
+            a = self.get_artist()
+            t = self.get_title()
+
             return '[%s] %s' % ( 
-                self.get_artist()
+                bytes(a, 'ascii').decode('ascii', errors='replace')
                 , 
-                self.get_title()
+                bytes(t, 'ascii').decode('ascii', errors='replace')
             )
         except UnicodeEncodeError :
             return '? ?'
+
+    def str(self) :
+        return self.__repr__()
 
 ################################################################
 #
