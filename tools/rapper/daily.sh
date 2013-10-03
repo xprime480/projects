@@ -16,6 +16,6 @@ fi
 
 cp ${DST} ${SRC}
 
-sqlite3 -init /home/I809989/.sqliterc ${DST} <<EOF
+sqlite3 -init ${HOME}/.sqliterc ${DST} <<EOF
 .read ordering.sql
 EOF
