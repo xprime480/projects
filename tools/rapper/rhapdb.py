@@ -13,12 +13,16 @@ import utils
 class RhapsodySong(object) :
     """A Song as represented the Rhapsody database."""
 
+    COMMENT = 1
+    RATINGS = 2
+
     def __init__(self, song) :
         """Initialize an instance."""
 
         self.song   = dict(song)
         self.rating = None
-        self.clean  = True
+        self.dirty  = { self.COMMENT : False, self.RATINGS : False }
+        
 
     def add_rating(self, rating) :
         self.rating = dict(rating)
@@ -41,6 +45,18 @@ class RhapsodySong(object) :
             return 0
         return self.rating['RATINGS_VALUE']
         
+    def set_rating(self, rating) :
+        if not self.rating :
+            return
+
+        self.rating['RATINGS_VALUE'] = rating
+        self.dirty[self.RATINGS] = True
+
+    def get_ratings_id(self) :
+        if not self.rating :
+            return None
+        return self.rating['RATINGS_ID']
+        
     def get_last_played(self) :
         t = self.song['LAST_PLAYED']
 
@@ -58,8 +74,8 @@ class RhapsodySong(object) :
     def is_in_library(self) :
         return self.song['IN_LIBRARY'] == 1
 
-    def is_dirty(self) :
-        return self.clean == False
+    def is_dirty(self, mode) :
+        return self.dirty.get(mode, False)
 
     def get_comment(self) :
         t = self.song['COMMENTS']
@@ -73,7 +89,7 @@ class RhapsodySong(object) :
 
         if new_comment != old_comment :
             self.song['COMMENTS'] = new_comment
-            self.clean = False
+            self.dirty[self.COMMENT] = True
 
     def __repr__(self) :
         try :
@@ -193,6 +209,7 @@ class RhapsodyDb(object) :
         """Teardown for the with protocol."""
 
         self.push_comments()
+        self.push_ratings()
 
         self.con.close()
 
@@ -346,12 +363,34 @@ class RhapsodyDb(object) :
         data = [
             (t[1].get_comment(), t[1].get_id()) 
             for t in self.songs.items()
-            if t[1].is_dirty()
+            if t[1].is_dirty(RhapsodySong.COMMENT)
         ]
 
         updated = utils.do_update(self.con, sql, data)
 
         print (updated, 'Comments updated')
+
+    ################################################################
+    #
+    def push_ratings(self) :
+        """Push ratings to the database."""
+
+        sql = """
+        UPDATE ratings
+           SET ratings_value = ?
+         WHERE ratings_id = ?
+        ;
+        """
+
+        data = [
+            (t[1].get_rating(), t[1].get_ratings_id()) 
+            for t in self.songs.items()
+            if t[1].is_dirty(RhapsodySong.RATINGS)
+        ]
+
+        updated = utils.do_update(self.con, sql, data)
+
+        print (updated, 'Ratings updated')
 
     
 ################################################################
