@@ -3,7 +3,7 @@
 SRC=/cygdrive/c/Users/I809989/AppData/Roaming/Real/rhapsody/1.sqlite/local3.seb
 DST=./temp.seb
 BAK=./gold.seb
-LEN=500
+LEN=200
 
 cp ${SRC} ${DST}
 cp -p ${DST} ${BAK}
