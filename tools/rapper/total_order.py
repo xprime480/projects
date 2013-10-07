@@ -42,6 +42,8 @@ class PartialOrder(object) :
         self.filter_by_last_played_date()
 
         self.order = []
+
+        print (len(self.tracks), 'eligible tracks in library.')
         
     ################################################################
     #
