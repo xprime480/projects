@@ -1,0 +1,10 @@
+(defun dbconnect (connection-string)
+  (interactive "sConnection string: ")
+  (let* ((connection-parts (split-string connection-string "[/@]"))
+	 (sql-user (nth 0 connection-parts))
+	 (sql-password (nth 1 connection-parts))
+	 (sql-database (nth 2 connection-parts))
+	 (buf (sql-oracle)))
+    (set-buffer buf)
+    (rename-buffer (concat "*" sql-user " sql*"))))
+
