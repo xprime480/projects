@@ -36,9 +36,10 @@ class PartialOrder(object) :
     def reset(self) :
         """Return to the initial condition."""
 
-        self.tracks = self.db.get_songs(lambda x : x.is_in_library())
+        self.tracks = self.db.get_songs(lambda x : True)
         for track in self.tracks :
             track.set_comment('')
+        self.tracks = self.db.get_songs(lambda x : x.is_in_library())
         self.filter_by_last_played_date()
 
         self.order = []
