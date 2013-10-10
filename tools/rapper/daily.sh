@@ -11,7 +11,7 @@ if [ -x temp.py ]; then
     ./temp.py --db ${DST}
 fi
 if [ -x ./total_order.py ]; then
-    ./total_order.py --db ${DST} --length=${LEN}
+    ./make_playlist.py --db ${DST} --length=${LEN}
 fi
 
 cp ${DST} ${SRC}
