@@ -8,12 +8,14 @@ LEN=200
 cp ${SRC} ${DST}
 rm -f ${BAK}
 cp -p ${DST} ${BAK}
-if [ -x temp.py ]; then
-    ./temp.py --db ${DST}
-fi
-if [ -x ./make_playlist.py ]; then
-    ./make_playlist.py --db ${DST} --length=${LEN}
-fi
+
+SCRIPTS='./temp.py ./make_playlist.py'
+
+for s in ${SCRIPTS} ; do
+    if [ -x $s ]; then
+	$s --db ${DST} --length=${LEN}
+    fi
+done
 
 cp ${DST} ${SRC}
 
