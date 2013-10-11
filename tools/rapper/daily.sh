@@ -6,6 +6,7 @@ BAK=./gold.seb
 LEN=200
 
 cp ${SRC} ${DST}
+rm -f ${BAK}
 cp -p ${DST} ${BAK}
 if [ -x temp.py ]; then
     ./temp.py --db ${DST}
