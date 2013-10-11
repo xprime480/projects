@@ -11,7 +11,7 @@ cp -p ${DST} ${BAK}
 if [ -x temp.py ]; then
     ./temp.py --db ${DST}
 fi
-if [ -x ./total_order.py ]; then
+if [ -x ./make_playlist.py ]; then
     ./make_playlist.py --db ${DST} --length=${LEN}
 fi
 
