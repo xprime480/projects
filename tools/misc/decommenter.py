@@ -48,7 +48,7 @@ class Decommenter(object) :
                         code = text[0:i]
                         text = text[end+1:]
                         fh.write(code)
-                        print (code, end='')
+                        #print (code, end='')
                         i = 0
                         size = len(text)
                     else :
