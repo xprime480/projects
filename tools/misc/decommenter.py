@@ -45,9 +45,10 @@ class Decommenter(object) :
                 elif c == '/' :
                     end, iscomment = self.start_comment(i+1, size, text)
                     if iscomment :
-                        fh.write(text[0:i])
-                        print (text[0:i])
-                        text = text[end+1:-1]
+                        code = text[0:i]
+                        text = text[end+1:]
+                        fh.write(code)
+                        print (code, end='')
                         i = 0
                         size = len(text)
                     else :
@@ -74,6 +75,9 @@ class Decommenter(object) :
 
     def start_comment(self, i, size, text) :
         """Determine if text is the start of a comment or spurious '/'"""
+
+        if i >= size :
+            return i, False
 
         c = text[i]
         if c == '*' :
