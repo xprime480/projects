@@ -51,8 +51,8 @@ class PartialOrder(object) :
     def make_order(self) :
         """Assign every track in the library a rank."""
 
-        self.add_to_list(self.get_songs_by_stars(5), 10)
-        self.add_to_list(self.get_songs_by_stars(4), 10)
+        self.add_to_list(self.get_songs_by_stars(5), 5)
+        self.add_to_list(self.get_songs_by_stars(4), 5)
 
         while len(self.tracks) > 0 and len(self.order) < self.length :
             for x in range(5,0,-1) :
