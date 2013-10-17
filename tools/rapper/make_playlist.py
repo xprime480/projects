@@ -22,8 +22,8 @@ def filter_and_sort(items, filterfn, keyfn=None, reverse=False) :
 
 ################################################################
 #
-class PartialOrder(object) :
-    """Provide methods to Create a partial order of tracks."""
+class PlaylistMaker(object) :
+    """Provide methods to Create a playlist of tracks."""
 
     ################################################################
     #
@@ -233,7 +233,7 @@ def main() :
         return 1
 
     with rhapdb.RhapsodyDb(args.db) as db :
-        o = PartialOrder(db, args.length) 
+        o = PlaylistMaker(db, args.length) 
         o.make_order()
 
     return 0
