@@ -10,11 +10,14 @@ import rhapdb
 
 ################################################################
 #
-def filter_and_sort(items, filterfn, keyfn, reverse=False) :
+def filter_and_sort(items, filterfn, keyfn=None, reverse=False) :
     """filter some items from a list and sort the rest."""
 
     temp = [i for i in items if filterfn(i)]
-    temp.sort(key=keyfn, reverse=reverse)
+    if keyfn :
+        temp.sort(key=keyfn, reverse=reverse)
+    else :
+        random.shuffle(temp)
     return temp
 
 ################################################################
@@ -58,7 +61,7 @@ class PartialOrder(object) :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_oldest_by_stars(x), 5)
 
-            self.add_to_list(self.new_songs, 25)
+            self.add_to_list(self.new_songs(), 25)
 
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_songs_by_stars(x), 5)
@@ -130,10 +133,14 @@ class PartialOrder(object) :
     def new_songs(self) :
         """Select songs that have never been played."""
 
-        matches = [t for t in self.tracks if t.get_play_count() == 0]
-        random.shuffle(matches) 
+        def fn() :
+            filterfn = lambda x : x.get_play_count() == 0
+            keyfn    = None
+            matches = filter_and_sort(self.tracks, filterfn, keyfn, False)
 
-        return matches
+            return matches
+
+        return fn
 
     ################################################################
     #
@@ -142,8 +149,8 @@ class PartialOrder(object) :
 
         def fn() :
             filterfn = lambda x : x.is_in_library() and x.get_rating() == stars
-            matches = [t for t in self.tracks if filterfn(t)]
-            random.shuffle(matches)
+            keyfn    = None
+            matches = filter_and_sort(self.tracks, filterfn, keyfn, False)
 
             return matches
 
@@ -156,8 +163,8 @@ class PartialOrder(object) :
 
         def fn() :
             filterfn = lambda x : x.is_in_library() and min_count <= x.get_play_count() <= max_count
-            matches = [t for t in self.tracks if filterfn(t)]
-            random.shuffle(matches)
+            keyfn    = None
+            matches = filter_and_sort(self.tracks, filterfn, keyfn, False)
 
             return matches
 
