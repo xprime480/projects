@@ -63,6 +63,8 @@ class PartialOrder(object) :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_songs_by_stars(x), 5)
 
+            self.add_to_list(self.get_songs_by_playcount(1, 5), 10)
+
         size = len(self.order)
         jitter  = [(x, x + random.randint(1,25)) for x in range(size)]
         jitter.sort(key=lambda x : x[1])
@@ -149,6 +151,20 @@ class PartialOrder(object) :
 
     ################################################################
     #
+    def get_songs_by_playcount(self, min_count, max_count) :
+        """Create a function that filters on playcount."""
+
+        def fn() :
+            filterfn = lambda x : x.is_in_library() and min_count <= x.get_play_count() <= max_count
+            matches = [t for t in self.tracks if filterfn(t)]
+            random.shuffle(matches)
+
+            return matches
+
+        return fn
+
+    ################################################################
+    #
     def filter_by_last_played_date(self) :
         """Elimnate songs that were played too recently."""
 
@@ -192,7 +208,7 @@ def main() :
     parser.add_argument(
         "--db",
         help="name of the database to open",
-        default='local3.seb',
+        default='temp.seb',
         nargs='?'
     )
     parser.add_argument(
