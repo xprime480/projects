@@ -181,7 +181,13 @@ class PlaylistMaker(object) :
             r = t.get_rating()
             if r == 0 or r == 5:
                 return True
+
             a = (now-t.get_last_played()).days
+            c = t.get_play_count()
+
+            if 1 <= c <= 5 :
+                a = a * (6-c)
+
             return a > max_days[r]
 
         x = [t for t in self.tracks if fn(t)]
