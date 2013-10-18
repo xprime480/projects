@@ -40,7 +40,7 @@ alias blue='colorize bbddff'
 #export DBCONN='--dbConnection wamu_heloc/wamu_heloc@fspilot'
 
 EMACS_EXE=/usr/bin/emacs
-alias ema='${EMACS_EXE} -geometry 80x550+650+40 -f bookmark-bmenu-list'
+alias ema='(cd ${HOME} && ${EMACS_EXE} -f bookmark-bmenu-list &)'
 
 
 alias ghelp='git --help'
