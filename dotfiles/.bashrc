@@ -42,4 +42,7 @@ export PS1='\u@\h: \W \$ '
 if [ \! -z "${DISPLAY}" ]; then
     blue
 fi
-export http_proxy=proxy.phl.sap.corp:8080
+
+
+#export http_proxy=proxy.phl.sap.corp:8080
+export http_proxy=usscfblue1.scf.sap.corp:8083
