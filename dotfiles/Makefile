@@ -11,7 +11,8 @@ FILES =	.abbrev_defs	\
 	.profile	\
 	.pyinit		\
 	.sqliterc	\
-	.vimrc
+	.vimrc		\
+	.wgetrc
 
 DESTDIR ?= $(HOME)
 
