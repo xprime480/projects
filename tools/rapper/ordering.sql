@@ -1,10 +1,11 @@
 .output ordering.txt
 
-.width 8 8 25 25
+.width 5 6 8 25 25
 
 SELECT *
   FROM (
-       SELECT 0 AS rating, 
+       SELECT coalesce(play_count, 0) as count,
+              0 AS rating, 
               trim(comments) AS ordering, 
               artist_name AS artist, 
               track_name AS track
@@ -20,7 +21,8 @@ SELECT *
 
        UNION
 
-       SELECT r.ratings_value AS rating, 
+       SELECT coalesce(play_count, 0) as count,
+		 		  r.ratings_value AS rating, 
               trim(t.comments) AS ordering, 
               t.artist_name AS artist, 
               t.track_name AS track
