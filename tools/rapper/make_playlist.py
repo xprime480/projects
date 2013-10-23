@@ -2,30 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import datetime
-import random
 import sys
 
 import playlist_maker
 import rhapdb
-
-################################################################
-#
-def old_songs(tracks) :
-    """Get all previously played songs in random order."""
-
-    matches = [t for t in tracks if t.get_play_count() > 0]
-    random.shuffle(matches) 
-
-    return matches
-
-################################################################
-#
-def cleanup(main, items) :
-    """Remove some items from a list."""
-
-    for item in items :
-        main.remove(item)
 
 ################################################################
 #
