@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import datetime
 import random
 
 import rhapdb
@@ -41,7 +40,7 @@ class PlaylistMaker(object) :
             track.set_comment('')
         self.tracks = self.db.get_songs(lambda x : x.is_in_library())
 
-        self.filter_by_last_played_date()
+        self.local_init()
 
         self.order = []
 
@@ -170,23 +169,8 @@ class PlaylistMaker(object) :
 
     ################################################################
     #
-    def filter_by_last_played_date(self) :
-        """Elimnate songs that were played too recently."""
-
-        max_days = [0, 180, 90, 600, 10, 0]
-        now = datetime.datetime.now()
-        def fn(t) :
-            c = t.get_play_count()
-            if c < 5 :
-                return True
-
-            r = t.get_rating()
-            a = (now - t.get_last_played()).days
-
-            return a >= max_days[r]
-
-        x = [t for t in self.tracks if fn(t)]
-        self.tracks = x
+    def local_init(self) :
+        pass
         
 
 if __name__ == '__main__' :
