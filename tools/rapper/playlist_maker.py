@@ -42,34 +42,28 @@ class PlaylistMaker(object) :
 
         self.local_init()
 
-        self.order = []
+        self.playlist = []
 
         print (len(self.tracks), 'eligible tracks in library.')
-        
+
     ################################################################
     #
-    def make_order(self) :
-        """Assign every track in the library a rank."""
+    def make_playlist(self) :
+        """Make a playlist."""
+        
+        self.generate_playlist()
 
-        self.add_to_list(self.get_songs_by_stars(5), 5)
-        self.add_to_list(self.get_songs_by_stars(4), 5)
+        size = len(self.playlist)
+        for i in range(size) :
+            self.playlist[i].set_comment('%05d' % (size-i))
 
-        while len(self.tracks) > 0 and len(self.order) < self.length :
-            for x in range(5,0,-1) :
-                self.add_to_list(self.get_oldest_by_stars(x), 5)
+    ################################################################
+    #
+    def generate_playlist(self) :
+        """Generate the entries for the list."""
+        
+        pass
 
-            self.add_to_list(self.new_songs(), 25)
-
-            for x in range(5,0,-1) :
-                self.add_to_list(self.get_songs_by_stars(x), 5)
-
-            #self.add_to_list(self.get_songs_by_playcount(1, 5), 10)
-
-        size = len(self.order)
-        jitter  = [(x, x + random.randint(1,25)) for x in range(size)]
-        jitter.sort(key=lambda x : x[1])
-        for x in range(size) :
-            self.order[jitter[x][0]].set_comment('%05d' % (size-x))
 
     ################################################################
     #
@@ -87,7 +81,7 @@ class PlaylistMaker(object) :
         temp = fn()
         self.apply_artist_correction(temp)
         temp = temp[:count]
-        self.order.extend(temp)
+        self.playlist.extend(temp)
         for s in temp :
             self.tracks.remove(s)
 
@@ -176,5 +170,5 @@ class PlaylistMaker(object) :
 if __name__ == '__main__' :
     with rhapdb.RhapsodyDb('temp.seb') as db :
         o = PlaylistMaker(db, 250) 
-        o.make_order()
+        o.make_playlist()
     
