@@ -44,5 +44,5 @@ if [ \! -z "${DISPLAY}" ]; then
 fi
 
 
-#export http_proxy=proxy.phl.sap.corp:8080
-export http_proxy=usscfblue1.scf.sap.corp:8083
+export http_proxy=proxy.phl.sap.corp:8080
+#export http_proxy=usscfblue1.scf.sap.corp:8083
