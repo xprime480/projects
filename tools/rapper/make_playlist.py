@@ -66,7 +66,7 @@ class PlaylistMaker(object) :
             for x in range(5,0,-1) :
                 self.add_to_list(self.get_songs_by_stars(x), 5)
 
-            self.add_to_list(self.get_songs_by_playcount(1, 5), 10)
+            #self.add_to_list(self.get_songs_by_playcount(1, 5), 10)
 
         size = len(self.order)
         jitter  = [(x, x + random.randint(1,25)) for x in range(size)]
@@ -175,20 +175,17 @@ class PlaylistMaker(object) :
     def filter_by_last_played_date(self) :
         """Elimnate songs that were played too recently."""
 
-        max_days = [0, 81, 27, 9, 3, 1]
+        max_days = [0, 180, 90, 600, 10, 0]
         now = datetime.datetime.now()
         def fn(t) :
-            r = t.get_rating()
-            if r == 0 or r == 5:
+            c = t.get_play_count()
+            if c < 5 :
                 return True
 
-            a = (now-t.get_last_played()).days
-            c = t.get_play_count()
+            r = t.get_rating()
+            a = (now - t.get_last_played()).days
 
-            if 1 <= c <= 5 :
-                a = a * (6-c)
-
-            return a > max_days[r]
+            return a >= max_days[r]
 
         x = [t for t in self.tracks if fn(t)]
         self.tracks = x
