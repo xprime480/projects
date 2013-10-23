@@ -9,7 +9,7 @@ cp ${SRC} ${DST}
 rm -f ${BAK}
 cp -p ${DST} ${BAK}
 
-SCRIPTS='./temp.py ./make_playlist.py'
+SCRIPTS='./temp.py ./make_playlist2.py'
 
 for s in ${SCRIPTS} ; do
     if [ -x $s ]; then
