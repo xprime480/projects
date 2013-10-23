@@ -64,14 +64,14 @@ class PlaylistMaker(object) :
         
         pass
 
-
     ################################################################
     #
-    def add_to_list(self, fn, count) :
+    def add_to_list(self, fn, gencount, finalcount=10000) :
         """Run the selector function and add results.
 
-        FN    is a callable that returns a list of tracks.
-        COUNT is the desired size of the final list.
+        FN       is a callable that returns a list of tracks.
+        GENCOUNT is how many songs to generate
+        COUNT    is the desired size of the final list.
 
         A correction function is run on the results returned by FN.
         If a given artist has multiple songs in the list, the second
@@ -79,8 +79,10 @@ class PlaylistMaker(object) :
         case the list is shortened to COUNT."""
 
         temp = fn()
+        temp = temp[:gencount]
+        random.shuffle(temp)
         self.apply_artist_correction(temp)
-        temp = temp[:count]
+        temp = temp[:finalcount]
         self.playlist.extend(temp)
         for s in temp :
             self.tracks.remove(s)
@@ -149,12 +151,11 @@ class PlaylistMaker(object) :
 
     ################################################################
     #
-    def get_songs_by_playcount(self, min_count, max_count) :
+    def get_songs_by_playcount(self, min_count, max_count, keyfn=None) :
         """Create a function that filters on playcount."""
 
         def fn() :
             filterfn = lambda x : x.is_in_library() and min_count <= x.get_play_count() <= max_count
-            keyfn    = None
             matches = filter_and_sort(self.tracks, filterfn, keyfn, False)
 
             return matches
