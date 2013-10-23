@@ -62,16 +62,16 @@ class PlaylistMaker(object) :
     def generate_playlist(self) :
         """Generate the entries for the list."""
         
-        pass
+        self.add_to_list(lambda : self.tracks, len(self.tracks))
 
     ################################################################
     #
-    def add_to_list(self, fn, gencount, finalcount=10000) :
+    def add_to_list(self, fn, gencount, finalcount=None) :
         """Run the selector function and add results.
 
-        FN       is a callable that returns a list of tracks.
-        GENCOUNT is how many songs to generate
-        COUNT    is the desired size of the final list.
+        FN         is a callable that returns a list of tracks.
+        GENCOUNT   is how many songs to generate
+        FINALCOUNT is the desired size of the final list.
 
         A correction function is run on the results returned by FN.
         If a given artist has multiple songs in the list, the second
@@ -82,7 +82,8 @@ class PlaylistMaker(object) :
         temp = temp[:gencount]
         random.shuffle(temp)
         self.apply_artist_correction(temp)
-        temp = temp[:finalcount]
+        if finalcount :
+            temp = temp[:finalcount]
         self.playlist.extend(temp)
         for s in temp :
             self.tracks.remove(s)
