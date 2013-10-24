@@ -46,7 +46,7 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
             #
             # get some new tracks
             #
-            self.add_to_list(self.new_songs(), 25)
+            self.add_to_list(self.new_songs(), 50, 25)
 
             #
             # get oldest rarely played songs
