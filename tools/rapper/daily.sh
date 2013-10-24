@@ -21,4 +21,5 @@ cp ${DST} ${SRC}
 
 sqlite3 -init ${HOME}/.sqliterc ${DST} <<EOF
 .read ordering.sql
+.read temp.sql
 EOF
