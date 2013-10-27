@@ -127,6 +127,8 @@ class PlaylistMaker(object) :
         tracks_at_front.extend(tracks_at_back)
         tracks[:] = tracks_at_front
 
+        return tracks
+
     ################################################################
     #
     def remove_duplicate_artists(self, tracks) :
