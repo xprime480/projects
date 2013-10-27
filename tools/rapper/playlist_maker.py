@@ -2,6 +2,7 @@
 
 import random
 
+from apply_rules import *
 import rhapdb
 
 ################################################################
@@ -88,6 +89,24 @@ class PlaylistMaker(object) :
         for s in temp :
             self.tracks.remove(s)
 
+    def extend_playlist(self, *rules) :
+        t = apply_rules(self.tracks, *rules)
+        self.playlist.extend(t)
+        for s in t :
+            self.tracks.remove(s)
+
+    ################################################################
+    #
+    def randomize(self, tracks) :
+        random.shuffle(tracks)
+        return tracks
+
+    ################################################################
+    #
+    def least_recently_played(self, tracks) :
+        tracks.sort(key=lambda x : x.get_last_played(), reverse=True)
+        return tracks
+
     ################################################################
     #
     def apply_artist_correction(self, tracks) :
@@ -107,6 +126,20 @@ class PlaylistMaker(object) :
 
         tracks_at_front.extend(tracks_at_back)
         tracks[:] = tracks_at_front
+
+    ################################################################
+    #
+    def remove_duplicate_artists(self, tracks) :
+        artists_seen = []
+        keep         = []
+
+        for track in tracks :
+            a = track.get_artist()
+            if a not in artists_seen :
+                artists_seen.append(a)
+                keep.append(track)
+
+        return keep
 
     ################################################################
     #
@@ -136,6 +169,19 @@ class PlaylistMaker(object) :
 
         return fn
 
+    def pick_new(self, tracks) :
+        temp = [t for t in tracks if t.get_play_count() == 0]
+        return temp
+
+    ################################################################
+    #
+    def truncate(self, count) :
+        def fn(tracks) :
+            temp = tracks[:count]
+            return temp
+            
+        return fn
+
     ################################################################
     #
     def get_songs_by_stars(self, stars) :
@@ -150,6 +196,11 @@ class PlaylistMaker(object) :
 
         return fn
 
+    def pick_by_stars(self, stars) :
+        def fn(tracks) :
+            return [t for t in tracks if t.get_rating() == stars]
+        return fn
+
     ################################################################
     #
     def get_songs_by_playcount(self, min_count, max_count, keyfn=None) :
@@ -160,6 +211,16 @@ class PlaylistMaker(object) :
             matches = filter_and_sort(self.tracks, filterfn, keyfn, False)
 
             return matches
+
+        return fn
+
+    def pick_by_playcount(self, min_count, max_count) :
+        def fn(tracks) :
+            temp = [
+                t for t in tracks
+                if min_count <= t.get_play_count() <= max_count
+            ]
+            return temp
 
         return fn
 
