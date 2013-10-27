@@ -29,29 +29,64 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
     def generate_playlist(self) :
         """Make a playlist."""
 
+        five_star_list = [
+            self.pick_by_stars(5),
+            self.randomize,
+            self.remove_duplicate_artists,
+        ]
+
+        new_list = [
+            self.pick_new,
+            self.randomize,
+            self.truncate(50),
+            self.remove_duplicate_artists,
+            self.truncate(25)
+        ]
+
+        basic_list = [
+            self.least_recently_played,
+            self.truncate(100),
+            self.randomize,
+            self.remove_duplicate_artists,
+            self.truncate(25)
+        ]
+
+        old_by_stars = [None] * 6
+
+        for x in range(6) :
+            old_by_stars[x] = [self.pick_by_stars(x)]
+            old_by_stars[x].extend(basic_list[:])
+
+        seldom_played = [self.pick_by_playcount(1, 5)]
+        seldom_played.extend(basic_list[:])
+
         #
-        # get all 5 stars.  
+        # get (almost) all 5 stars.  
         #
-        self.add_to_list(self.get_songs_by_stars(5), len(self.tracks))
+        self.extend_playlist(*five_star_list)
 
         # keep looping until the list is long enough
         #
         while len(self.tracks) > 0 and len(self.playlist) < self.length :
-            #
-            # get oldest 4 and 3 stars
-            #
-            for x in [4, 3] :
-                self.add_to_list(self.get_oldest_by_stars(x), 100, 25)
-                
+            
             #
             # get some new tracks
             #
-            self.add_to_list(self.new_songs(), 50, 25)
+            self.extend_playlist(*new_list)
+            #self.add_to_list(self.new_songs(), 50, 25)
 
+            #
+            # get oldest
+            #
+            for x in [5, 4, 3] :
+                self.extend_playlist(*old_by_stars[x])
+                #self.add_to_list(self.get_oldest_by_stars(x), 100, 25)
+                
             #
             # get oldest rarely played songs
             #
-            self.add_to_list(self.get_songs_by_playcount(1, 5, lambda t : t.get_last_played()), 100, 25)
+            self.extend_playlist(*seldom_played)
+            #self.add_to_list(self.get_songs_by_playcount(1, 5, lambda t : t.get_last_played()), 100, 25)
 
 ################################################################
 #
