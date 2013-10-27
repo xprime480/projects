@@ -48,10 +48,44 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
     def generate_playlist(self) :
         """Make a playlist."""
 
+        implicit_tasks = [
+            self.randomize,
+            self.apply_artist_correction
+        ]
+
+        initial_pick_list = [self.truncate(5)]
+        initial_pick_list.extend(implicit_tasks[:])
+        
+        initial_picks = [None] * 6
+        for x in range(6) :
+            initial_picks[x] = [self.pick_by_stars(x)]
+            initial_picks[x].extend(initial_pick_list[:])
+
+        old_by_stars = [None] * 6
+        for x in range(6) :
+            old_by_stars[x] = [self.pick_by_stars(x)]
+            old_by_stars[x].extend(initial_pick_list[:])
+
+        new_list = [
+            self.pick_new,
+            self.randomize,
+            self.truncate(25),
+            self.apply_artist_correction
+        ]
+
+        all_by_stars_list = [self.truncate(25)]
+        all_by_stars_list.extend(implicit_tasks[:])
+
+        all_by_stars = [None] * 6
+        for x in range(6) :
+            all_by_stars[x] = [self.pick_by_stars(x)]
+            all_by_stars[x].extend(all_by_stars_list[:])
+
+
         # get some of the best tracks
         #
         for x in [5, 4] :
-            self.add_to_list(self.get_songs_by_stars(x), 5)
+            self.extend_playlist(*initial_picks[x])
 
         # keep looping until the list is long enough
         #
@@ -61,18 +95,18 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
             # been played in a while
             #
             for x in range(5,0,-1) :
-                self.add_to_list(self.get_oldest_by_stars(x), 5)
+                self.extend_playlist(*old_by_stars[x])
 
             #
             # try some new songs
             #
-            self.add_to_list(self.new_songs(), 25)
+            self.extend_playlist(*new_list)
 
             #
             # get some tracks from each level of stars 
             #
             for x in range(5,0,-1) :
-                self.add_to_list(self.get_songs_by_stars(x), 5)
+                self.extend_playlist(*all_by_stars[x])
 
             #self.add_to_list(self.get_songs_by_playcount(1, 5), 10)
 
