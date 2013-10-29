@@ -104,7 +104,7 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def least_recently_played(self, tracks) :
-        tracks.sort(key=lambda x : x.get_last_played(), reverse=True)
+        tracks.sort(key=lambda x : x.get_last_played())
         return tracks
 
     ################################################################
