@@ -78,14 +78,14 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
             #
             # get oldest
             #
-            for x in [5, 4, 3] :
+            for x in [5, 4, 3, 2] :
                 self.extend_playlist(*old_by_stars[x])
                 #self.add_to_list(self.get_oldest_by_stars(x), 100, 25)
                 
             #
             # get oldest rarely played songs
             #
-            self.extend_playlist(*seldom_played)
+            #self.extend_playlist(*seldom_played)
             #self.add_to_list(self.get_songs_by_playcount(1, 5, lambda t : t.get_last_played()), 100, 25)
 
 ################################################################
