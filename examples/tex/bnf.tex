@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage[epsilon]{backnaur}
+\usepackage{amssymb}
+
+\begin{document}
+
+\begin{bnf*}
+\bnfprod{list}
+{\bnfpn{listitems} \bnfor \bnfes}\\
+\bnfprod{listitems}
+{\bnfpn{item} \bnfor \bnfpn{item}
+\bnfsp \bnfts{;} \bnfsp \bnfpn{listitems}}\\
+\bnfprod{item}
+{\bnftd{description of item}}
+\end{bnf*}
+
+
+$\mathcal{S}^{\circlearrowright\alpha}$
+
+$\mathcal{S}^{\alpha}$
+
+
+\end{document}
