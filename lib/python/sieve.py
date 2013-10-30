@@ -9,7 +9,10 @@ def sieve(k) :
     pout = []
     while pin :
         pout.append(pin[0])
-        for p in pout :
+        pin = pin[1:]
+        if not pin :
+            break
+        for p in [q for q in pout if q*q <= pin[-1]] :
             pin = [x for x in pin if (x%p) != 0]
     return pout
 
