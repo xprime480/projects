@@ -90,7 +90,19 @@ class PlaylistMaker(object) :
         for s in temp :
             self.tracks.remove(s)
 
+    ################################################################
+    #
     def extend_playlist(self, *rules) :
+        """Create a playlist by applying a set of RULES.
+        
+        RULES is a list of callables.
+
+        The first of the RULES is given the unused tracks in the
+        library.  Each succesive rule's input is the output from the
+        previous rule.  The output of the last rule is the returned
+        by this function.  Also, all the tracks in the return value
+        are removed from the list of available tracks."""
+
         t = apply_rules(self.tracks, *rules)
         self.playlist.extend(t)
         for s in t :
@@ -99,6 +111,8 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def randomize(self, tracks) :
+        """Returns its input in a random order."""
+
         random.shuffle(tracks)
         return tracks
 
@@ -133,6 +147,15 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def remove_duplicate_artists(self, tracks) :
+        """Returns its input minus all but one track from each artist.
+
+        If a given artist has more than one track in the input, one
+        of those tracks is selected for inclusion in the output.  Each
+        track has a probability of being selected proportional to the 
+        length of time since the last time the track was played.  If
+        there is only one track for an artist, that track is included
+        in the output."""
+
         artists_seen = []
         keep         = []
 
@@ -189,7 +212,7 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def new_songs(self) :
-        """Select songs that have never been played."""
+        """Return a function that selects songs that have never been played."""
 
         def fn() :
             filterfn = lambda x : x.get_play_count() == 0
@@ -200,13 +223,19 @@ class PlaylistMaker(object) :
 
         return fn
 
+    ################################################################
+    #
     def pick_new(self, tracks) :
+        """Return all tracks in the input that have never been played."""
+
         temp = [t for t in tracks if t.get_play_count() == 0]
         return temp
 
     ################################################################
     #
     def truncate(self, count) :
+        """Return a function that returns the first COUNT input values."""
+
         def fn(tracks) :
             temp = tracks[:count]
             return temp
@@ -227,7 +256,11 @@ class PlaylistMaker(object) :
 
         return fn
 
+    ################################################################
+    #
     def pick_by_stars(self, stars) :
+        """Return a function that filters its input by STARS."""
+
         def fn(tracks) :
             return [t for t in tracks if t.get_rating() == stars]
         return fn
@@ -245,7 +278,11 @@ class PlaylistMaker(object) :
 
         return fn
 
+    ################################################################
+    #
     def pick_by_playcount(self, min_count, max_count) :
+        """Return a function that filters on playcount."""
+
         def fn(tracks) :
             temp = [
                 t for t in tracks
@@ -258,6 +295,8 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def local_init(self) :
+        """Do any local playlist initialization."""
+
         pass
         
 
