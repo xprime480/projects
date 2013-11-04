@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import datetime
 import random
 
 from apply_rules import *
@@ -135,12 +136,40 @@ class PlaylistMaker(object) :
         artists_seen = []
         keep         = []
 
+        pos_to_artist = []
+        artist_tracks = {}
+
         for track in tracks :
             a = track.get_artist()
+            d = artist_tracks.get(a, [])
+            d.append(track)
+            artist_tracks[a] = d
+
             if a not in artists_seen :
+                pos_to_artist.append(a)
                 artists_seen.append(a)
                 keep.append(track)
 
+
+        now = datetime.datetime.now()
+        for i in range(len(pos_to_artist)) :
+            a = pos_to_artist[i]
+            tracks = artist_tracks[a]
+            if len(tracks) > 1 :
+                total_days = sum(
+                    [(now - t.get_last_played()).days
+                     for t in tracks]
+                )
+                selector = random.randint(0,total_days-1)
+                for t in tracks :
+                    track_date = t.get_last_played()
+                    age = (now - track_date).days
+                    if selector < age :
+                        keep[i] = t
+                        break
+                    else :
+                        selector -= age
+        
         return keep
 
     ################################################################
