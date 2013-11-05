@@ -183,11 +183,11 @@ class PlaylistMaker(object) :
                     [(now - t.get_last_played()).days
                      for t in tracks]
                 )
-                selector = random.randint(0,total_days-1)
+                selector = random.randint(0,total_days)
                 for t in tracks :
                     track_date = t.get_last_played()
                     age = (now - track_date).days
-                    if selector < age :
+                    if selector <= age :
                         keep[i] = t
                         break
                     else :
@@ -304,4 +304,3 @@ if __name__ == '__main__' :
     with rhapdb.RhapsodyDb('temp.seb') as db :
         o = PlaylistMaker(db, 250) 
         o.make_playlist()
-    
