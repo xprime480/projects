@@ -1,5 +1,5 @@
 
-FILES ?= $(wildcard *.py)
+FILES ?= $(wildcard *.py) $(wildcard *.sh)
 
 DESTDIR ?= $(HOME)/bin
 
