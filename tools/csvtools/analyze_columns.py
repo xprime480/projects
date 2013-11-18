@@ -50,10 +50,43 @@ class ColumnFormatter(object) :
     def write_error(self, name) :
         print ('Error in field', name)
 
+
+
+################################################################
+#
+class TextFormatter(ColumnFormatter) :
+
+    def write_string(self, name, data) :
+        print ()
+        print ('Column "%s" has %d distinct values and %d NULL values.' %
+               (name, data['distinct_count'], data['null_count']))
+
+        cs = len(data['display_values'])
+        if not cs :
+            print ('No value accounts for more than 1\\% of the values.')
+            return
+
+        print ('Top %d values for "%s"' % (cs, name))
+        print ('%32s %8s' % ('Value', 'Count'))
+        print ('%32s %8s' % ('=' * 32, '=' * 5))
+        for p in data['display_values'] :
+            print ('%32s %8s' % p)
+
+    def write_float(self, name, data) :
+        print ()
+        print ('Column "%s" has %d numeric and %d NULL values' %
+               (name, data['value_count'], data['null_count']))
+
+
+        print ('Statistics for "%s"' % (name))
+        print ('Quartiles: ')
+        print ('%.2f %.2f %.2f %.2f %.2f ' % tuple(data['quartiles']))
+        print ('\\hline')
+        print ('Average: %.2f \tStd Dev: %.2f' % (data['avg'], data['sd']))
+
 ################################################################
 #
 class LatexFormatter(ColumnFormatter) :
-    pass
 
     def write_string(self, name, data) :
         th = texify(name)
@@ -284,9 +317,14 @@ def main() :
     """Read inputs and analyze columns."""
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("--format",
+                        default="latex",
+                        help="Stat output format (latex or text)",
+                        nargs='?')
     parser.add_argument("files",
                         help="CSV input files",
                         nargs=argparse.REMAINDER)
+
 
     try :
         args = parser.parse_args()
@@ -297,7 +335,10 @@ def main() :
     analyzer = Analyzer()
     analyzer.read(*args.files)
 
-    formatter = LatexFormatter()
+    if args.format == 'text' :
+        formatter = TextFormatter()
+    else :
+        formatter = LatexFormatter()
     analyzer.write(formatter)
 
 ################################################################
