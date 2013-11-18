@@ -36,26 +36,46 @@ def likely_date(v) :
 def likely_flag(v) :
     return v == 1 or v == 0 or v == '1' or v == '0'
 
+def all_floats(vs) :
+    for v in vs :
+        try :
+            float(v)
+        except ValueError :
+            return False
+    return True
+
+def all_strings(vs) :
+    for v in vs :
+        if type(v) != type('') :
+            return False
+
+    return True
 
 ################################################################
 #
 class ColumnFormatter(object) :
 
+    ################################################################
+    #
     def write_string(self, name, data) :
         pass
 
+    ################################################################
+    #
     def write_unknown(self) :
         pass
 
+    ################################################################
+    #
     def write_error(self, name) :
         print ('Error in field', name)
-
-
 
 ################################################################
 #
 class TextFormatter(ColumnFormatter) :
 
+    ################################################################
+    #
     def write_string(self, name, data) :
         print ()
         print ('Column "%s" has %d distinct values and %d NULL values.' %
@@ -72,6 +92,8 @@ class TextFormatter(ColumnFormatter) :
         for p in data['display_values'] :
             print ('%32s %8s' % p)
 
+    ################################################################
+    #
     def write_float(self, name, data) :
         print ()
         print ('Column "%s" has %d numeric and %d NULL values' %
@@ -81,13 +103,14 @@ class TextFormatter(ColumnFormatter) :
         print ('Statistics for "%s"' % (name))
         print ('Quartiles: ')
         print ('%.2f %.2f %.2f %.2f %.2f ' % tuple(data['quartiles']))
-        print ('\\hline')
         print ('Average: %.2f \tStd Dev: %.2f' % (data['avg'], data['sd']))
 
 ################################################################
 #
 class LatexFormatter(ColumnFormatter) :
 
+    ################################################################
+    #
     def write_string(self, name, data) :
         th = texify(name)
 
@@ -116,6 +139,8 @@ class LatexFormatter(ColumnFormatter) :
         print ('\\end{tabular}')
         print ('\\end{table}')
 
+    ################################################################
+    #
     def write_float(self, name, data) :
         th = texify(name)
         x = ''.join(name.split('_'))
@@ -139,6 +164,8 @@ class LatexFormatter(ColumnFormatter) :
         print ('\\end{tabular}')
         print ('\\end{table}')
 
+    ################################################################
+    #
     def write_error(self, name) :
         h = texify(name)
         print ('\\item[%s] was not processed correctly, please report' % (h,))
@@ -151,7 +178,6 @@ class Analyzer(object) :
         self.nulls   = {}
         self.headers = None
         self.lines   = 0
-        self.types   = {}
 
     def read(self, *files) :
         for f in files :
@@ -162,12 +188,13 @@ class Analyzer(object) :
 
     def write(self, formatter) :
         for h in self.headers :
-            if self.types[h] == self._proc_unknown_type :
+            data = self.counts[h]
+            if not data :
                 self._write_unknown(h, formatter)
-            elif self.types[h] == self._proc_string :
-                self._write_string(h, formatter)
-            elif self.types[h] == self._proc_float :
+            elif all_floats(data) :
                 self._write_float(h, formatter)
+            elif all_strings(data) :
+                self._write_string(h, formatter)
             else :
                 self._write_error(h, formatter)
 
@@ -177,8 +204,6 @@ class Analyzer(object) :
                 print ('Warning: different inputs have different headers.')
 
         self.headers = rdr.fieldnames[:]
-        for h in self.headers :
-            self.types[h] = self._proc_unknown_type
 
     def _init_counts(self) :
 
@@ -198,45 +223,15 @@ class Analyzer(object) :
 
             for h in self.headers :
                 v = row[h]
-                self.types[h](h,v)
-
-    def _proc_null(self, h) :
-        self.nulls[h] = 1 + self.nulls[h]
-
-    def _proc_unknown_type(self, h, v) :
-        if not v :
-            self._proc_null(h)
-            return
-
-        try :
-            v2 = float(v)
-            self.types[h] = self._proc_float
-            self.counts[h] = []
-        except :
-            self.types[h] = self._proc_string
-
-        self.types[h](h, v)
-
-    def _proc_float(self, h, v) :
-        if not v :
-            self._proc_null(h)
-            return
-
-        v = float(v)
-        self.counts[h].append(v)
-
-    def _proc_string(self, h, v) :
-        if not v :
-            self._proc_null(h)
-            return
-
-        self.counts[h][v] = 1 + self.counts[h].get(v, 0)
+                if not v :
+                    self.nulls[h] = 1 + self.nulls[h]
+                else :
+                    self.counts[h][v] = 1 + self.counts[h].get(v, 0)
 
     def _write_unknown(self, h, formatter) :
         formatter.write_unknown()
 
     def _write_string(self, h, formatter) :
-
         th = texify(h)
         c  = len(self.counts[h])
         threshold = c // 100
@@ -254,7 +249,9 @@ class Analyzer(object) :
         formatter.write_string(h, data)
 
     def _write_float(self, h, formatter) :
-        values = self.counts[h]
+        values = []
+        for n,c in self.counts[h].items() :
+            values.extend([float(n)] * c)
 
         # the following code is horrible
         # find a pythonic way to fix it.
@@ -288,7 +285,7 @@ class Analyzer(object) :
         if size > 1 :
             sd  = math.sqrt(sum([x * x for x in tmp]) / (size-1))
 
-        c  = len(self.counts[h])
+        c  = len(values)
 
         data = {
             'value_count' : c,
