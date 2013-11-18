@@ -36,6 +36,80 @@ def likely_date(v) :
 def likely_flag(v) :
     return v == 1 or v == 0 or v == '1' or v == '0'
 
+
+################################################################
+#
+class ColumnFormatter(object) :
+
+    def write_string(self, name, data) :
+        pass
+
+    def write_unknown(self) :
+        pass
+
+    def write_error(self, name) :
+        print ('Error in field', name)
+
+################################################################
+#
+class LatexFormatter(ColumnFormatter) :
+    pass
+
+    def write_string(self, name, data) :
+        th = texify(name)
+
+        print ('\\item[%s] has %d distinct values and %d NULL values.' %
+               (th, data['distinct_count'], data['null_count']))
+
+        cs = len(data['display_values'])
+        if not cs :
+            print ('No value accounts for more than 1\\% of the values.')
+            return
+
+        tn = 'tab:' + ''.join(name.split('_'))
+
+        print ('See Table \\ref{%s}' % (tn))
+
+        print ('\\begin{table}')
+        print ('\\caption{Top %d values for %s} \\label{%s}' % (cs, th, tn))
+        print ('\centering')
+        print ('\\begin{tabular}{|r|l|}')
+        print ('\\hline')
+        print ('Value & Count \\\\')
+        print ('\\hline')
+        for p in data['display_values'] :
+            print ('%s & %s \\\\' % p)
+        print ('\\hline')
+        print ('\\end{tabular}')
+        print ('\\end{table}')
+
+    def write_float(self, name, data) :
+        th = texify(name)
+        x = ''.join(name.split('_'))
+        x = ''.join(x.split('#'))
+        tn = 'tab:' + x
+
+        print ('\\item[%s] has %d numeric and %d NULL values' %
+               (th, data['value_count'], data['null_count']))
+        print ('See Table \\ref{%s}' % (tn))
+
+        print ('\\begin{table}[ht]')
+        print ('\\caption{Statistics for %s} \\label{%s}' % (th, tn))
+        print ('\centering')
+        print ('\\begin{tabular}{|rrrrr|}')
+        print ('\\hline')
+        print ('Quartiles & & & &  \\\\')
+        print ('%.2f & %.2f & %.2f & %.2f & %.2f \\\\' % tuple(data['quartiles']))
+        print ('\\hline')
+        print ('Average & %.2f & & Std Dev & %.2f \\\\' % (data['avg'], data['sd']))
+        print ('\\hline')
+        print ('\\end{tabular}')
+        print ('\\end{table}')
+
+    def write_error(self, name) :
+        h = texify(name)
+        print ('\\item[%s] was not processed correctly, please report' % (h,))
+
 ################################################################
 #
 class Analyzer(object) :
@@ -52,29 +126,29 @@ class Analyzer(object) :
                 self._check_headers(rdr)
                 self._init_counts()
                 self._process(rdr)
-                
-    def write(self) :
+
+    def write(self, formatter) :
         for h in self.headers :
             if self.types[h] == self._proc_unknown_type :
-                self._write_unknown(h)
+                self._write_unknown(h, formatter)
             elif self.types[h] == self._proc_string :
-                self._write_string(h)
+                self._write_string(h, formatter)
             elif self.types[h] == self._proc_float :
-                self._write_float(h)
+                self._write_float(h, formatter)
             else :
-                self._write_error(h)
+                self._write_error(h, formatter)
 
     def _check_headers(self, rdr) :
         if self.headers :
             if self.headers != rdr.fieldnames:
                 print ('Warning: different inputs have different headers.')
-                
+
         self.headers = rdr.fieldnames[:]
         for h in self.headers :
             self.types[h] = self._proc_unknown_type
 
     def _init_counts(self) :
-        
+
         tmp = {}
         for h in self.headers :
             tmp[h] = {}
@@ -125,13 +199,12 @@ class Analyzer(object) :
 
         self.counts[h][v] = 1 + self.counts[h].get(v, 0)
 
-    def _write_unknown(self, h) :
-        pass
-        #print ('\\item[%s] has no values' % (texify(h)))
+    def _write_unknown(self, h, formatter) :
+        formatter.write_unknown()
 
-    def _write_string(self, h) :
+    def _write_string(self, h, formatter) :
+
         th = texify(h)
-        tn = 'tab:' + ''.join(h.split('_'))
         c  = len(self.counts[h])
         threshold = c // 100
 
@@ -140,30 +213,14 @@ class Analyzer(object) :
         t  = [v for v in cv if v[1] >= threshold]
         cv = t
 
-        print ('\\item[%s] has %d distinct values and %d NULL values.' %
-               (th, c, self.nulls[h]))
+        data = {}
+        data['distinct_count'] = c
+        data['null_count']     = self.nulls[h]
+        data['display_values'] = cv
 
-        cs = len(cv)
-        if not cs :
-            print ('No value accounts for more than 1\\% of the values.')
-            return
+        formatter.write_string(h, data)
 
-        print ('See Table \\ref{%s}' % (tn))
-
-        print ('\\begin{table}')
-        print ('\\caption{Top %d values for %s} \\label{%s}' % (cs, th, tn))
-        print ('\centering')
-        print ('\\begin{tabular}{|r|l|}')
-        print ('\\hline')
-        print ('Value & Count \\\\')
-        print ('\\hline')
-        for p in cv :
-            print ('%s & %s \\\\' % p)            
-        print ('\\hline')
-        print ('\\end{tabular}')
-        print ('\\end{table}')
-
-    def _write_float(self, h) :
+    def _write_float(self, h, formatter) :
         values = self.counts[h]
 
         # the following code is horrible
@@ -187,16 +244,6 @@ class Analyzer(object) :
             self._write_as_string(h)
             return
 
-        th = texify(h)
-        x = ''.join(h.split('_'))
-        x = ''.join(x.split('#'))
-        tn = 'tab:' + x
-        c  = len(self.counts[h])
-
-        print ('\\item[%s] has %d numeric and %d NULL values' %
-               (th, c, self.nulls[h]))
-        print ('See Table \\ref{%s}' % (tn))
-
         values.sort()
         size = len(values)
 
@@ -208,18 +255,17 @@ class Analyzer(object) :
         if size > 1 :
             sd  = math.sqrt(sum([x * x for x in tmp]) / (size-1))
 
-        print ('\\begin{table}[ht]')
-        print ('\\caption{Statistics for %s} \\label{%s}' % (th, tn))
-        print ('\centering')
-        print ('\\begin{tabular}{|rrrrr|}')
-        print ('\\hline')
-        print ('Quartiles & & & &  \\\\')
-        print ('%.2f & %.2f & %.2f & %.2f & %.2f \\\\' % tuple(v))
-        print ('\\hline')
-        print ('Average & %.2f & & Std Dev & %.2f \\\\' % (avg, sd))
-        print ('\\hline')
-        print ('\\end{tabular}')
-        print ('\\end{table}')
+        c  = len(self.counts[h])
+
+        data = {
+            'value_count' : c,
+            'null_count'  : self.nulls[h],
+            'quartiles'   : v,
+            'avg'         : avg,
+            'sd'          : sd
+        }
+
+        formatter.write_float(h, data)
 
     def _write_as_string(self, h) :
         values = self.counts[h]
@@ -230,8 +276,7 @@ class Analyzer(object) :
         self._write_string(h)
 
     def _write_error(self, h) :
-        print ('\\item[%s] was not processed correctly, please report' %
-               (texify(h)))
+        formatter.write_error(h)
 
 ################################################################
 #
@@ -248,10 +293,12 @@ def main() :
     except IOError as e :
         print (e)
         sys.exit(1)
-    
+
     analyzer = Analyzer()
     analyzer.read(*args.files)
-    analyzer.write()
+
+    formatter = LatexFormatter()
+    analyzer.write(formatter)
 
 ################################################################
 #
