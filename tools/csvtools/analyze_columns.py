@@ -83,7 +83,7 @@ class TextFormatter(ColumnFormatter) :
 
         cs = len(data['display_values'])
         if not cs :
-            print ('No value accounts for more than 1\\% of the values.')
+            print ('No value accounts for more than 1% of the values.')
             return
 
         print ('Top %d values for "%s"' % (cs, name))
