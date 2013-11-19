@@ -1,0 +1,10 @@
+INT_DATA,STR_DATA,NOT_INT_DATA
+1,x,8
+2,y,7
+3,zoo,6
+1,able,5
+2,zoo,4
+3,x,3
+4,x,2
+5,x,1
+6,cats,zero
