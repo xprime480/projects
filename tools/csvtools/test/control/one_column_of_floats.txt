@@ -1,0 +1,6 @@
+
+Column "DATA" has 6 numeric and 0 NULL values
+Statistics for "DATA"
+Quartiles: 
+-2.76 1.00 2.00 3.13 3.60 
+Average: 1.37 	Std Dev: 2.27
