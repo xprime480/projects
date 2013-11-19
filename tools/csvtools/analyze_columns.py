@@ -294,18 +294,6 @@ class Analyzer(object) :
         for n,c in self.counts[h].items() :
             values.extend([float(n)] * c)
 
-        # the following code is horrible
-        # find a pythonic way to fix it.
-
-        flag = True
-        for x in values :
-            if not likely_date(x) :
-                flag = False
-                break
-        if flag :
-            self._write_as_string(h)
-            return
-
         values.sort()
         size = len(values)
 
