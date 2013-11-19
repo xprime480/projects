@@ -1,0 +1,10 @@
+
+Column "YYYYMMDD" contains dates with 1 valid and 0 NULL values.
+
+Column "MMDDYYYY" contains dates with 1 valid and 0 NULL values.
+
+Column "MM_DD_YYYY" contains dates with 1 valid and 0 NULL values.
+
+Column "YYYY_MM_DD" contains dates with 1 valid and 0 NULL values.
+
+Column "MON_DD_YYYY" contains dates with 1 valid and 0 NULL values.
