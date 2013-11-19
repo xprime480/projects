@@ -1,0 +1,11 @@
+
+Column "DATA" has 6 distinct values and 0 NULL values.
+Top 6 values for "DATA"
+                           Value    Count
+================================    =====
+                             bat        2
+                          doggie        1
+                   elephant fish        1
+                         giraffe        1
+                       armadillo        1
+                         cheetah        1
