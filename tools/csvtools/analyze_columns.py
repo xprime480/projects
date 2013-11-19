@@ -5,6 +5,7 @@ Analyze input columns and report results
 """
 
 import argparse
+import datetime
 import itertools
 import math
 import sys
@@ -30,6 +31,39 @@ def likely_date(v) :
     d = v % 100
     if d < 1 or d > 31 :
         return False
+
+    return True
+
+def all_date_formats() :
+    now = datetime.datetime.now()
+
+    year_fmts  = ['%y', '%Y']
+    month_fmts = ['%m', '%b', '%B']
+    day_fmts   = ['%d']
+    seps       = ['', '/', '-', ' ']
+
+    for x in itertools.product(year_fmts, month_fmts, day_fmts) :
+        for y in itertools.permutations(x, 3) :
+            for sep in seps :
+                yield sep.join(y)
+
+    yield '%B %d, %Y'           # January 17, 1960
+    yield '%b %d, %Y'           # Jan 17, 1960
+
+def all_dates(vs) :
+    fmts = list(all_date_formats())
+
+    for v in vs :
+        tfmts = fmts[:]
+        fmts  = []
+        for f in tfmts :
+            try :
+                datetime.datetime.strptime(v, f)
+                fmts.append(f)
+            except ValueError :
+                pass
+        if not fmts :
+            return False
 
     return True
 
@@ -103,9 +137,16 @@ class TextFormatter(ColumnFormatter) :
     #
     def write_flag(self, name, data) :
         print ()
-        print ('Column "%s" is a flag with %d true, %d false and %d NULL values' %
+        print ('Column "%s" contains flags with %d true, %d false and %d NULL values.' %
                (name, data['true_count'], data['false_count'], data['null_count']))
         
+    ################################################################
+    #
+    def write_date(self, name, data) :
+        print ()
+        print ('Column "%s" contains dates with %d valid and %d NULL values.' %
+               (name, data['valid_count'], data['null_count']))
+
     ################################################################
     #
     def write_float(self, name, data) :
@@ -158,8 +199,17 @@ class LatexFormatter(ColumnFormatter) :
     def write_flag(self, name, data) :
         th = texify(name)
 
-        print ('\\item[%s] is a flag with %d true, %d false and %d NULL values.' %
-               (name, data['true_count'], data['false_count'], data['null_count']))
+        print ('\\item[%s] contains flags with %d true, %d false and %d NULL values.' %
+               (th, data['true_count'], data['false_count'], data['null_count']))
+    ################################################################
+    #
+    def write_date(self, name, data) :
+        th = texify(name)
+
+        print ()
+        print ('\\item[%s] contains dates with %d valid and %d NULL values.' %
+               (th, data['valid_count'], data['null_count']))
+
     ################################################################
     #
     def write_float(self, name, data) :
@@ -214,7 +264,9 @@ class Analyzer(object) :
                 self._write_unknown(h, formatter)
             elif all_flags(data) :
                 self._write_flag(h, formatter)
-            elif all_floats(data) :
+            elif all_dates(data) :
+                self._write_date(h, formatter)
+            elif all_floats(data) : # integers count
                 self._write_float(h, formatter)
             elif all_strings(data) :
                 self._write_string(h, formatter)
@@ -229,7 +281,6 @@ class Analyzer(object) :
         self.headers = rdr.fieldnames[:]
 
     def _init_counts(self) :
-
         tmp = {}
         for h in self.headers :
             tmp[h] = {}
@@ -288,6 +339,14 @@ class Analyzer(object) :
         }
 
         formatter.write_flag(h, data)
+
+    def _write_date(self, h, formatter) :
+        data = {
+            'null_count'  : self.nulls[h],
+            'valid_count' : sum(self.counts[h].values())
+        }
+        
+        formatter.write_date(h, data)
 
     def _write_float(self, h, formatter) :
         values = []
