@@ -11,5 +11,5 @@ install :
 		( echo "Installing $$f" && rm -f $(DESTDIR)/$$f && cp -p $$f $(DESTDIR)/$$f ); \
 	done
 
-#test :
-#	make -C test test
+test :
+	make -C test test
