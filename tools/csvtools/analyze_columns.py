@@ -306,15 +306,6 @@ class Analyzer(object) :
             self._write_as_string(h)
             return
 
-        flag = True
-        for x in values :
-            if not likely_flag(x) :
-                flag = False
-                break
-        if flag :
-            self._write_as_string(h)
-            return
-
         values.sort()
         size = len(values)
 
