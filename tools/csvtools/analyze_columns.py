@@ -34,7 +34,14 @@ def likely_date(v) :
     return True
 
 def likely_flag(v) :
-    return v == 1 or v == 0 or v == '1' or v == '0'
+    t = str(v).lower()
+    return t == '0' or t == '1'
+
+def all_flags(vs) :
+    for v in vs :
+        if not likely_flag(v) :
+            return False
+    return True
 
 def all_floats(vs) :
     for v in vs :
@@ -94,6 +101,13 @@ class TextFormatter(ColumnFormatter) :
 
     ################################################################
     #
+    def write_flag(self, name, data) :
+        print ()
+        print ('Column "%s" is a flag with %d true, %d false and %d NULL values' %
+               (name, data['true_count'], data['false_count'], data['null_count']))
+        
+    ################################################################
+    #
     def write_float(self, name, data) :
         print ()
         print ('Column "%s" has %d numeric and %d NULL values' %
@@ -139,6 +153,13 @@ class LatexFormatter(ColumnFormatter) :
         print ('\\end{tabular}')
         print ('\\end{table}')
 
+    ################################################################
+    #
+    def write_flag(self, name, data) :
+        th = texify(name)
+
+        print ('\\item[%s] is a flag with %d true, %d false and %d NULL values.' %
+               (name, data['true_count'], data['false_count'], data['null_count']))
     ################################################################
     #
     def write_float(self, name, data) :
@@ -191,6 +212,8 @@ class Analyzer(object) :
             data = self.counts[h]
             if not data :
                 self._write_unknown(h, formatter)
+            elif all_flags(data) :
+                self._write_flag(h, formatter)
             elif all_floats(data) :
                 self._write_float(h, formatter)
             elif all_strings(data) :
@@ -232,7 +255,6 @@ class Analyzer(object) :
         formatter.write_unknown()
 
     def _write_string(self, h, formatter) :
-        th = texify(h)
         c  = len(self.counts[h])
         threshold = c // 100
 
@@ -247,6 +269,25 @@ class Analyzer(object) :
         data['display_values'] = cv
 
         formatter.write_string(h, data)
+
+    def _write_flag(self, h, formatter) :
+
+        tv = 0
+        fv = 0
+
+        for k,v in self.counts[h].items() :
+            if str(k) == '1' :
+                tv += v
+            else :
+                fv += v
+
+        data = {
+            'null_count'  : self.nulls[h],
+            'true_count'  : tv,
+            'false_count' : fv
+        }
+
+        formatter.write_flag(h, data)
 
     def _write_float(self, h, formatter) :
         values = []
