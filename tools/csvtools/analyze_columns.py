@@ -20,20 +20,34 @@ import typeutils
 ################################################################
 #
 class Analyzer(object) :
+    """Class which will read CSV files and produce descriptive stats."""
+
+    ################################################################
+    #
     def __init__(self) :
+        """Initialize counts."""
+
         self.counts  = {}
         self.nulls   = {}
         self.headers = None
         self.lines   = 0
 
+    ################################################################
+    #
     def read(self, *files) :
+        """Read and process each CSV file."""
+
         for f in files :
             with csvfileio.CsvFileIo(f, False) as rdr :
                 self._check_headers(rdr)
                 self._init_counts()
                 self._process(rdr)
 
+    ################################################################
+    #
     def write(self, formatter) :
+        """Write the descriptive statistics for each column."""
+
         for h in self.headers :
             def rule_for_no_data(data) :
                 if not data :
@@ -75,14 +89,25 @@ class Analyzer(object) :
             ]
             apply_rules.find_a_matching_rule(self.counts[h], *rules)
 
+    ################################################################
+    #
     def _check_headers(self, rdr) :
+        """Verify that the headers from the current input match previous."""
+
         if self.headers :
             if self.headers != rdr.fieldnames:
-                print ('Warning: different inputs have different headers.')
-
+                print (
+                    'Warning: different inputs have different headers.',
+                    file=sys.stdout
+                )
+                
         self.headers = rdr.fieldnames[:]
 
+    ################################################################
+    #
     def _init_counts(self) :
+        """Initialze the per-header counts."""
+
         tmp = {}
         for h in self.headers :
             tmp[h] = {}
@@ -93,7 +118,16 @@ class Analyzer(object) :
         tmp.update(self.nulls)
         self.nulls = tmp
 
+    ################################################################
+    #
     def _process(self, rdr) :
+        """
+        Process one row.
+
+        For each column, if the value of the datum is null, update
+        the null count, otherwise update the count for the value.
+        """
+
         for row in rdr :
             self.lines += 1
 
@@ -104,10 +138,18 @@ class Analyzer(object) :
                 else :
                     self.counts[h][v] = 1 + self.counts[h].get(v, 0)
 
+    ################################################################
+    #
     def _write_unknown(self, h, formatter) :
+        """Write descriptive statistics for a column of unknown type."""
+
         formatter.write_unknown()
 
+    ################################################################
+    #
     def _write_string(self, h, formatter) :
+        """Write descriptive statistics for a column of strings."""
+
         c  = len(self.counts[h])
         threshold = c // 100
 
@@ -123,7 +165,10 @@ class Analyzer(object) :
 
         formatter.write_string(h, data)
 
+    ################################################################
+    #
     def _write_flag(self, h, formatter) :
+        """Write descriptive statistics for a column of flags."""
 
         tv = 0
         fv = 0
@@ -142,7 +187,11 @@ class Analyzer(object) :
 
         formatter.write_flag(h, data)
 
+    ################################################################
+    #
     def _write_date(self, h, formatter, fmt) :
+        """Write descriptive statistics for a column of dates."""
+
         values = [datetime.datetime.strptime(v, fmt) 
                   for v in self.counts[h].keys()]
         
@@ -155,7 +204,11 @@ class Analyzer(object) :
         
         formatter.write_date(h, data)
 
+    ################################################################
+    #
     def _write_float(self, h, formatter) :
+        """Write descriptive statistics for a column of numerical input."""
+
         values = []
         for n,c in self.counts[h].items() :
             values.extend([float(n)] * c)
@@ -183,7 +236,11 @@ class Analyzer(object) :
 
         formatter.write_float(h, data)
 
+    ################################################################
+    #
     def _write_as_string(self, h) :
+        """Unused."""
+
         values = self.counts[h]
         self.counts[h] = {}
         for v in values :
@@ -191,7 +248,11 @@ class Analyzer(object) :
 
         self._write_string(h)
 
+    ################################################################
+    #
     def _write_error(self, h) :
+        """Write an error message."""
+
         formatter.write_error(h)
 
 ################################################################
