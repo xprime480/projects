@@ -58,14 +58,16 @@ def all_dates(vs) :
         fmts  = []
         for f in tfmts :
             try :
-                datetime.datetime.strptime(v, f)
+                d = datetime.datetime.strptime(v, f)
+                if not 1900 <= d.year <= 2100 :
+                    continue
                 fmts.append(f)
             except ValueError :
                 pass
         if not fmts :
-            return False
+            break
 
-    return True
+    return fmts
 
 def likely_flag(v) :
     t = str(v).lower()
@@ -146,6 +148,7 @@ class TextFormatter(ColumnFormatter) :
         print ()
         print ('Column "%s" contains dates with %d valid and %d NULL values.' %
                (name, data['valid_count'], data['null_count']))
+        print ('Date range is from %s to %s.' % (data['earliest'], data['latest']))
 
     ################################################################
     #
@@ -209,6 +212,7 @@ class LatexFormatter(ColumnFormatter) :
         print ()
         print ('\\item[%s] contains dates with %d valid and %d NULL values.' %
                (th, data['valid_count'], data['null_count']))
+        print ('Date range is from %s to %s.' % (data['earliest'], data['latest']))
 
     ################################################################
     #
@@ -262,16 +266,26 @@ class Analyzer(object) :
             data = self.counts[h]
             if not data :
                 self._write_unknown(h, formatter)
-            elif all_flags(data) :
+                continue
+
+            if all_flags(data) :
                 self._write_flag(h, formatter)
-            elif all_dates(data) :
-                self._write_date(h, formatter)
-            elif all_floats(data) : # integers count
+                continue
+
+            fmt = all_dates(data)
+            if fmt :
+                self._write_date(h, formatter, fmt[0])
+                continue
+
+            if all_floats(data) : # integers count
                 self._write_float(h, formatter)
-            elif all_strings(data) :
+                continue
+
+            if all_strings(data) :
                 self._write_string(h, formatter)
-            else :
-                self._write_error(h, formatter)
+                continue
+
+            self._write_error(h, formatter)
 
     def _check_headers(self, rdr) :
         if self.headers :
@@ -340,10 +354,15 @@ class Analyzer(object) :
 
         formatter.write_flag(h, data)
 
-    def _write_date(self, h, formatter) :
+    def _write_date(self, h, formatter, fmt) :
+        values = [datetime.datetime.strptime(v, fmt) 
+                  for v in self.counts[h].keys()]
+        
         data = {
             'null_count'  : self.nulls[h],
-            'valid_count' : sum(self.counts[h].values())
+            'valid_count' : sum(self.counts[h].values()),
+            'earliest'    : min(values).strftime(fmt),
+            'latest'      : max(values).strftime(fmt),
         }
         
         formatter.write_date(h, data)
