@@ -12,11 +12,7 @@ import sys
 
 import csvfileio
 import dateutils
-
-def texify(name) :
-    t = '\\_'.join(name.split('_'))
-    t = '\\#'.join(t.split('#'))
-    return t
+import texutils
 
 def likely_flag(v) :
     t = str(v).lower()
@@ -119,7 +115,7 @@ class LatexFormatter(ColumnFormatter) :
     ################################################################
     #
     def write_string(self, name, data) :
-        th = texify(name)
+        th = texutils.texify(name)
 
         print ('\\item[%s] has %d distinct values and %d NULL values.' %
                (th, data['distinct_count'], data['null_count']))
@@ -149,14 +145,14 @@ class LatexFormatter(ColumnFormatter) :
     ################################################################
     #
     def write_flag(self, name, data) :
-        th = texify(name)
+        th = texutils.texify(name)
 
         print ('\\item[%s] contains flags with %d true, %d false and %d NULL values.' %
                (th, data['true_count'], data['false_count'], data['null_count']))
     ################################################################
     #
     def write_date(self, name, data) :
-        th = texify(name)
+        th = texutils.texify(name)
 
         print ()
         print ('\\item[%s] contains dates with %d valid and %d NULL values.' %
@@ -166,7 +162,7 @@ class LatexFormatter(ColumnFormatter) :
     ################################################################
     #
     def write_float(self, name, data) :
-        th = texify(name)
+        th = texutils.texify(name)
         x = ''.join(name.split('_'))
         x = ''.join(x.split('#'))
         tn = 'tab:' + x
@@ -191,7 +187,7 @@ class LatexFormatter(ColumnFormatter) :
     ################################################################
     #
     def write_error(self, name) :
-        h = texify(name)
+        h = texutils.texify(name)
         print ('\\item[%s] was not processed correctly, please report' % (h,))
 
 ################################################################
