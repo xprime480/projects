@@ -10,6 +10,7 @@ import itertools
 import math
 import sys
 
+import apply_rules
 import csvfileio
 import dateutils
 import texutils
@@ -34,29 +35,45 @@ class Analyzer(object) :
 
     def write(self, formatter) :
         for h in self.headers :
-            data = self.counts[h]
-            if not data :
-                self._write_unknown(h, formatter)
-                continue
+            def rule_for_no_data(data) :
+                if not data :
+                    
+                    return True
 
-            if typeutils.all_flags(data) :
-                self._write_flag(h, formatter)
-                continue
+            def rule_for_flags(data) :
+                if typeutils.all_flags(data) :
+                    self._write_flag(h, formatter)
+                    return True
 
-            fmt = dateutils.all_dates(data)
-            if fmt :
-                self._write_date(h, formatter, fmt[0])
-                continue
+            def rule_for_dates(data) :
+                fmt = dateutils.all_dates(data)
+                if fmt :
+                    self._write_date(h, formatter, fmt[0])
+                    return True
 
-            if typeutils.all_floats(data) : # integers count
-                self._write_float(h, formatter)
-                continue
+            def rule_for_floats(data) :
+                if typeutils.all_floats(data) : # integers count
+                    self._write_float(h, formatter)
+                    return True
 
-            if typeutils.all_strings(data) :
-                self._write_string(h, formatter)
-                continue
+            def rule_for_strings(data) :
+                if typeutils.all_strings(data) :
+                    self._write_string(h, formatter)
+                    return True
+                    
+            def last_rule(data) :
+                self._write_error(h, formatter)
+                return True
 
-            self._write_error(h, formatter)
+            rules = [
+                rule_for_no_data,
+                rule_for_flags,
+                rule_for_dates,
+                rule_for_floats,
+                rule_for_strings,
+                last_rule
+            ]
+            apply_rules.find_a_matching_rule(self.counts[h], *rules)
 
     def _check_headers(self, rdr) :
         if self.headers :
