@@ -5,7 +5,6 @@ Analyze input columns and report results
 """
 
 import argparse
-import itertools
 import sys
 
 import csvfileio
