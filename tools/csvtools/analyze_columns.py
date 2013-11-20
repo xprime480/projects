@@ -238,18 +238,6 @@ class Analyzer(object) :
 
     ################################################################
     #
-    def _write_as_string(self, h) :
-        """Unused."""
-
-        values = self.counts[h]
-        self.counts[h] = {}
-        for v in values :
-            self._proc_string(h, str(int(v)))
-
-        self._write_string(h)
-
-    ################################################################
-    #
     def _write_error(self, h) :
         """Write an error message."""
 
