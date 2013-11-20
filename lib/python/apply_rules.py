@@ -9,6 +9,15 @@ def apply_rules(initial, *rules) :
 
     return obj
 
+def find_a_matching_rule(data, *rules) :
+    """Pass DATA to each of RULES until one returns a True value."""
+
+    for rule in rules :
+        if rule(data) :
+            return rule
+
+    return None
+
 
 def main() :
     """Test by generating some random numbers."""
