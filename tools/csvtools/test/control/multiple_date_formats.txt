@@ -1,10 +1,15 @@
 
-Column "YYYYMMDD" contains dates with 1 valid and 0 NULL values.
+Column "YYYYMMDD" contains dates with 2 valid and 0 NULL values.
+Date range is from 20120115 to 20120115.
 
-Column "MMDDYYYY" contains dates with 1 valid and 0 NULL values.
+Column "MMDDYYYY" contains dates with 2 valid and 0 NULL values.
+Date range is from 03051994 to 12252001.
 
-Column "MM_DD_YYYY" contains dates with 1 valid and 0 NULL values.
+Column "MM_DD_YYYY" contains dates with 2 valid and 0 NULL values.
+Date range is from 07/19/2000 to 05/04/2003.
 
-Column "YYYY_MM_DD" contains dates with 1 valid and 0 NULL values.
+Column "YYYY_MM_DD" contains dates with 2 valid and 0 NULL values.
+Date range is from 2001-12-15 to 2010-09-11.
 
-Column "MON_DD_YYYY" contains dates with 1 valid and 0 NULL values.
+Column "MON_DD_YYYY" contains dates with 1 valid and 1 NULL values.
+Date range is from Jan 17, 1960 to Jan 17, 1960.
