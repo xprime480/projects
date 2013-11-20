@@ -13,31 +13,7 @@ import sys
 import csvfileio
 import dateutils
 import texutils
-
-def likely_flag(v) :
-    t = str(v).lower()
-    return t == '0' or t == '1'
-
-def all_flags(vs) :
-    for v in vs :
-        if not likely_flag(v) :
-            return False
-    return True
-
-def all_floats(vs) :
-    for v in vs :
-        try :
-            float(v)
-        except ValueError :
-            return False
-    return True
-
-def all_strings(vs) :
-    for v in vs :
-        if type(v) != type('') :
-            return False
-
-    return True
+import typeutils
 
 ################################################################
 #
@@ -213,7 +189,7 @@ class Analyzer(object) :
                 self._write_unknown(h, formatter)
                 continue
 
-            if all_flags(data) :
+            if typeutils.all_flags(data) :
                 self._write_flag(h, formatter)
                 continue
 
@@ -222,11 +198,11 @@ class Analyzer(object) :
                 self._write_date(h, formatter, fmt[0])
                 continue
 
-            if all_floats(data) : # integers count
+            if typeutils.all_floats(data) : # integers count
                 self._write_float(h, formatter)
                 continue
 
-            if all_strings(data) :
+            if typeutils.all_strings(data) :
                 self._write_string(h, formatter)
                 continue
 
