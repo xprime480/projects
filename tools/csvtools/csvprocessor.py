@@ -34,7 +34,6 @@ class CsvProcessor(object) :
             self.current_output = None
         self.finish_write()
 
-
     def start_read(self) :
         pass
 
