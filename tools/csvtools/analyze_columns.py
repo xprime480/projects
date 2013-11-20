@@ -51,7 +51,7 @@ class Analyzer(object) :
         for h in self.headers :
             def rule_for_no_data(data) :
                 if not data :
-                    
+                    self._write_unknown(h)
                     return True
 
             def rule_for_flags(data) :
