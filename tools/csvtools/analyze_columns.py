@@ -17,23 +17,6 @@ def texify(name) :
     t = '\\#'.join(t.split('#'))
     return t
 
-def likely_date(v) :
-    """Check if input is likely a date."""
-
-    if int(v) != v :
-        return False
-    y = v // 10000
-    if y < 1900 or y > 2200 :
-        return False
-    m = (v // 100) % 100
-    if m < 1 or m > 12 :
-        return False
-    d = v % 100
-    if d < 1 or d > 31 :
-        return False
-
-    return True
-
 def all_date_formats() :
     now = datetime.datetime.now()
 
