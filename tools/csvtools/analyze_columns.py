@@ -11,46 +11,12 @@ import math
 import sys
 
 import csvfileio
+import dateutils
 
 def texify(name) :
     t = '\\_'.join(name.split('_'))
     t = '\\#'.join(t.split('#'))
     return t
-
-def all_date_formats() :
-    now = datetime.datetime.now()
-
-    year_fmts  = ['%y', '%Y']
-    month_fmts = ['%m', '%b', '%B']
-    day_fmts   = ['%d']
-    seps       = ['', '/', '-', ' ']
-
-    for x in itertools.product(year_fmts, month_fmts, day_fmts) :
-        for y in itertools.permutations(x, 3) :
-            for sep in seps :
-                yield sep.join(y)
-
-    yield '%B %d, %Y'           # January 17, 1960
-    yield '%b %d, %Y'           # Jan 17, 1960
-
-def all_dates(vs) :
-    fmts = list(all_date_formats())
-
-    for v in vs :
-        tfmts = fmts[:]
-        fmts  = []
-        for f in tfmts :
-            try :
-                d = datetime.datetime.strptime(v, f)
-                if not 1900 <= d.year <= 2100 :
-                    continue
-                fmts.append(f)
-            except ValueError :
-                pass
-        if not fmts :
-            break
-
-    return fmts
 
 def likely_flag(v) :
     t = str(v).lower()
@@ -255,7 +221,7 @@ class Analyzer(object) :
                 self._write_flag(h, formatter)
                 continue
 
-            fmt = all_dates(data)
+            fmt = dateutils.all_dates(data)
             if fmt :
                 self._write_date(h, formatter, fmt[0])
                 continue
