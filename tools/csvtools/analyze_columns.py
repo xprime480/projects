@@ -10,7 +10,6 @@ import itertools
 import math
 import sys
 
-import apply_rules
 import csvfileio
 import dateutils
 import texutils
@@ -49,45 +48,8 @@ class Analyzer(object) :
         """Write the descriptive statistics for each column."""
 
         for h in self.headers :
-            def rule_for_no_data(data) :
-                if not data :
-                    self._write_unknown(h)
-                    return True
-
-            def rule_for_flags(data) :
-                if typeutils.all_flags(data) :
-                    self._write_flag(h, formatter)
-                    return True
-
-            def rule_for_dates(data) :
-                fmt = dateutils.all_dates(data)
-                if fmt :
-                    self._write_date(h, formatter, fmt[0])
-                    return True
-
-            def rule_for_floats(data) :
-                if typeutils.all_floats(data) : # integers count
-                    self._write_float(h, formatter)
-                    return True
-
-            def rule_for_strings(data) :
-                if typeutils.all_strings(data) :
-                    self._write_string(h, formatter)
-                    return True
-                    
-            def last_rule(data) :
-                self._write_error(h, formatter)
-                return True
-
-            rules = [
-                rule_for_no_data,
-                rule_for_flags,
-                rule_for_dates,
-                rule_for_floats,
-                rule_for_strings,
-                last_rule
-            ]
-            apply_rules.find_a_matching_rule(self.counts[h], *rules)
+            func, extra = self._get_write_func(h)
+            func(h, formatter, extra)
 
     ################################################################
     #
@@ -130,7 +92,6 @@ class Analyzer(object) :
 
         for row in rdr :
             self.lines += 1
-
             for h in self.headers :
                 v = row[h]
                 if not v :
@@ -140,14 +101,39 @@ class Analyzer(object) :
 
     ################################################################
     #
-    def _write_unknown(self, h, formatter) :
+    def _get_write_func(self, h) :
+        """Map the header name to a function to write its statistics."""
+
+        data = self.counts[h]
+
+        if not data :
+            return self._write_unknown, None
+
+        if typeutils.all_flags(data) :
+            return self._write_flag, None
+
+        fmt = dateutils.all_dates(data)
+        if fmt :
+            return self._write_date, fmt[0]
+
+        if typeutils.all_floats(data) : # integers count
+            return self._write_float, None
+
+        if typeutils.all_strings(data) :
+            return self._write_string, None
+                    
+        return self._write_error, None
+
+    ################################################################
+    #
+    def _write_unknown(self, h, formatter, extra) :
         """Write descriptive statistics for a column of unknown type."""
 
         formatter.write_unknown()
 
     ################################################################
     #
-    def _write_string(self, h, formatter) :
+    def _write_string(self, h, formatter, extra) :
         """Write descriptive statistics for a column of strings."""
 
         c  = len(self.counts[h])
@@ -167,7 +153,7 @@ class Analyzer(object) :
 
     ################################################################
     #
-    def _write_flag(self, h, formatter) :
+    def _write_flag(self, h, formatter, extra) :
         """Write descriptive statistics for a column of flags."""
 
         tv = 0
@@ -206,7 +192,7 @@ class Analyzer(object) :
 
     ################################################################
     #
-    def _write_float(self, h, formatter) :
+    def _write_float(self, h, formatter, extra) :
         """Write descriptive statistics for a column of numerical input."""
 
         values = []
@@ -238,7 +224,7 @@ class Analyzer(object) :
 
     ################################################################
     #
-    def _write_error(self, h) :
+    def _write_error(self, h, formatter, extra) :
         """Write an error message."""
 
         formatter.write_error(h)
