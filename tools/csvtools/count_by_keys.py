@@ -9,25 +9,19 @@ import itertools
 import math
 import sys
 
-import csvfileio
+import csvprocessor
 
 
 ################################################################
 #
-class Analyzer(object) :
+class KeyCounter(csvprocessor.CsvProcessor) :
+
     ################################################################
     #
-    def __init__(self) :
+    def __init__(self, categories, extra_columns = ['Count']) :
+        super().__init__()
 
-        self.categories = [
-            'Business_Status',
-            'Facility_Risk_Rating',
-            'Loan_Type',
-            'Balance_Tier',
-            'Term_Type',
-            'Collateral_Group',
-            'Period'
-        ]
+        self.categories = categories
 
         self.category_values = {}
         for cat in self.categories :
@@ -36,50 +30,46 @@ class Analyzer(object) :
         self.category_count = len(self.categories)
 
         self.headers = self.categories[:]
-        self.headers.extend([
-            'Count',
-            'Total_Balance',
-            'Effective_Rate'
-        ])
+        self.headers.extend(extra_columns)
 
         # input data
         #
         self.all_rows = []
 
-    ################################################################
-    #
-    def read(self, infile) :
-        with csvfileio.CsvFileIo(infile, False) as rdr :
-            self._process(rdr)
 
     ################################################################
     #
-    def write(self, outfile) :
-        with csvfileio.CsvFileIo(outfile, True, self.headers) as rtr :
-            rtr.writeheader()
-            self._write_rows(rtr, self.all_rows, {}, 0)
-        
-    ################################################################
-    #
-    def _process(self, rdr) :
-        for row in rdr :
-            self.all_rows.append(row)
+    def process_row(self, row) :
+        self.all_rows.append(row)
 
-            for cat in self.categories :
-                value = row[cat]
-                self.category_values[cat][value] = 1
+        for cat in self.categories :
+            value = row[cat]
+            self.category_values[cat][value] = 1
 
     ################################################################
     #
-    def _write_rows(self, rtr, candidates, output, index) :
+    def start_write(self) :
+        return self.headers[:]
+
+    ################################################################
+    #
+    def get_next_output_row(self) :
+        for row in self._generate_rows(self.all_rows, {}, 0) :
+            yield row
+
+    ################################################################
+    #
+    def _generate_rows(self, candidates, output, index) :
         if index < self.category_count :
-            self._loop_on_index(rtr, candidates, output, index)
+            for row in self._loop_on_index(candidates, output, index) :
+                yield row
         else :
-            self._write_one(rtr, candidates, output)
+            for row in self.generate_one(candidates, output) :
+                yield row
 
     ################################################################
     #
-    def _loop_on_index(self, rtr, candidates, output, index) :
+    def _loop_on_index(self, candidates, output, index) :
         key  = self.categories[index]
         vals = self.category_values[key]
         for val in vals.keys() :
@@ -89,16 +79,44 @@ class Analyzer(object) :
 
             new_candidates = [x for x in candidates if x[key] == val]
 
-            self._write_rows(rtr, new_candidates, new_output, index+1)
+            for row in self._generate_rows(new_candidates, new_output, index+1) :
+                yield row
 
         new_output = {}
         new_output.update(output)
         new_output[key] = '***All***'
-        self._write_rows(rtr, candidates, new_output, index+1)
+        for row in self._generate_rows(candidates, new_output, index+1) :
+            yield row
 
     ################################################################
     #
-    def _write_one(self, rtr, candidates, output) :
+    def generate_one(self, candidates, output) :
+        output['Count'] = len(candidates)
+        yield output
+        
+################################################################
+#
+class Analyzer(KeyCounter) :
+    __categories = [
+        'Business_Status',
+        'Facility_Risk_Rating',
+        'Loan_Type',
+        'Balance_Tier',
+        'Term_Type',
+        'Collateral_Group',
+        'Period'
+    ]
+
+    __extra = [
+        'Count',
+        'Total_Balance',
+        'Effective_Rate'
+    ]
+
+    def __init__(self) :
+        super().__init__(Analyzer.__categories, Analyzer.__extra)
+
+    def generate_one(self, candidates, output) :
 
         if output['Collateral_Group'].startswith('Fin') :
             return
@@ -143,8 +161,8 @@ class Analyzer(object) :
         output['Total_Balance']  = bal
         output['Effective_Rate'] = rate
 
-        rtr.writerow(output)
-        
+        yield output
+
 ################################################################
 #
 def main() :
@@ -165,8 +183,8 @@ def main() :
         sys.exit(1)
     
     analyzer = Analyzer()
-    analyzer.read(args.infile[0])
-    analyzer.write(args.outfile[0])
+    analyzer.read(*args.infile)
+    analyzer.write(*args.outfile)
 
 ################################################################
 #
