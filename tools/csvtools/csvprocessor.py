@@ -30,7 +30,7 @@ class CsvProcessor(object) :
             with csvfileio.CsvFileIo(f, True, headers) as rtr :
                 rtr.writeheader()
                 for row in self.get_next_output_row() :
-                    rtr.write_row(row)
+                    rtr.writerow(row)
             self.current_output = None
         self.finish_write()
 
