@@ -8,39 +8,34 @@ import argparse
 import itertools
 import sys
 
-import csvfileio
-
-def texify(name) :
-    return '\\_'.join(name.split('_'))
+import csvprocessor
 
 ################################################################
 #
-class Analyzer(object) :
+class Analyzer(csvprocessor.CsvProcessor) :
     def __init__(self, key, val) :
+        super().__init__()
+
         self.a2m = {}
         self.key = key
         self.val = val
-        
 
-    def read(self, *files) :
-        for f in files :
-            with csvfileio.CsvFileIo(f, False) as rdr :
-                self._process(rdr)
-                
-    def write(self) :
-        print (self.key, self.val, sep=',')
+    def process_row(self, row) :
+        k = row[self.key]
+        v = row[self.val]
+        q = self.a2m.get(k, {})
+        q.update({v:1})
+        self.a2m[k] = q
+
+    def start_write(self) :
+        return [self.key, self.val]
+
+    def get_next_output_row(self) :
         for key, value in self.a2m.items() :
             if len(value) > 1 :
                 for k,v in value.items() :
-                    print (key, k, sep=',')
+                    yield { self.key : key,  self.val : k }
 
-    def _process(self, rdr) :
-        for row in rdr :
-            k = row[self.key]
-            v = row[self.val]
-            q = self.a2m.get(k, {})
-            q.update({v:1})
-            self.a2m[k] = q
 
 ################################################################
 #
@@ -54,9 +49,12 @@ def main() :
     parser.add_argument("val",
                         help="column name of the VALUE",
                         nargs=1)
-    parser.add_argument("files",
-                        help="CSV input files",
-                        nargs=argparse.REMAINDER)
+    parser.add_argument("infile",
+                        help="CSV input file",
+                        nargs=1)
+    parser.add_argument("outfile",
+                        help="CSV output file",
+                        nargs=1)
 
     try :
         args = parser.parse_args()
@@ -65,8 +63,8 @@ def main() :
         sys.exit(1)
     
     analyzer = Analyzer(args.key[0], args.val[0])
-    analyzer.read(*args.files)
-    analyzer.write()
+    analyzer.read(*args.infile)
+    analyzer.write(*args.outfile)
 
 ################################################################
 #
