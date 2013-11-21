@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-EXE=../keycounter.py
+EXE=../key_counter.py
 SAMPLEDIR=./sample
 CONTROLDIR=./control
 ROOT=${1}
