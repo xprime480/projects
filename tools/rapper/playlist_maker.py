@@ -163,7 +163,9 @@ class PlaylistMaker(object) :
         artist_tracks = {}
 
         for track in tracks :
-            a = track.get_artist()
+            a = track.get_artist().lower()
+            if a.startswith('the ') and len(a) > 4 :
+                a = a[4:]
             d = artist_tracks.get(a, [])
             d.append(track)
             artist_tracks[a] = d
