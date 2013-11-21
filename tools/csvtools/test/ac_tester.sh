@@ -4,24 +4,23 @@ EXE=../analyze_columns.py
 SAMPLEDIR=./sample
 CONTROLDIR=./control
 ROOT=${1}
+INPUT_FILE=${ROOT}.csv
 
+source ./do_the_test.sh
 
 function one_test () {
     EXT=${1}
     FLAGS=${2}
     SAMPLE_FILE=${SAMPLEDIR}/${ROOT}.${EXT}
     CONTROL_FILE=${CONTROLDIR}/${ROOT}.${EXT}
+    STD_OUT=${SAMPLE_FILE}
 
-    ${EXE} ${FLAGS} ${ROOT}.csv > ${SAMPLE_FILE} || exit 1
-    
-    if [ \! -f ${CONTROL_FILE} ]; then
-	echo "Control file ${CONTROL_FILE} does not exist."
-	exit 1
-    fi
-
-    diff -q ${SAMPLE_FILE} ${CONTROL_FILE} || exit 1
-
-    rm ${SAMPLE_FILE}
+    do_the_test \
+	${EXE}  \
+	"${FLAGS} ${INPUT_FILE}" \
+	${SAMPLE_FILE}  \
+	${CONTROL_FILE} \
+	${STD_OUT}
 }
 
 one_test tex
