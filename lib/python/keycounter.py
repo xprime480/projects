@@ -108,8 +108,12 @@ def main() :
     except IOError as e :
         print (e)
         sys.exit(1)
-    
-    analyzer = KeyCounter(['INT_DATA','STR_DATA'])
+
+    keys = []
+    if args.keys :
+        keys = args.keys[0].split(',')
+        
+    analyzer = KeyCounter(keys)
     analyzer.read(*args.infile)
     analyzer.write(*args.outfile)
 
