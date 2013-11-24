@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import itertools
 import sys
 
 ################################################################
@@ -10,12 +11,22 @@ class RowReference(object) :
         self.rowid = rowid
 
     def __repr__(self) :
-        cols = self.table.get_cols()
+        row = self.values()
+        return str(row)
+
+    def values(self, cols=None) :
+        if not cols :
+            cols = self.table.get_cols()
         row = []
         for col in cols :
             row.append(self.table.get_value(col, self.rowid))
+        return row
 
-        return str(row)
+    def as_dict(self) :
+        cols = self.table.get_cols()
+        vals = self.values(cols)
+
+        return dict(zip(cols, vals))
 
 ################################################################
 #
@@ -84,6 +95,8 @@ class DataTable(object) :
             self._add_from_dict(values)
         elif type(values) == type([]) :
             self._add_from_list(values)
+        elif type(values) == RowReference :
+            self._add_from_dict(values.as_dict())
         else :
             raise Exception('Don''t know how to add %s ' % str(values))
             
@@ -120,6 +133,11 @@ class DataTable(object) :
 
     ################################################################
     #
+    def get_name(self) :
+        return self.name
+
+    ################################################################
+    #
     def get_row_count(self) :
         return self.row_count
 
@@ -142,12 +160,82 @@ class DataTable(object) :
 
     ################################################################
     #
+    def project(self, name, cols) :
+        new_table = DataTable(name, cols)
+        for col in cols :
+            if col in self.cols :
+                new_table.rows[col] = self.get_values(col)
+            else :
+                new_table.rows[col] = [None] * self.row_count
+        return new_table
+
+    ################################################################
+    #
+    def filter(self, name, filterfn) :
+        new_table = DataTable(name, self.cols)
+        for row in self :
+            d = row.as_dict()
+            if filterfn(d) :
+                new_table._add_from_dict(d)
+        return new_table
+
+    ################################################################
+    #
+    def select(self, name, *selectors) :
+        cols = [s.get_name() for s in selectors]
+        new_table = DataTable(name, cols)
+        for row in self :
+            d = row.as_dict()
+            r = [s(d) for s in selectors]
+            new_table._add_from_list(r)
+        return new_table
+
+    ################################################################
+    #
+    def group_by(self, name, keys, *aggregators) :
+        cols = [k.get_name() for k in keys]
+        cols.extend(a.get_name() for a in aggregators)
+        new_table = DataTable(name, cols)
+
+        def key_func(row) :
+            r = row.as_dict()
+            key = tuple([k(r) for k in keys])
+            return key
+            
+        temp = [(key_func(r), r) for r in self]
+        temp.sort(key=lambda x : x[0])
+        for key, rows in itertools.groupby(temp, lambda x : x[0]) :
+            rvals = [x[1].as_dict() for x in rows]
+            new_row = list(key)
+            new_row.extend([a(rvals) for a in aggregators])
+            new_table.add_row(new_row)
+        
+        return new_table
+                 
+    ################################################################
+    #
+    def order_by(self, name, *selectors) :
+        
+        temp = []
+        for row in self :
+            r = row.as_dict()
+            keys = tuple([s(r) for s in selectors])
+            temp.append((keys, r))
+
+        temp.sort(key=lambda x : x[0])
+        
+        new_table = DataTable(name, self.get_cols())
+        new_table.add_rows([x[1] for x in temp])
+        return new_table
+
+    ################################################################
+    #
     def __iter__(self) :
         return DataTableIterator(self, range(self.row_count))
 
     ################################################################
     #
-    def display(self, f) :
+    def display(self, f=sys.stderr) :
         print ('\n\n', file=f)
         print ('Table %s:' % self.name, file=f)
 
@@ -163,32 +251,4 @@ class DataTable(object) :
         print ('Row count = %d' % self.row_count, file=f)
 
 if __name__ == '__main__' :
-    d1 = DataTable('d1')
-    d1.display(sys.stdout)
-    try :
-        d2 = DataTable('d2', ['cat', 'cat'])
-    except Exception as e :
-        pass
-
-    d3 = DataTable('d3', ['Key', 'Value'])
-    d3.display(sys.stdout)
-
-    d3.add_row(['dog', 7])
-    d3.add_row(['cat', 3])
-    
-    d3.display(sys.stdout)
-
-    d4 = DataTable('d4')
-    d4.add_cols(d3)
-    d4.display(sys.stdout)
-
-    d5 = DataTable('d5', ['Key', 'More'])
-    d5.add_row(['Sam', 'Dave'])
-    d5.add_row(['Mike', 'Abby'])
-    d5.add_cols(d3)
-    d6 = DataTable('d6', ['Not_Used'])
-    d5.add_cols(d6)
-    d5.display(sys.stdout)
-
-    for row in d5 :
-        print (row, file=sys.stdout)
+    print ('Run testdatatable.py for unit tests.')
