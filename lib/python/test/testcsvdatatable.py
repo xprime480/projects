@@ -30,7 +30,7 @@ class CombinatorTest(unittest.TestCase) :
             dt.get_values('Name')
         )
         self.assertCountEqual(
-            ['Colonel', 'Major', 'Major'],
+            ['Captain', 'Major', 'Major'],
             dt.get_values('Rank')
         )
         self.assertCountEqual(
