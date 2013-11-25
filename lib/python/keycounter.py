@@ -33,7 +33,6 @@ class KeyCounter(csvprocessor.CsvProcessor) :
         #
         self.all_rows = []
 
-
     ################################################################
     #
     def process_row(self, row) :
@@ -120,8 +119,9 @@ class KeyCounterAlt(object) :
         del (selector)
 
         # create the output table
+        aggs = self.get_aggregators()
         cols = self.categories[:]
-        cols.append('Count')
+        cols.extend([a.get_name() for a in aggs])
         self.outputdata = datatable.DataTable(name, cols)
         del (cols)
         
@@ -130,8 +130,15 @@ class KeyCounterAlt(object) :
             filterfn = self._make_filter_fn(x)
             dt = self.inputdata.filter('temp', filterfn)
             row = list(x)[:]
-            row.append(dt.get_row_count())
+            row.extend([a(dt) for a in aggs])
             self.outputdata.add_row(row)
+
+        del (aggs)
+
+    ################################################################
+    #
+    def get_aggregators(self) :
+        return [selectors.count_aggregator()]
 
     ################################################################
     #
