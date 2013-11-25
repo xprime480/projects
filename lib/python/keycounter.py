@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 
 import argparse
+import itertools
 import sys
 
+import csvdatatable
 import csvprocessor
+import datatable
+import selectors
 
 ################################################################
 #
@@ -87,6 +91,68 @@ class KeyCounter(csvprocessor.CsvProcessor) :
         output['Count'] = len(candidates)
         yield output
 
+class KeyCounterAlt(object) :
+
+    ################################################################
+    #
+    def __init__(self, categories) :
+        self.categories = categories
+        self.inputdata  = None
+        self.outputdata = None
+        self.cat_values = {}
+
+        for cat in self.categories :
+            self.cat_values[cat] = {}
+
+    ################################################################
+    #
+    def read(self, name) :
+        self.inputdata = csvdatatable.read(name)
+
+    ################################################################
+    #
+    def generate_counts(self, name='temp') :
+        # get the unique keys for each column
+        for cat in self.categories :
+            selector = selectors.simple_column_selector(cat)
+            self.cat_values[cat] = self.inputdata.group_by('temp', [selector]).get_values(cat)
+            self.cat_values[cat].append('***All***')
+        del (selector)
+
+        # create the output table
+        cols = self.categories[:]
+        cols.append('Count')
+        self.outputdata = datatable.DataTable(name, cols)
+        del (cols)
+        
+        # get counts for each combination.
+        for x in itertools.product(*[v for v in self.cat_values.values()]) :
+            filterfn = self._make_filter_fn(x)
+            dt = self.inputdata.filter('temp', filterfn)
+            row = list(x)[:]
+            row.append(dt.get_row_count())
+            self.outputdata.add_row(row)
+
+    ################################################################
+    #
+    def write(self, name) :
+        if not self.inputdata :
+            return
+
+        if not self.outputdata :
+            self.generate_counts(name)
+
+        csvdatatable.write(self.outputdata)
+
+    ################################################################
+    #
+    def  _make_filter_fn(self, values) :
+        named = zip(self.categories, values)
+        preds = [v for v in named if v[1] != '***All***']
+        def ffn(row) :
+            return all([row[p[0]] == p[1] for p in preds])
+        return ffn
+
 ################################################################
 #
 def main() :
@@ -112,7 +178,7 @@ def main() :
     keys = []
     if args.keys :
         keys = args.keys[0].split(',')
-        
+
     analyzer = KeyCounter(keys)
     analyzer.read(*args.infile)
     analyzer.write(*args.outfile)
