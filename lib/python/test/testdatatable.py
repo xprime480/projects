@@ -95,18 +95,13 @@ class CombinatorTest(unittest.TestCase) :
         key_selector  = simple_column_selector('Key', rename='Bob')
         keys = [key_selector]
 
-        def sum_func(ds) :
-            return sum([v for v in [d['Value'] for d in ds] if v])
-        sum_aggregator = NamedSelector('Sum_of_Values', sum_func)
-
-        def count_func(ds) :
-            return len([d for d in ds])
-        count_aggregator = NamedSelector('Count', count_func)
-
         dg = dt.group_by('TestGroupBy',
                          keys,
-                         sum_aggregator,
-                         count_aggregator)
+                         sum_aggregator(
+                             'Sum_of_Values',
+                             simple_column_selector('Value')
+                         ),
+                         count_aggregator())
 
         self.assertCountEqual(['Bob', 'Sum_of_Values', 'Count'], dg.get_cols())
         self.assertCountEqual(['cat', 'dog', 'fish'], dg.get_values('Bob'))
@@ -118,7 +113,7 @@ class CombinatorTest(unittest.TestCase) :
 
         dg2 = dt.group_by('TestGroupBy2',
                           keys,
-                          count_aggregator)
+                          count_aggregator())
 
         self.assertCountEqual(
             ['Bob', 'Value', 'Count'],
