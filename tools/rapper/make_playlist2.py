@@ -63,7 +63,7 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
         #
         # get (almost) all 5 stars.  
         #
-        self.extend_playlist(*five_star_list)
+        #self.extend_playlist(*five_star_list)
 
         # keep looping until the list is long enough
         #
@@ -78,7 +78,7 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
             #
             # get oldest
             #
-            for x in [5, 4, 3, 2] :
+            for x in [5, 4, 2] :
                 self.extend_playlist(*old_by_stars[x])
                 #self.add_to_list(self.get_oldest_by_stars(x), 100, 25)
                 
