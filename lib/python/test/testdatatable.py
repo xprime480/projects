@@ -7,7 +7,7 @@ from selectors import *
 
 ##################################################################
 #
-class CombinatorTest(unittest.TestCase) :
+class DataTableTest(unittest.TestCase) :
     """Test DataTable."""
 
     ##################################################################
@@ -62,14 +62,17 @@ class CombinatorTest(unittest.TestCase) :
         dp = dt.project('TestProjection', ['Key'])
 
         self.assertEqual(['Key'], dp.get_cols())
-        self.assertCountEqual(['dog', 'cat'], dp.get_values('Key'))
+        self.assertCountEqual([['dog'], ['cat']], dp.get_values('Key'))
 
     def test_filter(self) :
         dt = self.make_dt_one()
-        df = dt.filter('TestFilter', lambda x : x['Key'] == 'dog')
+        def fn(d) :
+            k = d['Key']
+            return k == 'dog'
 
+        df = dt.filter('TestFilter', fn)
         self.assertEqual(1, df.get_row_count())
-        self.assertCountEqual([7], df.get_values('Value'))
+        self.assertCountEqual([[7, 'dog']], df.get_values('Value', 'Key'))
 
     def test_select(self) :
         dt = self.make_dt_one()
@@ -79,21 +82,24 @@ class CombinatorTest(unittest.TestCase) :
         ds = dt.select('TestSelect', key_selector, data_selector)
 
         self.assertCountEqual(['Key', 'Result'], ds.get_cols())
-        self.assertCountEqual(['cat', 'dog'], ds.get_values('Key'))
-        self.assertCountEqual([10, 50], ds.get_values('Result'))
+        self.assertCountEqual(
+            [['cat', 10], ['dog', 50]], 
+            ds.get_values('Key', 'Result')
+        )
 
     def test_group_by(self) :
         dt = self.make_dt_one()
         dt.add_rows(dt)
 
         self.assertCountEqual(['Key', 'Value'],   dt.get_cols())
-        self.assertCountEqual(['cat', 'dog'] * 2, dt.get_values('Key'))
-        self.assertCountEqual([3, 7] * 2,         dt.get_values('Value'))
+        self.assertCountEqual(
+            [['cat', 3], ['dog', 7]] * 2, 
+            dt.get_values('Key', 'Value')
+        )
 
-        dt.add_row(['fish', None])
+        dt.add_rows([['fish', None]])
 
-        key_selector  = simple_column_selector('Key', rename='Bob')
-        keys = [key_selector]
+        keys = [ simple_column_selector('Key', rename='Bob') ]
 
         dg = dt.group_by('TestGroupBy',
                          keys,
@@ -103,10 +109,18 @@ class CombinatorTest(unittest.TestCase) :
                          ),
                          count_aggregator())
 
-        self.assertCountEqual(['Bob', 'Sum_of_Values', 'Count'], dg.get_cols())
-        self.assertCountEqual(['cat', 'dog', 'fish'], dg.get_values('Bob'))
-        self.assertCountEqual([6, 14, 0], dg.get_values('Sum_of_Values'))
-        self.assertCountEqual([2,2,1], dg.get_values('Count'))
+        self.assertCountEqual(
+            ['Bob', 'Sum_of_Values', 'Count'], 
+            dg.get_cols()
+        )
+        self.assertCountEqual(
+            [
+                ['cat', 6, 2], 
+                ['dog', 14, 2], 
+                ['fish', 0, 1]
+            ], 
+            dg.get_values('Bob', 'Sum_of_Values', 'Count')
+        )
 
         value_selector = simple_column_selector('Value')
         keys.append(value_selector)
@@ -120,27 +134,23 @@ class CombinatorTest(unittest.TestCase) :
             dg2.get_cols()
         )
         self.assertCountEqual(
-            ['cat', 'dog', 'fish'],
-            dg2.get_values('Bob')
-        )
-        self.assertCountEqual(
-            [3, 7, None],
-            dg2.get_values('Value')
-        )
-        self.assertCountEqual(
-            [2,2,1],
-            dg2.get_values('Count')
+            [
+                ['cat',  3,    2], 
+                ['dog',  7,    2], 
+                ['fish', None, 1]
+            ],
+            dg2.get_values('Bob', 'Value', 'Count')
         )
 
     def test_order_by(self) :
         dt = self.make_dt_one()
 
-        self.assertEqual([7,3], dt.get_values('Value'))
+        self.assertEqual([[7], [3]], dt.get_values('Value'))
 
         value_selector = simple_column_selector('Value')
         ds = dt.order_by('TestOrderBy', value_selector)
 
-        self.assertEqual([3,7], ds.get_values('Value'))
+        self.assertEqual([[3], [7]], ds.get_values('Value'))
 
     def make_dt_one(self) :
         dt = DataTable('table', ['Key', 'Value'])
@@ -150,8 +160,10 @@ class CombinatorTest(unittest.TestCase) :
 
     def assert_dt_one(self, dt) :
         self.assertCountEqual(['Key', 'Value'], dt.get_cols())
-        self.assertCountEqual(['dog', 'cat'], dt.get_values('Key'))
-        self.assertCountEqual([7, 3], dt.get_values('Value'))
+        self.assertCountEqual(
+            [['dog', 7], ['cat', 3]], 
+            dt.get_values('Key', 'Value')
+        )
         self.assertEqual(2, dt.get_row_count())
 
 ################################################################
