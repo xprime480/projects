@@ -8,8 +8,8 @@ import csvdatatable
 
 ##################################################################
 #
-class CombinatorTest(unittest.TestCase) :
-    """Test DataTable."""
+class CsvDataTableTest(unittest.TestCase) :
+    """Test CsvDataTable."""
 
     ##################################################################
     #
@@ -26,16 +26,12 @@ class CombinatorTest(unittest.TestCase) :
             dt.get_cols()
         )
         self.assertCountEqual(
-            ['Yossarian', 'Major', 'Tom'], 
-            dt.get_values('Name')
-        )
-        self.assertCountEqual(
-            ['Captain', 'Major', 'Major'],
-            dt.get_values('Rank')
-        )
-        self.assertCountEqual(
-            ['123456', '888888', '987654'],
-            dt.get_values('Serial Number')
+            [
+                ['Yossarian', 'Captain', '123456'],
+                ['Major', 'Major', '888888'],
+                ['Tom', 'Major', '987654']
+            ], 
+            dt.get_values('Name', 'Rank', 'Serial Number')
         )
 
     def test_write(self) :
@@ -55,7 +51,7 @@ class CombinatorTest(unittest.TestCase) :
             dt.get_cols()
         )
         self.assertCountEqual(
-            ['Wine', 'Batman'], 
+            [['Wine'], ['Batman']], 
             dt.get_values('Good')
         )
 
