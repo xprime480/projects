@@ -42,16 +42,16 @@ class KeyCounterTest(unittest.TestCase) :
         self.assertCountEqual(['Name','Rank','Count'], dt.get_cols())
         self.assertEqual(12, dt.get_row_count())
         self.assertCountEqual(
-            ['Major', 'Yossarian', 'Tom', '***All***'] * 3,
+            [['Major'], ['Yossarian'], ['Tom'], ['***All***']] * 3,
             dt.get_values('Name')
         )
         self.assertCountEqual(
-            ['Major', 'Captain', '***All***'] * 4,
+            [['Major'], ['Captain'], ['***All***']] * 4,
             dt.get_values('Rank')
         )
         self.assertCountEqual(
             [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 3],
-            [int(x) for x in dt.get_values('Count')]
+            [int(x[0]) for x in dt.get_values('Count')]
         )
 
         os.unlink('test2.csv')
