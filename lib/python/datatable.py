@@ -56,41 +56,50 @@ class DataTable(object) :
             if self.cols.count(col) > 1 :
                 raise Exception('Duplicate column name: %s' % name)
 
-        self.rows      = {}
-        for col in self.cols :
-            self.rows[col] = []
-
-        self.row_count = 0
+        self.col_indices = dict(zip(self.cols, range(len(self.cols))))
+        self.rows        = []
+        self.row_count   = 0
+        self.version     = 0
 
     ################################################################
     #
     def add_cols(self, source) :
-        cols    = source.get_cols()
-        new_cols = set(cols).difference(self.cols)
-        self.cols.extend(list(new_cols))
+        cols     = source.get_cols()
+        new_cols = list(set(cols).difference(self.cols))
+        self.cols.extend(new_cols)
+        self.col_indices = dict(zip(self.cols, range(len(self.cols))))
         
-        for col in new_cols :
-            new_vals = source.get_values(col)
-            count = len(new_vals)
-            if self.row_count == 0 :
-                self.row_count = count
-            expected = self.row_count
-            if count > expected :
-                new_vals = new_vals[:expected]
-            elif count < expected :
-                new_vals.extend([None] * (expected-count))
+        new_vals = source.get_values(*new_cols)
+        count = len(new_vals)
 
-            self.rows[col] = new_vals
+        if self.row_count == 0 :
+            self.row_count = count
+            for i in range(count) :
+                self.rows.append([])
+
+        expected = self.row_count
+        if count > expected :
+            new_vals = new_vals[:expected]
+        elif count < expected :
+            extender = [None] * len(new_cols)
+            new_vals.extend([extender] * (expected-count))
+
+        for i in range(self.row_count) :
+            self.rows[i].extend(new_vals[i])
+
+        self.version += 1
 
     ################################################################
     #
     def add_rows(self, rows) :
         for row in rows :
-            self.add_row(row)
+            self.add_row(row, 0)
+
+        self.version += 1
 
     ################################################################
     #
-    def add_row(self, values) :
+    def add_row(self, values, _version_incr=1) :
         if type(values) == type({}) :
             self._add_from_dict(values)
         elif type(values) == type([]) :
@@ -99,15 +108,15 @@ class DataTable(object) :
             self._add_from_dict(values.as_dict())
         else :
             raise Exception('Don''t know how to add %s ' % str(values))
+
+        self.row_count  = len(self.rows)
+        self.version   += _version_incr
             
     ################################################################
     #
     def _add_from_dict(self, row) :
-        for col in self.cols :
-            val = row.get(col, None)
-            self.rows[col].append(val)
-
-        self.row_count += 1
+        vals = [row.get(col, None) for col in self.cols]
+        self.rows.append(vals)
         
     ################################################################
     #
@@ -115,15 +124,11 @@ class DataTable(object) :
         count = len(self.cols)
         inrow = len(row)
 
-        for i in range(min(count, inrow)) :
-            col = self.cols[i]
-            val = row[i]
-            self.rows[col].append(val)
-
-        for i in range(inrow, count) :
-            col = self.cols
-            self.rows[col].append(None)
-
+        rowdata = row[:count]
+        if count > inrow :
+            rowdata.extend([None] * (count - inrow))
+            
+        self.rows.append(rowdata)
         self.row_count += 1
 
     ################################################################
@@ -146,27 +151,24 @@ class DataTable(object) :
     def get_value(self, col, i) :
         if col not in self.cols :
             raise Exception('Column %s not in data' % col)
-        col = self.rows[col]
-        if len(col) <= i :
+        if len(self.rows) <= i :
             raise Exception('Table has fewer than %d rows' % i)
-        return col[i]
+        return self.rows[i][self.col_indices[col]]
 
     ################################################################
     #
-    def get_values(self, col) :
-        if col not in self.cols :
-            raise Exception('Column %s not in data' % col)
-        return self.rows[col][:]
+    def get_values(self, *cols) :
+        for col in cols :
+            if col not in self.cols :
+                raise Exception('Column %s not in data' % col)
+        col_indices = [self.col_indices[col] for col in cols]
+        return [[row[x] for x in col_indices] for row in self.rows]
 
     ################################################################
     #
     def project(self, name, cols) :
         new_table = DataTable(name, cols)
-        for col in cols :
-            if col in self.cols :
-                new_table.rows[col] = self.get_values(col)
-            else :
-                new_table.rows[col] = [None] * self.row_count
+        new_table.add_rows(self.get_values(*cols))
         return new_table
 
     ################################################################
@@ -177,6 +179,7 @@ class DataTable(object) :
             d = row.as_dict()
             if filterfn(d) :
                 new_table._add_from_dict(d)
+                new_table.row_count += 1
         return new_table
 
     ################################################################
@@ -188,6 +191,7 @@ class DataTable(object) :
             d = row.as_dict()
             r = [s(d) for s in selectors]
             new_table._add_from_list(r)
+        new_table.version += 1
         return new_table
 
     ################################################################
@@ -204,6 +208,7 @@ class DataTable(object) :
             
         temp = [(key_func(r), r) for r in self]
         temp.sort(key=lambda x : x[0])
+
         for key, rows in itertools.groupby(temp, lambda x : x[0]) :
             rvals = [x[1].as_dict() for x in rows]
             new_row = list(key)
@@ -236,7 +241,7 @@ class DataTable(object) :
     ################################################################
     #
     def display(self, f=sys.stderr) :
-        print ('\n\n', file=f)
+        #print ('\n\n', file=f)
         print ('Table %s:' % self.name, file=f)
 
         if not self.cols :
@@ -249,6 +254,7 @@ class DataTable(object) :
 
         print ('', file=f)
         print ('Row count = %d' % self.row_count, file=f)
+        print ('Version = %d' % self.version, file=f)
 
 if __name__ == '__main__' :
     print ('Run testdatatable.py for unit tests.')
