@@ -114,7 +114,8 @@ class KeyCounterAlt(object) :
         # get the unique keys for each column
         for cat in self.categories :
             selector = selectors.simple_column_selector(cat)
-            self.cat_values[cat] = self.inputdata.group_by('temp', [selector]).get_values(cat)
+            vs = self.inputdata.group_by('temp', [selector]).get_values(cat)
+            self.cat_values[cat] = [v[0] for v in vs]
             self.cat_values[cat].append('***All***')
         del (selector)
 
