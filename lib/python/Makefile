@@ -13,3 +13,6 @@ install :
 
 test :
 	make -C test test
+
+perf :
+	make -C test perf

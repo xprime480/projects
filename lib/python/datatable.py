@@ -3,49 +3,13 @@
 import itertools
 import sys
 
-################################################################
-#
-class RowReference(object) :
-    def __init__(self, table, rowid) :
-        self.table = table
-        self.rowid = rowid
-
-    def __repr__(self) :
-        row = self.values()
-        return str(row)
-
-    def values(self, cols=None) :
-        if not cols :
-            cols = self.table.get_cols()
-        row = []
-        for col in cols :
-            row.append(self.table.get_value(col, self.rowid))
-        return row
-
-    def as_dict(self) :
-        cols = self.table.get_cols()
-        vals = self.values(cols)
-
-        return dict(zip(cols, vals))
+import datatablebase
+from datatableiterator import DataTableIterator, RowReference
+import rowadapter
 
 ################################################################
 #
-class DataTableIterator(object) :
-    def __init__(self, table, rows) :
-        self.table = table
-        self.rows  = rows
-        self.curr  = 0
-
-    def __next__(self) :
-        if self.curr >= len(self.rows) :
-            raise StopIteration
-        row = RowReference(self.table, self.rows[self.curr])
-        self.curr += 1
-        return row
-    
-################################################################
-#
-class DataTable(object) :
+class DataTable(datatablebase.DataTableBase) :
     
     ################################################################
     #
@@ -184,6 +148,17 @@ class DataTable(object) :
 
     ################################################################
     #
+    def alt_filter(self, name, filterfn) :
+        accept = []
+        new_table = DataTable(name, self.cols)
+        for row in self :
+            d = row.as_dict()
+            if filterfn(d) :
+                accept.append(d.rowid)
+        return RowFilteredDataTable(self, new_table, accept)
+
+    ################################################################
+    #
     def select(self, name, *selectors) :
         cols = [s.get_name() for s in selectors]
         new_table = DataTable(name, cols)
@@ -240,21 +215,34 @@ class DataTable(object) :
 
     ################################################################
     #
-    def display(self, f=sys.stderr) :
+    def display(self, f=sys.stderr, row_limit=20) :
         #print ('\n\n', file=f)
-        print ('Table %s:' % self.name, file=f)
+        print ('Table %s:' % self.get_name(), file=f)
 
-        if not self.cols :
+        if not self.get_cols() :
             print ('Table has no columns', file=f)
             return
         
-        print ('Columns:', self.cols, file=f)
+        print ('Columns:', self.get_cols(), file=f)
+        rows_printed = 0
         for row in self :
+            if rows_printed >= row_limit :
+                break
             print (' Values:', row, file=f)
+            rows_printed += 1
 
         print ('', file=f)
         print ('Row count = %d' % self.row_count, file=f)
         print ('Version = %d' % self.version, file=f)
+
+
+################################################################
+#        
+class RowFilteredDataTable(object) :
+    def __init__(self, table, accept) :
+        self.table   = table
+        self.accept  = accept
+        
 
 if __name__ == '__main__' :
     print ('Run testdatatable.py for unit tests.')
