@@ -128,6 +128,15 @@ class DataTable(datatablebase.DataTableBase) :
         col_indices = [self.col_indices[col] for col in cols]
         return [[row[x] for x in col_indices] for row in self.rows]
 
+
+    ################################################################
+    #
+    def get_row(self, rownum) :
+        values = []
+        for col in self.cols :
+            values.append(self.get_value(col, rownum))
+        return values
+
     ################################################################
     #
     def project(self, name, cols) :
