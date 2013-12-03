@@ -2,46 +2,44 @@
 
 import itertools
 import sys
+import sqlite3 as lite
 
 ################################################################
 #
 class RowReference(object) :
-    def __init__(self, table, rowid) :
-        self.table = table
-        self.rowid = rowid
+    def __init__(self, cols, data) :
+        self.cols = cols
+        self.data = data
 
     def __repr__(self) :
-        row = self.values()
-        return str(row)
+        return str(self.data)
 
     def values(self, cols=None) :
         if not cols :
-            cols = self.table.get_cols()
+            cols = self.cols
         row = []
         for col in cols :
-            row.append(self.table.get_value(col, self.rowid))
+            if col in self.cols :
+                row.append(self.data[self.cols.index[col]])
+            else :
+                row.append(None)
         return row
 
     def as_dict(self) :
-        cols = self.table.get_cols()
-        vals = self.values(cols)
-
-        return dict(zip(cols, vals))
+        return dict(zip(self.cols, self.data))
 
 ################################################################
 #
 class DataTableIterator(object) :
-    def __init__(self, table, rows) :
-        self.table = table
-        self.rows  = rows
-        self.curr  = 0
+    def __init__(self, cur) :
+        self.cur  = cur
+        self.desc = [x[0] for x in self.cur.description]
 
     def __next__(self) :
-        if self.curr >= len(self.rows) :
+        data = self.cur.fetchone()
+        if not data :
             raise StopIteration
-        row = RowReference(self.table, self.rows[self.curr])
-        self.curr += 1
-        return row
+        return RowReference(self.desc, data)
     
 ################################################################
 #
@@ -49,38 +47,52 @@ class DataTable(object) :
     
     ################################################################
     #
-    def __init__(self, name, cols=[]) :
-        self.name = name
-        self.cols = list(cols)[:]
-        for col in self.cols :
-            if self.cols.count(col) > 1 :
-                raise Exception('Duplicate column name: %s' % name)
+    def __init__(self, con, name, cols=[]) :
+        self.con   = con
+        self.name  = name
+        self.cols  = ['__ROWID']
+        self.types = ['INTEGER']
+        self._extend_cols(cols)
+        self.row_id = 0
 
-        self.rows      = {}
-        for col in self.cols :
-            self.rows[col] = []
-
-        self.row_count = 0
+        self._create_table()
 
     ################################################################
     #
     def add_cols(self, source) :
         cols    = source.get_cols()
-        new_cols = set(cols).difference(self.cols)
-        self.cols.extend(list(new_cols))
+        types   = source.get_types()
+
+        new_cols  = []
+        new_types = []
+        for i in range(len(cols)) :
+            if cols[i] not in self.cols :
+                new_cols.append(cols[i])
+                new_types.append(types[i])
+        self.cols.extend(new_cols)
+        self.types.extend(new_types)
+
+        self._alter_table(new_cols, new_types)
+
+        row_ids   = self.get_values('__ROWID')
         
         for col in new_cols :
             new_vals = source.get_values(col)
-            count = len(new_vals)
-            if self.row_count == 0 :
-                self.row_count = count
-            expected = self.row_count
-            if count > expected :
-                new_vals = new_vals[:expected]
-            elif count < expected :
-                new_vals.extend([None] * (expected-count))
+            if len(row_ids) == 0 :
+                for val in new_vals :
+                    self._insert_internal(['__ROWID', col], [0, val])
 
-            self.rows[col] = new_vals
+                row_ids   = self.get_values('__ROWID')
+
+            else :
+                binds = zip(new_vals, row_ids)
+                q = self._quoter(col)
+                sql_base = 'UPDATE "%s" SET "%s" = %s WHERE "__ROWID" = %%d' % (self.name, col, q)
+                cur = self.con.cursor()
+                for bind in binds :
+                    if bind[0] :
+                        update_sql = sql_base % (str(bind[0]), bind[1])
+                        cur.execute(update_sql)
 
     ################################################################
     #
@@ -102,34 +114,13 @@ class DataTable(object) :
             
     ################################################################
     #
-    def _add_from_dict(self, row) :
-        for col in self.cols :
-            val = row.get(col, None)
-            self.rows[col].append(val)
-
-        self.row_count += 1
-        
-    ################################################################
-    #
-    def _add_from_list(self, row) :
-        count = len(self.cols)
-        inrow = len(row)
-
-        for i in range(min(count, inrow)) :
-            col = self.cols[i]
-            val = row[i]
-            self.rows[col].append(val)
-
-        for i in range(inrow, count) :
-            col = self.cols
-            self.rows[col].append(None)
-
-        self.row_count += 1
-
-    ################################################################
-    #
     def get_cols(self) :
-        return list(self.cols)[:]
+        return list(self.cols)[1:]
+
+    ################################################################
+    #
+    def get_types(self) :
+        return list(self.types)[1:]
 
     ################################################################
     #
@@ -139,7 +130,10 @@ class DataTable(object) :
     ################################################################
     #
     def get_row_count(self) :
-        return self.row_count
+        count_sql = 'SELECT count(*) FROM "%s"' % (self.name,)
+        cur = self.con.cursor()
+        cur.execute(count_sql)
+        return cur.fetchone()[0]
 
     ################################################################
     #
@@ -156,7 +150,12 @@ class DataTable(object) :
     def get_values(self, col) :
         if col not in self.cols :
             raise Exception('Column %s not in data' % col)
-        return self.rows[col][:]
+
+        select_sql = 'SELECT "%s" FROM "%s" ORDER BY __ROWID ASC' % (col, self.name)
+        cur = self.con.cursor()
+        cur.execute(select_sql)
+        vs = cur.fetchall()
+        return [v[0] for v in vs]
 
     ################################################################
     #
@@ -231,7 +230,10 @@ class DataTable(object) :
     ################################################################
     #
     def __iter__(self) :
-        return DataTableIterator(self, range(self.row_count))
+        cur = self.con.cursor()
+        row_sql = 'SELECT * FROM "%s"' % (self.name,)
+        cur.execute(row_sql)
+        return DataTableIterator(cur)
 
     ################################################################
     #
@@ -239,16 +241,104 @@ class DataTable(object) :
         print ('\n\n', file=f)
         print ('Table %s:' % self.name, file=f)
 
-        if not self.cols :
-            print ('Table has no columns', file=f)
-            return
-        
-        print ('Columns:', self.cols, file=f)
-        for row in self :
+        cur = self.con.cursor()
+        row_sql = 'SELECT * FROM "%s"' % (self.name,)
+        cur.execute(row_sql)
+
+        cols = [c[0] for c in cur.description]
+        print ('Columns:', cols, file=f)
+        for row in cur.fetchall() :
             print (' Values:', row, file=f)
 
         print ('', file=f)
-        print ('Row count = %d' % self.row_count, file=f)
+        print ('Row count = %d' % self.get_row_count(), file=f)
+
+    ################################################################
+    #
+    def _extend_cols(self, cols) :
+        for i in range(len(cols)) :
+            c = cols[i]
+            if type(c) == type('') :
+                cname = c
+                typef = str
+            elif type(c) == type((0,)) :
+                if len(c) < 2 :
+                    raise Exception('Bad tuple for column definition')
+                cname = c[0]
+                typef = c[1]
+
+            if self.cols.count(cname) > 0 :
+                raise Exception('Duplicate column name: %s' % cname)
+
+            self.cols .append(cname)
+            if typef == int :
+                self.types.append('INTEGER')
+            elif typef == float :
+                self.types.append('REAL')
+            elif typef == str :
+                self.types.append('TEXT')
+            else :
+                raise Exception('Bad type for column: %s [%s]' % (cname, str(typef)))
+
+    ################################################################
+    #
+    def _create_table(self) :
+        cur = self.con.cursor()
+        delete_sql = 'DROP TABLE IF EXISTS "%s"' % self.name
+        cur.execute(delete_sql)
+
+        col_sql = ','.join(['"%s" %s' % (self.cols[i], self.types[i])
+                            for i in range(len(self.cols))])
+        create_sql = 'CREATE TABLE "%s" ( %s );' % (self.name, col_sql)
+        cur.execute(create_sql)
+
+    ################################################################
+    #
+    def _add_from_dict(self, row) :
+        for col in self.cols :
+            val = row.get(col, None)
+            self.rows[col].append(val)
+
+        self.row_count += 1
+        
+    ################################################################
+    #
+    def _add_from_list(self, row) :
+        data        = [0]
+        data.extend(row[:len(self.cols)-1])
+        cols        = self.cols[:len(data)]
+        self._insert_internal(cols, data)
+
+    ################################################################
+    #
+    def _insert_internal(self, cols, vals) :
+        self.row_id += 1
+        vals[0] = self.row_id
+        value_sql = ','.join([self._quoter(cols[i]) % str(vals[i]) 
+                              for i in range(len(vals))])
+
+        col_sql = ','.join(['"%s"' % c for c in cols])
+        insert_sql = 'INSERT INTO "%s" (%s) VALUES (%s)' % (self.name, col_sql, value_sql)
+        cur = self.con.cursor()
+        cur.execute(insert_sql)
+        
+    ################################################################
+    #
+    def _alter_table(self, names, types) :
+        cur = self.con.cursor()
+        for i in range(min(len(names), len(types))) :
+            alter_sql = 'ALTER TABLE "%s" ADD COLUMN "%s" %s' % (self.name, names[i], types[i])
+            cur.execute(alter_sql)
+
+    ################################################################
+    #
+    def _quoter(self, col) :
+        j = self.cols.index(col)
+        if self.types[j] == 'TEXT' :
+            return '"%s"'
+        else :
+            return '%s'
+
 
 if __name__ == '__main__' :
     print ('Run testdatatable.py for unit tests.')
