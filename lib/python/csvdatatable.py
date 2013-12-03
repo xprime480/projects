@@ -2,13 +2,14 @@
 
 import csvfileio
 import datatable
+import datatablefactory
 
-def read(name, cols=None) :
+def read(name, factory, cols=None) :
     f = name + '.csv'
     with csvfileio.CsvFileIo(f, False) as rdr :
         if cols is None :
             cols = rdr.fieldnames
-        temp = datatable.DataTable(name, cols)
+        temp = factory.new_table(name, cols)
         temp.add_rows(rdr)
     return temp
 

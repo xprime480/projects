@@ -3,6 +3,7 @@
 import os
 import unittest
 
+import datatablefactory
 import keycounter
 import csvdatatable
 
@@ -37,7 +38,9 @@ class KeyCounterTest(unittest.TestCase) :
     ################################################################
     #
     def validate(self) :
-        dt = csvdatatable.read('test2')
+        f = datatablefactory.DataTableFactory()
+        f.open()
+        dt = csvdatatable.read('test2', f)
 
         self.assertCountEqual(['Name','Rank','Count'], dt.get_cols())
         self.assertEqual(12, dt.get_row_count())
@@ -55,6 +58,7 @@ class KeyCounterTest(unittest.TestCase) :
         )
 
         os.unlink('test2.csv')
+        f.close()
 
 ################################################################
 #

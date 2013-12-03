@@ -7,6 +7,7 @@ import sys
 import csvdatatable
 import csvprocessor
 import datatable
+import datatablefactory
 import selectors
 
 ################################################################
@@ -99,6 +100,8 @@ class KeyCounterAlt(object) :
         self.inputdata  = None
         self.outputdata = None
         self.cat_values = {}
+        self.factory    = datatablefactory.DataTableFactory()
+        self.factory.open()
 
         for cat in self.categories :
             self.cat_values[cat] = {}
@@ -106,14 +109,18 @@ class KeyCounterAlt(object) :
     ################################################################
     #
     def read(self, name) :
-        self.inputdata = csvdatatable.read(name)
+        self.inputdata = csvdatatable.read(name, self.factory)
 
     ################################################################
     #
     def generate_counts(self, name='temp') :
         # get the unique keys for each column
+        cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
         for cat in self.categories :
-            selector = selectors.simple_column_selector(cat)
+            ct       = [ct for ct in cts if ct[0] == cat]
+            print ('GC1:', ct, file=sys.stderr)
+            typ = ct[0][1]
+            selector = selectors.simple_column_selector(cat, typ)
             self.cat_values[cat] = self.inputdata.group_by('temp', [selector]).get_values(cat)
             self.cat_values[cat].append('***All***')
         del (selector)
@@ -122,7 +129,7 @@ class KeyCounterAlt(object) :
         aggs = self.get_aggregators()
         cols = self.categories[:]
         cols.extend([a.get_name() for a in aggs])
-        self.outputdata = datatable.DataTable(name, cols)
+        self.outputdata = self.factory.new_table(name, cols)
         del (cols)
         
         # get counts for each combination.
