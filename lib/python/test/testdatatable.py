@@ -4,6 +4,7 @@ import unittest
 
 from datatable import *
 from selectors import *
+from datatablefactory import DataTableFactory
 
 ##################################################################
 #
@@ -15,33 +16,40 @@ class DataTableTest(unittest.TestCase) :
     def __init__(self, n='runTest') :
         super().__init__(n)
 
+    def setUp(self) :
+        self.factory = DataTableFactory()
+        self.factory.open()
+
+    def tearDown(self) :
+        self.factory.close()
+
     ################################################################
     #
     def test_empty_table(self) :
-        dt = DataTable('table')
+        dt = self.factory.new_table('table')
 
         self.assertCountEqual([], dt.get_cols())
         self.assertEqual(0, dt.get_row_count())
 
     def test_duplicate_columns(self) :
         with self.assertRaises(Exception) :
-            dt = DataTable('table', ['cat', 'cat'])
+            dt = self.factory.new_table('table', ['cat', 'cat'])
 
     def test_basic(self) :
         dt = self.make_dt_one()
         self.assert_dt_one(dt)
 
     def test_copy(self) :
-        dt = DataTable('table')
+        dt = self.factory.new_table('table')
         dt.add_cols(self.make_dt_one())
         self.assert_dt_one(dt)
 
     def test_dup_col_add(self) :
-        d5 = DataTable('d5', ['Key', 'More'])
+        d5 = self.factory.new_table('d5', ['Key', 'More'])
         d5.add_row(['Sam', 'Dave'])
         d5.add_row(['Mike', 'Abby'])
         d5.add_cols(self.make_dt_one())
-        d6 = DataTable('d6', ['Not_Used'])
+        d6 = self.factory.new_table('d6', ['Not_Used'])
         d5.add_cols(d6)
 
         all_cols = ['Key', 'More', 'Not_Used', 'Value']
@@ -76,9 +84,9 @@ class DataTableTest(unittest.TestCase) :
 
     def test_select(self) :
         dt = self.make_dt_one()
-        key_selector  = simple_column_selector('Key')
+        key_selector  = simple_column_selector('Key', str)
         transformer = lambda x : x['Value']**2+1
-        data_selector = NamedSelector('Result', transformer)
+        data_selector = NamedSelector('Result', int, transformer)
         ds = dt.select('TestSelect', key_selector, data_selector)
 
         self.assertCountEqual(['Key', 'Result'], ds.get_cols())
@@ -89,7 +97,8 @@ class DataTableTest(unittest.TestCase) :
 
     def test_group_by(self) :
         dt = self.make_dt_one()
-        dt.add_rows(dt)
+        rows = dt.get_rows()
+        dt.add_rows(rows)
 
         self.assertCountEqual(['Key', 'Value'],   dt.get_cols())
         self.assertCountEqual(
@@ -99,13 +108,13 @@ class DataTableTest(unittest.TestCase) :
 
         dt.add_rows([['fish', None]])
 
-        keys = [ simple_column_selector('Key', rename='Bob') ]
-
+        key_selector  = simple_column_selector('Key', str, rename='Bob')
+        keys = [key_selector]
         dg = dt.group_by('TestGroupBy',
                          keys,
                          sum_aggregator(
                              'Sum_of_Values',
-                             simple_column_selector('Value')
+                             simple_column_selector('Value', int)
                          ),
                          count_aggregator())
 
@@ -122,7 +131,7 @@ class DataTableTest(unittest.TestCase) :
             dg.get_values('Bob', 'Sum_of_Values', 'Count')
         )
 
-        value_selector = simple_column_selector('Value')
+        value_selector = simple_column_selector('Value', int)
         keys.append(value_selector)
 
         dg2 = dt.group_by('TestGroupBy2',
@@ -147,13 +156,13 @@ class DataTableTest(unittest.TestCase) :
 
         self.assertEqual([[7], [3]], dt.get_values('Value'))
 
-        value_selector = simple_column_selector('Value')
+        value_selector = simple_column_selector('Value', int)
         ds = dt.order_by('TestOrderBy', value_selector)
 
         self.assertEqual([[3], [7]], ds.get_values('Value'))
 
     def make_dt_one(self) :
-        dt = DataTable('table', ['Key', 'Value'])
+        dt = self.factory.new_table('table', [('Key'), ('Value', int)])
         dt.add_row(['dog', 7])
         dt.add_row(['cat', 3])
         return dt

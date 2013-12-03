@@ -4,6 +4,7 @@ import os
 import unittest
 
 import datatable
+import datatablefactory
 import csvdatatable
 
 ##################################################################
@@ -18,8 +19,21 @@ class CsvDataTableTest(unittest.TestCase) :
 
     ################################################################
     #
+    def setUp(self) :
+        self.factory = datatablefactory.DataTableFactory()
+        self.factory.open()
+
+    ################################################################
+    #
+    def tearDown(self) :
+        self.factory.close()
+        del(self.factory)
+
+    ################################################################
+    #
     def test_read(self) :
-        dt = csvdatatable.read('test1')
+        dt = csvdatatable.read('test1', self.factory
+)
         
         self.assertCountEqual(
             ['Name', 'Rank', 'Serial Number'],
@@ -35,7 +49,7 @@ class CsvDataTableTest(unittest.TestCase) :
         )
 
     def test_write(self) :
-        dt = datatable.DataTable('test2', ['Good','Bad'])
+        dt = self.factory.new_table('test2', ['Good','Bad'])
         dt.add_rows([
             ['Wine', 'Ouzo'],
             ['Batman', 'Joker']
@@ -44,7 +58,7 @@ class CsvDataTableTest(unittest.TestCase) :
 
         del dt
 
-        dt = csvdatatable.read('test2', ['Good'])
+        dt = csvdatatable.read('test2', self.factory, ['Good'])
         
         self.assertCountEqual(
             ['Good'],
