@@ -4,10 +4,11 @@ import unittest
 
 from datatable import *
 from selectors import *
+from datatablefactory import DataTableFactory
 
 ##################################################################
 #
-class CombinatorTest(unittest.TestCase) :
+class DataTableTest(unittest.TestCase) :
     """Test DataTable."""
 
     ##################################################################
@@ -15,33 +16,40 @@ class CombinatorTest(unittest.TestCase) :
     def __init__(self, n='runTest') :
         super().__init__(n)
 
+    def setUp(self) :
+        self.factory = DataTableFactory()
+        self.factory.open()
+
+    def tearDown(self) :
+        self.factory.close()
+
     ################################################################
     #
     def test_empty_table(self) :
-        dt = DataTable('table')
+        dt = self.factory.new_table('table')
 
         self.assertCountEqual([], dt.get_cols())
         self.assertEqual(0, dt.get_row_count())
 
     def test_duplicate_columns(self) :
         with self.assertRaises(Exception) :
-            dt = DataTable('table', ['cat', 'cat'])
+            dt = self.factory.new_table('table', ['cat', 'cat'])
 
     def test_basic(self) :
         dt = self.make_dt_one()
         self.assert_dt_one(dt)
 
     def test_copy(self) :
-        dt = DataTable('table')
+        dt = self.factory.new_table('table')
         dt.add_cols(self.make_dt_one())
         self.assert_dt_one(dt)
 
     def test_dup_col_add(self) :
-        d5 = DataTable('d5', ['Key', 'More'])
+        d5 = self.factory.new_table('d5', ['Key', 'More'])
         d5.add_row(['Sam', 'Dave'])
         d5.add_row(['Mike', 'Abby'])
         d5.add_cols(self.make_dt_one())
-        d6 = DataTable('d6', ['Not_Used'])
+        d6 = self.factory.new_table('d6', ['Not_Used'])
         d5.add_cols(d6)
 
         all_cols = ['Key', 'More', 'Not_Used', 'Value']
@@ -143,7 +151,7 @@ class CombinatorTest(unittest.TestCase) :
         self.assertEqual([3,7], ds.get_values('Value'))
 
     def make_dt_one(self) :
-        dt = DataTable('table', ['Key', 'Value'])
+        dt = self.factory.new_table('table', [('Key'), ('Value', int)])
         dt.add_row(['dog', 7])
         dt.add_row(['cat', 3])
         return dt
