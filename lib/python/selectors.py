@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
 
 class NamedSelector(object) :
-    def __init__(self, name, func) :
+    def __init__(self, name, the_type, func) :
         self.name = name
         self.func = func
+        self.type = the_type
 
     def get_name(self) :
         return self.name
 
+    def get_type(self) :
+        return self.type
+        
     def __call__(self, row) :
         return self.func(row)
 
-def simple_column_selector(name, rename=None) :
+def simple_column_selector(name, the_type, rename=None) :
     if rename is None :
         rename = name
 
-    return NamedSelector(rename, lambda x : x[name])
+    return NamedSelector(rename, the_type, lambda x : x[name])
 
 def get_non_nulls(ds, selector) :
     return [v for v in [selector(d) for d in ds] if v]
@@ -24,13 +28,13 @@ def _count_func(ds) :
     return len([d for d in ds])
 
 def count_aggregator(name='Count') :
-    return NamedSelector(name, _count_func)
+    return NamedSelector(name, int, _count_func)
 
 def sum_aggregator(name, selector) :
     def _sum_func(ds) :
         return sum(get_non_nulls(ds, selector))
 
-    return NamedSelector(name, _sum_func)
+    return NamedSelector(name, selector.get_type(), _sum_func)
 
 def average_aggregator(name, selector) :
     def _avg_func(ds) :
@@ -40,5 +44,5 @@ def average_aggregator(name, selector) :
         else :
             return 0
 
-    return NamedSelector(name, _avg_func)
+    return NamedSelector(name, float, _avg_func)
 

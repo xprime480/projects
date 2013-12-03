@@ -19,4 +19,4 @@ class DataTableFactory(object) :
     def new_table(self, name, cols=[]) :
         self.table_id += 1
         name_with_id = '%s_%06d' % (name, self.table_id)
-        return datatable.DataTable(self.con, name_with_id, cols)
+        return datatable.DataTable(self, self.con, name_with_id, cols)

@@ -47,11 +47,12 @@ class DataTable(object) :
     
     ################################################################
     #
-    def __init__(self, con, name, cols=[]) :
-        self.con   = con
-        self.name  = name
-        self.cols  = ['__ROWID']
-        self.types = ['INTEGER']
+    def __init__(self, factory, con, name, cols=[]) :
+        self.factory = factory
+        self.con     = con
+        self.name    = name
+        self.cols    = ['__ROWID']
+        self.types   = ['INTEGER']
         self._extend_cols(cols)
         self.row_id = 0
 
@@ -107,6 +108,8 @@ class DataTable(object) :
             self._add_from_dict(values)
         elif type(values) == type([]) :
             self._add_from_list(values)
+        elif type(values) == type(()) :
+            self._add_from_list(list(values))
         elif type(values) == RowReference :
             self._add_from_dict(values.as_dict())
         else :
@@ -159,19 +162,33 @@ class DataTable(object) :
 
     ################################################################
     #
+    def get_rows(self) :
+        select_sql = 'SELECT * FROM "%s" ORDER BY __ROWID ASC' % (self.name)
+        cur = self.con.cursor()
+        cur.execute(select_sql)
+        vs = cur.fetchall()
+        return [v[1:] for v in vs]
+
+    ################################################################
+    #
     def project(self, name, cols) :
-        new_table = DataTable(name, cols)
-        for col in cols :
-            if col in self.cols :
-                new_table.rows[col] = self.get_values(col)
-            else :
-                new_table.rows[col] = [None] * self.row_count
+        ct   = [v 
+                for v in list(zip(self.get_cols(), self.get_types()))
+                if v[0] in cols]
+        new_table = self.factory.new_table(name, ct)
+        base_row = dict(zip(cols, itertools.repeat(None)))
+        for row in self :
+            values = {}
+            values.update(base_row)
+            values.update(row.as_dict())
+            new_table.add_row(values)
         return new_table
 
     ################################################################
     #
     def filter(self, name, filterfn) :
-        new_table = DataTable(name, self.cols)
+        ct   = list(zip(self.get_cols(), self.get_types()))
+        new_table = self.factory.new_table(name, ct)
         for row in self :
             d = row.as_dict()
             if filterfn(d) :
@@ -181,8 +198,8 @@ class DataTable(object) :
     ################################################################
     #
     def select(self, name, *selectors) :
-        cols = [s.get_name() for s in selectors]
-        new_table = DataTable(name, cols)
+        ct = [(s.get_name(), s.get_type()) for s in selectors]
+        new_table = self.factory.new_table(name, ct)
         for row in self :
             d = row.as_dict()
             r = [s(d) for s in selectors]
@@ -192,9 +209,9 @@ class DataTable(object) :
     ################################################################
     #
     def group_by(self, name, keys, *aggregators) :
-        cols = [k.get_name() for k in keys]
-        cols.extend(a.get_name() for a in aggregators)
-        new_table = DataTable(name, cols)
+        ct = [(k.get_name(), k.get_type()) for k in keys]
+        ct.extend([(a.get_name(), a.get_type()) for a in aggregators])
+        new_table = self.factory.new_table(name, ct)
 
         def key_func(row) :
             r = row.as_dict()
@@ -214,7 +231,6 @@ class DataTable(object) :
     ################################################################
     #
     def order_by(self, name, *selectors) :
-        
         temp = []
         for row in self :
             r = row.as_dict()
@@ -222,8 +238,9 @@ class DataTable(object) :
             temp.append((keys, r))
 
         temp.sort(key=lambda x : x[0])
-        
-        new_table = DataTable(name, self.get_cols())
+
+        ct = [(s.get_name(), s.get_type()) for s in selectors]
+        new_table = self.factory.new_table(name, ct)
         new_table.add_rows([x[1] for x in temp])
         return new_table
 
@@ -271,11 +288,11 @@ class DataTable(object) :
                 raise Exception('Duplicate column name: %s' % cname)
 
             self.cols .append(cname)
-            if typef == int :
+            if typef in [int, 'INTEGER'] :
                 self.types.append('INTEGER')
-            elif typef == float :
+            elif typef in [float, 'REAL'] :
                 self.types.append('REAL')
-            elif typef == str :
+            elif typef in [str, 'TEXT'] :
                 self.types.append('TEXT')
             else :
                 raise Exception('Bad type for column: %s [%s]' % (cname, str(typef)))
@@ -295,11 +312,8 @@ class DataTable(object) :
     ################################################################
     #
     def _add_from_dict(self, row) :
-        for col in self.cols :
-            val = row.get(col, None)
-            self.rows[col].append(val)
-
-        self.row_count += 1
+        data = [row.get(col, None) for col in self.cols]
+        self._insert_internal(self.cols, data)
         
     ################################################################
     #
@@ -314,10 +328,20 @@ class DataTable(object) :
     def _insert_internal(self, cols, vals) :
         self.row_id += 1
         vals[0] = self.row_id
-        value_sql = ','.join([self._quoter(cols[i]) % str(vals[i]) 
-                              for i in range(len(vals))])
 
-        col_sql = ','.join(['"%s"' % c for c in cols])
+        if None in vals :
+            cvs = list(zip(cols, vals))
+            cvs = [cv for cv in cvs if cv[1] is not None]
+            cs  = [cv[0] for cv in cvs]
+            vs  = [cv[1] for cv in cvs]
+        else :
+            cs = cols
+            vs = vals
+
+        value_sql = ','.join([self._quoter(cols[i]) % str(vs[i]) 
+                              for i in range(len(vs))])
+
+        col_sql = ','.join(['"%s"' % c for c in cs])
         insert_sql = 'INSERT INTO "%s" (%s) VALUES (%s)' % (self.name, col_sql, value_sql)
         cur = self.con.cursor()
         cur.execute(insert_sql)

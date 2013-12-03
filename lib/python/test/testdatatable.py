@@ -81,9 +81,9 @@ class DataTableTest(unittest.TestCase) :
 
     def test_select(self) :
         dt = self.make_dt_one()
-        key_selector  = simple_column_selector('Key')
+        key_selector  = simple_column_selector('Key', str)
         transformer = lambda x : x['Value']**2+1
-        data_selector = NamedSelector('Result', transformer)
+        data_selector = NamedSelector('Result', int, transformer)
         ds = dt.select('TestSelect', key_selector, data_selector)
 
         self.assertCountEqual(['Key', 'Result'], ds.get_cols())
@@ -92,7 +92,8 @@ class DataTableTest(unittest.TestCase) :
 
     def test_group_by(self) :
         dt = self.make_dt_one()
-        dt.add_rows(dt)
+        rows = dt.get_rows()
+        dt.add_rows(rows)
 
         self.assertCountEqual(['Key', 'Value'],   dt.get_cols())
         self.assertCountEqual(['cat', 'dog'] * 2, dt.get_values('Key'))
@@ -100,14 +101,14 @@ class DataTableTest(unittest.TestCase) :
 
         dt.add_row(['fish', None])
 
-        key_selector  = simple_column_selector('Key', rename='Bob')
+        key_selector  = simple_column_selector('Key', str, rename='Bob')
         keys = [key_selector]
 
         dg = dt.group_by('TestGroupBy',
                          keys,
                          sum_aggregator(
                              'Sum_of_Values',
-                             simple_column_selector('Value')
+                             simple_column_selector('Value', int)
                          ),
                          count_aggregator())
 
@@ -116,7 +117,7 @@ class DataTableTest(unittest.TestCase) :
         self.assertCountEqual([6, 14, 0], dg.get_values('Sum_of_Values'))
         self.assertCountEqual([2,2,1], dg.get_values('Count'))
 
-        value_selector = simple_column_selector('Value')
+        value_selector = simple_column_selector('Value', int)
         keys.append(value_selector)
 
         dg2 = dt.group_by('TestGroupBy2',
@@ -145,7 +146,7 @@ class DataTableTest(unittest.TestCase) :
 
         self.assertEqual([7,3], dt.get_values('Value'))
 
-        value_selector = simple_column_selector('Value')
+        value_selector = simple_column_selector('Value', int)
         ds = dt.order_by('TestOrderBy', value_selector)
 
         self.assertEqual([3,7], ds.get_values('Value'))
