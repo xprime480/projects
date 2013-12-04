@@ -124,9 +124,9 @@ class DataTableTest(unittest.TestCase) :
         )
         self.assertCountEqual(
             [
-                ('cat', 6, 2),
-                ('dog', 14, 2),
-                ('fish', 0, 1)
+                ['cat', 6, 2],
+                ['dog', 14, 2],
+                ['fish', 0, 1]
             ],
             dg.get_rows()
         )
@@ -144,9 +144,9 @@ class DataTableTest(unittest.TestCase) :
         )
         self.assertCountEqual(
             [
-                ('cat',  3,    2),
-                ('dog',  7,    2),
-                ('fish', None, 1)
+                ['cat',  3,    2],
+                ['dog',  7,    2],
+                ['fish', None, 1]
             ],
             dg2.get_rows()
         )
