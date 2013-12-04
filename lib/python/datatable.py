@@ -4,6 +4,9 @@ import itertools
 import sys
 import sqlite3 as lite
 
+import datatablebase
+import datatableresults
+
 ################################################################
 #
 class RowReference(object) :
@@ -45,19 +48,17 @@ class DataTableIterator(object) :
     
 ################################################################
 #
-class DataTable(object) :
+class DataTable(datatablebase.DataTableBase) :
     
     ################################################################
     #
     def __init__(self, factory, con, name, cols=[]) :
+        super().__init__(name)
         self.factory = factory
         self.con     = con
-        self.name    = name
-        self.cols    = ['__ROWID']
-        self.types   = ['INTEGER']
+        self._extend_cols([('__ROWID', 'INTEGER')])
         self._extend_cols(cols)
         self.row_id  = 0
-        self.version = 1
 
         self._create_table()
 
@@ -169,12 +170,25 @@ class DataTable(object) :
 
     ################################################################
     #
-    def get_rows(self) :
-        select_sql = 'SELECT * FROM "%s" ORDER BY __ROWID ASC' % (self.name)
+    def get_rows(self, limit=None, hidden=1) :
+        if limit is not None :
+            select_sql = 'SELECT * FROM "%s" ORDER BY __ROWID ASC LIMIT %d' % (self.name, limit)
+        else :
+            select_sql = 'SELECT * FROM "%s" ORDER BY __ROWID ASC' % (self.name)
+
         cur = self.con.cursor()
         cur.execute(select_sql)
         vs = cur.fetchall()
-        return [v[1:] for v in vs]
+        if hidden :
+            vs = [v[hidden:] for v in vs]
+
+        cols = [c[0] for c in cur.description[hidden:]]
+        typs = self._cols_to_types(cols)
+        ct = list(zip(cols, typs))
+
+        return datatableresults.DataTableResults('temp', ct, vs)
+
+        return vs
 
     ################################################################
     #
@@ -242,9 +256,7 @@ class DataTable(object) :
             new_row.extend([a(rvals) for a in aggregators])
             new_data.append(new_row)
 
-        new_table = self.factory.new_table(name, ct)
-        new_table.add_rows(new_data)
-        return new_table
+        return datatableresults.DataTableResults(name, ct, new_data)
                  
     ################################################################
     #
@@ -269,54 +281,6 @@ class DataTable(object) :
         row_sql = 'SELECT * FROM "%s"' % (self.name,)
         cur.execute(row_sql)
         return DataTableIterator(cur)
-
-    ################################################################
-    #
-    def display(self, f=sys.stderr, row_limit=20) :
-        print ('Table %s:' % self.get_name(), file=f)
-
-        cur = self.con.cursor()
-        row_sql = 'SELECT * FROM "%s"' % (self.name,)
-        cur.execute(row_sql)
-
-        cols = [c[0] for c in cur.description]
-        print ('Columns:', cols, file=f)
-        rows_printed = 0
-        for row in cur.fetchall() :
-            print (' Values:', row, file=f)
-            rows_printed += 1
-            if rows_printed >= row_limit :
-                break
-
-        print ('', file=f)
-        print ('Row count = %d' % self.get_row_count(), file=f)
-
-    ################################################################
-    #
-    def _extend_cols(self, cols) :
-        for i in range(len(cols)) :
-            c = cols[i]
-            if type(c) == type('') :
-                cname = c
-                typef = str
-            elif type(c) == type((0,)) :
-                if len(c) < 2 :
-                    raise Exception('Bad tuple for column definition')
-                cname = c[0]
-                typef = c[1]
-
-            if self.cols.count(cname) > 0 :
-                raise Exception('Duplicate column name: %s' % cname)
-
-            self.cols .append(cname)
-            if typef in [int, 'INTEGER'] :
-                self.types.append('INTEGER')
-            elif typef in [float, 'REAL'] :
-                self.types.append('REAL')
-            elif typef in [str, 'TEXT'] :
-                self.types.append('TEXT')
-            else :
-                raise Exception('Bad type for column: %s [%s]' % (cname, str(typef)))
 
     ################################################################
     #
