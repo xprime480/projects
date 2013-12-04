@@ -77,6 +77,11 @@ class DataTablePassthru(DataTableAdapter) :
 
     ################################################################
     #
+    def get_rows(self) :
+        return self.base.get_rows()
+
+    ################################################################
+    #
     def project(self, name, cols) :
         return self.base.project(name, cols)
 

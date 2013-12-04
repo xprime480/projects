@@ -54,7 +54,8 @@ class DataTable(object) :
         self.cols    = ['__ROWID']
         self.types   = ['INTEGER']
         self._extend_cols(cols)
-        self.row_id = 0
+        self.row_id  = 0
+        self.version = 1
 
         self._create_table()
 
@@ -95,15 +96,19 @@ class DataTable(object) :
                         update_sql = sql_base % (str(bind[0]), bind[1])
                         cur.execute(update_sql)
 
+        self.version += 1
+
     ################################################################
     #
     def add_rows(self, rows) :
         for row in rows :
             self.add_row(row, 0)
 
+        self.version += 1
+
     ################################################################
     #
-    def add_row(self, values) :
+    def add_row(self, values, vers_inc=1) :
         if type(values) == type({}) :
             self._add_from_dict(values)
         elif type(values) == type([]) :
@@ -114,6 +119,8 @@ class DataTable(object) :
             self._add_from_dict(values.as_dict())
         else :
             raise Exception('Don''t know how to add %s ' % str(values))
+
+        self.version += vers_inc
 
     ################################################################
     #
@@ -170,6 +177,11 @@ class DataTable(object) :
 
     ################################################################
     #
+    def get_version(self) :
+        return self.version
+
+    ################################################################
+    #
     def project(self, name, cols) :
         ct   = [v 
                 for v in list(zip(self.get_cols(), self.get_types()))
@@ -191,7 +203,7 @@ class DataTable(object) :
         for row in self :
             d = row.as_dict()
             if filterfn(d) :
-                new_table._add_from_dict(d)
+                new_table.add_row(d)
         return new_table
 
     ################################################################

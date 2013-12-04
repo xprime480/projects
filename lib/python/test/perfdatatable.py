@@ -30,6 +30,12 @@ def add_one_million_rows(factory) :
         dt.add_row([x])
     return dt
 
+@withtimer
+def add_one_million_rows_range(factory) :
+    dt = factory.new_table('random', [('Random', int)])
+    dt.add_rows([(x,) for x in range(1000000)])
+    return dt
+
 def is_random_odd(x) :
     return x['Random'] % 2 == 1
     
@@ -40,7 +46,6 @@ def filter_one_million_rows(factory) :
     dt = add_one_million_rows(factory)
     df = dt.filter('Odds', __odd_selector)
     return df
-
 
 @withtimer
 def alt_filter_one_million_rows() :
@@ -53,6 +58,7 @@ def main() :
     factory.open()
     add_one_million_rows(factory)
     filter_one_million_rows(factory)
+    add_one_million_rows_range(factory)
     factory.close()
 
 if __name__ == '__main__' :

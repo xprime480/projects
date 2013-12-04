@@ -41,11 +41,11 @@ class CsvDataTableTest(unittest.TestCase) :
         )
         self.assertCountEqual(
             [
-                ['Yossarian', 'Captain', '123456'],
-                ['Major', 'Major', '888888'],
-                ['Tom', 'Major', '987654']
+                ('Yossarian', 'Captain', '123456'),
+                ('Major', 'Major', '888888'),
+                ('Tom', 'Major', '987654')
             ], 
-            dt.get_values('Name', 'Rank', 'Serial Number')
+            dt.get_rows()
         )
 
     def test_write(self) :
@@ -65,7 +65,7 @@ class CsvDataTableTest(unittest.TestCase) :
             dt.get_cols()
         )
         self.assertCountEqual(
-            [['Wine'], ['Batman']], 
+            ['Wine', 'Batman'], 
             dt.get_values('Good')
         )
 

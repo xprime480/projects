@@ -70,6 +70,11 @@ class DataTableBase(object) :
 
     ################################################################
     #
+    def get_rows(self) :
+        self.__unsupported(__name__)
+
+    ################################################################
+    #
     def project(self, name, cols) :
         self.__unsupported(__name__)
 

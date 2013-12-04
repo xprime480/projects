@@ -70,7 +70,7 @@ class DataTableTest(unittest.TestCase) :
         dp = dt.project('TestProjection', ['Key'])
 
         self.assertEqual(['Key'], dp.get_cols())
-        self.assertCountEqual([['dog'], ['cat']], dp.get_values('Key'))
+        self.assertCountEqual(['dog', 'cat'], dp.get_values('Key'))
 
     def test_filter(self) :
         dt = self.make_dt_one()
@@ -80,7 +80,7 @@ class DataTableTest(unittest.TestCase) :
 
         df = dt.filter('TestFilter', fn)
         self.assertEqual(1, df.get_row_count())
-        self.assertCountEqual([[7, 'dog']], df.get_values('Value', 'Key'))
+        self.assertCountEqual([('dog', 7)], df.get_rows())
 
     def test_select(self) :
         dt = self.make_dt_one()
@@ -91,8 +91,8 @@ class DataTableTest(unittest.TestCase) :
 
         self.assertCountEqual(['Key', 'Result'], ds.get_cols())
         self.assertCountEqual(
-            [['cat', 10], ['dog', 50]], 
-            ds.get_values('Key', 'Result')
+            [('cat', 10), ('dog', 50)],
+            ds.get_rows()
         )
 
     def test_group_by(self) :
@@ -102,8 +102,8 @@ class DataTableTest(unittest.TestCase) :
 
         self.assertCountEqual(['Key', 'Value'],   dt.get_cols())
         self.assertCountEqual(
-            [['cat', 3], ['dog', 7]] * 2, 
-            dt.get_values('Key', 'Value')
+            [('cat', 3), ('dog', 7)] * 2,
+            dt.get_rows()
         )
 
         dt.add_rows([['fish', None]])
@@ -119,16 +119,16 @@ class DataTableTest(unittest.TestCase) :
                          count_aggregator())
 
         self.assertCountEqual(
-            ['Bob', 'Sum_of_Values', 'Count'], 
+            ['Bob', 'Sum_of_Values', 'Count'],
             dg.get_cols()
         )
         self.assertCountEqual(
             [
-                ['cat', 6, 2], 
-                ['dog', 14, 2], 
-                ['fish', 0, 1]
-            ], 
-            dg.get_values('Bob', 'Sum_of_Values', 'Count')
+                ('cat', 6, 2),
+                ('dog', 14, 2),
+                ('fish', 0, 1)
+            ],
+            dg.get_rows()
         )
 
         value_selector = simple_column_selector('Value', int)
@@ -144,22 +144,22 @@ class DataTableTest(unittest.TestCase) :
         )
         self.assertCountEqual(
             [
-                ['cat',  3,    2], 
-                ['dog',  7,    2], 
-                ['fish', None, 1]
+                ('cat',  3,    2),
+                ('dog',  7,    2),
+                ('fish', None, 1)
             ],
-            dg2.get_values('Bob', 'Value', 'Count')
+            dg2.get_rows()
         )
 
     def test_order_by(self) :
         dt = self.make_dt_one()
 
-        self.assertEqual([[7], [3]], dt.get_values('Value'))
+        self.assertEqual([7, 3], dt.get_values('Value'))
 
         value_selector = simple_column_selector('Value', int)
         ds = dt.order_by('TestOrderBy', value_selector)
 
-        self.assertEqual([[3], [7]], ds.get_values('Value'))
+        self.assertEqual([3, 7], ds.get_values('Value'))
 
     def make_dt_one(self) :
         dt = self.factory.new_table('table', [('Key'), ('Value', int)])
@@ -170,8 +170,8 @@ class DataTableTest(unittest.TestCase) :
     def assert_dt_one(self, dt) :
         self.assertCountEqual(['Key', 'Value'], dt.get_cols())
         self.assertCountEqual(
-            [['dog', 7], ['cat', 3]], 
-            dt.get_values('Key', 'Value')
+            [('dog', 7), ('cat', 3)],
+            dt.get_rows()
         )
         self.assertEqual(2, dt.get_row_count())
 

@@ -6,6 +6,7 @@ import unittest
 from datatable        import *
 from datatableadapter import *
 from datatablebase    import DataTableBaseException
+from datatablefactory import DataTableFactory
 
 ##################################################################
 #
@@ -19,13 +20,24 @@ class DataTableAdapterTest(unittest.TestCase) :
 
     ################################################################
     #
+    def setUp(self) :
+        self.factory = DataTableFactory()
+        self.factory.open()
+
+    ################################################################
+    #
+    def tearDown(self) :
+        self.factory.close()
+
+    ################################################################
+    #
     def test_base_functions(self) :
-        dt  = DataTable('void', ['id'])
-        dt.add_row(['101'])
+        dt  = self.factory.new_table('void', [('id', int)])
+        dt.add_row([101])
         dta = DataTableAdapter('anthrax', dt)
 
         self.assertEqual('anthrax$void', dta.get_name())
-        self.assertEqual(1, dta.get_version())
+        self.assertEqual(2, dta.get_version())
 
         with self.assertRaises(DataTableBaseException) :
             dta.display()
@@ -45,10 +57,10 @@ class DataTableAdapterTest(unittest.TestCase) :
                 print (x, file=sys.stderr)
 
     def test_passthru(self) :
-        dt1 = DataTable('first', ['id'])
+        dt1 = self.factory.new_table('first', [('id', int)])
         dt1.add_rows([[1], [3], [157]])
 
-        dt2 = DataTable('second', ['datum'])
+        dt2 = self.factory.new_table('second', ['datum'])
         dt2.add_rows([['yes'], ['no']])
         
         dta = DataTablePassthru('window1', dt1)
@@ -60,12 +72,12 @@ class DataTableAdapterTest(unittest.TestCase) :
         self.check_passthru(dt1) # should be identical
 
     def check_passthru(self, dta) :
-        self.assertEqual(2, dta.get_version())        
+        self.assertEqual(3, dta.get_version())        
         self.assertEqual(3, dta.get_row_count())
         self.assertCountEqual(['id', 'datum'], dta.get_cols())
         self.assertCountEqual(
-            [ [1, 'yes'], [3, 'no'], [157, None] ],
-            dta.get_values('id', 'datum')
+            [ (1, 'yes'), (3, 'no'), (157, None) ],
+            dta.get_rows()
         )
 
 
