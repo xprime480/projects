@@ -101,9 +101,8 @@ class DataTable(object) :
     ################################################################
     #
     def add_rows(self, rows) :
-        for row in rows :
-            self.add_row(row, 0)
-
+        converted = [self._convert_row(row) for row in rows]
+        self._bulk_add_rows(converted)
         self.version += 1
 
     ################################################################
@@ -332,6 +331,39 @@ class DataTable(object) :
         create_sql = 'CREATE TABLE "%s" ( %s );' % (self.name, col_sql)
         cur.execute(create_sql)
 
+    ################################################################
+    #
+    def _convert_row(self, row) :
+        self.row_id += 1
+        data = [self.row_id]
+
+        if type(row) == type({}) :
+            data.extend(row.get(col, None) for col in self.cols[1:])
+        elif type(row) in [type([]), type(())] :
+            data.extend(row)
+        elif type(values) == RowReference :
+            data.extend(row.values())
+        else :
+            raise Exception(
+                'Don''t know how to add row from: %s ' % str(values)
+            )
+
+        if len(data) != len(self.cols) :
+            raise Exception(
+                'Wrong number of values for new row with cols %s: %s' % 
+                (str(self.cols), str(data))
+                    
+            )
+
+        return data
+
+    ################################################################
+    #
+    def _bulk_add_rows(self, converted) :
+        insert_sql = 'INSERT INTO "%s" VALUES (%s)' % (self.name, ','.join(['?'] * len(self.cols)))
+        cur = self.con.cursor()
+        cur.executemany(insert_sql, converted)
+        
     ################################################################
     #
     def _add_from_dict(self, row) :
