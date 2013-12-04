@@ -20,7 +20,7 @@ class RowReference(object) :
         row = []
         for col in cols :
             if col in self.cols :
-                row.append(self.data[self.cols.index[col]])
+                row.append(self.data[self.cols.index(col)])
             else :
                 row.append(None)
         return row
@@ -34,12 +34,14 @@ class DataTableIterator(object) :
     def __init__(self, cur) :
         self.cur  = cur
         self.desc = [x[0] for x in self.cur.description]
+        if '__ROWID' in self.desc :
+            self.desc.remove('__ROWID')
 
     def __next__(self) :
         data = self.cur.fetchone()
         if not data :
             raise StopIteration
-        return RowReference(self.desc, data)
+        return RowReference(self.desc, data[1:])
     
 ################################################################
 #
@@ -185,36 +187,28 @@ class DataTable(object) :
         ct   = [v 
                 for v in list(zip(self.get_cols(), self.get_types()))
                 if v[0] in cols]
-        new_table = self.factory.new_table(name, ct)
+
         base_row = dict(zip(cols, itertools.repeat(None)))
-        for row in self :
+        
+        def make_new_row(r) :
             values = {}
             values.update(base_row)
-            values.update(row.as_dict())
-            new_table.add_row(values)
+            values.update(r.as_dict())
+            return values
+        new_rows = [make_new_row(row) for row in self]
+
+        new_table = self.factory.new_table(name, ct)
+        new_table.add_rows(new_rows)
         return new_table
 
     ################################################################
     #
     def filter(self, name, filterfn) :
         ct   = list(zip(self.get_cols(), self.get_types()))
+        new_rows = [row for row in self if filterfn(row.as_dict())]
         new_table = self.factory.new_table(name, ct)
-        for row in self :
-            d = row.as_dict()
-            if filterfn(d) :
-                new_table.add_row(d)
+        new_table.add_rows(new_rows)
         return new_table
-
-    ################################################################
-    #
-    def alt_filter(self, name, filterfn) :
-        accept = []
-        new_table = DataTable(name, self.cols)
-        for row in self :
-            d = row.as_dict()
-            if filterfn(d) :
-                accept.append(d.rowid)
-        return RowFilteredDataTable(self, new_table, accept)
 
     ################################################################
     #
@@ -232,6 +226,7 @@ class DataTable(object) :
     def group_by(self, name, keys, *aggregators) :
         ct = [(k.get_name(), k.get_type()) for k in keys]
         ct.extend([(a.get_name(), a.get_type()) for a in aggregators])
+
         new_table = self.factory.new_table(name, ct)
 
         def key_func(row) :
@@ -285,9 +280,12 @@ class DataTable(object) :
 
         cols = [c[0] for c in cur.description]
         print ('Columns:', cols, file=f)
+        rows_printed = 0
         for row in cur.fetchall() :
             print (' Values:', row, file=f)
             rows_printed += 1
+            if rows_printed >= row_limit :
+                break
 
         print ('', file=f)
         print ('Row count = %d' % self.get_row_count(), file=f)
@@ -341,11 +339,11 @@ class DataTable(object) :
             data.extend(row.get(col, None) for col in self.cols[1:])
         elif type(row) in [type([]), type(())] :
             data.extend(row)
-        elif type(values) == RowReference :
+        elif type(row) == RowReference :
             data.extend(row.values())
         else :
             raise Exception(
-                'Don''t know how to add row from: %s ' % str(values)
+                'Don''t know how to add row from: %s ' % str(row)
             )
 
         if len(data) != len(self.cols) :
