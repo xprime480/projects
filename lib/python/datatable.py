@@ -227,8 +227,6 @@ class DataTable(object) :
         ct = [(k.get_name(), k.get_type()) for k in keys]
         ct.extend([(a.get_name(), a.get_type()) for a in aggregators])
 
-        new_table = self.factory.new_table(name, ct)
-
         def key_func(row) :
             r = row.as_dict()
             key = tuple([k(r) for k in keys])
@@ -237,12 +235,15 @@ class DataTable(object) :
         temp = [(key_func(r), r) for r in self]
         temp.sort(key=lambda x : x[0])
 
+        new_data = []
         for key, rows in itertools.groupby(temp, lambda x : x[0]) :
             rvals = [x[1].as_dict() for x in rows]
             new_row = list(key)
             new_row.extend([a(rvals) for a in aggregators])
-            new_table.add_row(new_row)
-        
+            new_data.append(new_row)
+
+        new_table = self.factory.new_table(name, ct)
+        new_table.add_rows(new_data)
         return new_table
                  
     ################################################################
