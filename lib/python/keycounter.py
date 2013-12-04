@@ -118,7 +118,6 @@ class KeyCounterAlt(object) :
         cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
         for cat in self.categories :
             ct       = [ct for ct in cts if ct[0] == cat]
-            print ('GC1:', ct, file=sys.stderr)
             typ = ct[0][1]
             selector = selectors.simple_column_selector(cat, typ)
             self.cat_values[cat] = self.inputdata.group_by('temp', [selector]).get_values(cat)
