@@ -112,13 +112,6 @@ class KeyCounterAlt(object) :
 
     ################################################################
     #
-    def generate_counts(self, name='temp') :
-        self._get_column_keys()
-        self._create_output(name)
-        self._get_counts()
-
-    ################################################################
-    #
     def get_aggregators(self) :
         return [selectors.count_aggregator()]
 
@@ -129,7 +122,9 @@ class KeyCounterAlt(object) :
             return
 
         if not self.outputdata :
-            self.generate_counts(name)
+            self._get_column_keys()
+            self._create_output(name)
+            self._get_counts()
 
         csvdatatable.write(self.outputdata)
 
@@ -141,9 +136,11 @@ class KeyCounterAlt(object) :
             ct       = [ct for ct in cts if ct[0] == cat]
             typ = ct[0][1]
             selector = selectors.simple_column_selector(cat, typ)
-            tmp_table = self.inputdata.group_by('group_by_' + cat, [selector])
-            self.cat_values[cat] = tmp_table.get_values(cat)
+            results = self.inputdata.group_by('group_by_' + cat, [selector])
+            values = results.get_values(cat)
+            self.cat_values[cat] = values[:]
             self.cat_values[cat].append('***All***')
+
         del (selector)
 
     ################################################################
