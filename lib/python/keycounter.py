@@ -95,13 +95,12 @@ class KeyCounterAlt(object) :
 
     ################################################################
     #
-    def __init__(self, categories) :
+    def __init__(self, categories, factory) :
         self.categories = categories
         self.inputdata  = None
         self.outputdata = None
         self.cat_values = {}
-        self.factory    = datatablefactory.DataTableFactory()
-        self.factory.open()
+        self.factory    = factory
 
         for cat in self.categories :
             self.cat_values[cat] = {}
@@ -114,32 +113,9 @@ class KeyCounterAlt(object) :
     ################################################################
     #
     def generate_counts(self, name='temp') :
-        # get the unique keys for each column
-        cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
-        for cat in self.categories :
-            ct       = [ct for ct in cts if ct[0] == cat]
-            typ = ct[0][1]
-            selector = selectors.simple_column_selector(cat, typ)
-            self.cat_values[cat] = self.inputdata.group_by('temp', [selector]).get_values(cat)
-            self.cat_values[cat].append('***All***')
-        del (selector)
-
-        # create the output table
-        aggs = self.get_aggregators()
-        cols = self.categories[:]
-        cols.extend([a.get_name() for a in aggs])
-        self.outputdata = self.factory.new_table(name, cols)
-        del (cols)
-        
-        # get counts for each combination.
-        for x in itertools.product(*[v for v in self.cat_values.values()]) :
-            filterfn = self._make_filter_fn(x)
-            dt = self.inputdata.filter('temp', filterfn)
-            row = list(x)[:]
-            row.extend([a(dt) for a in aggs])
-            self.outputdata.add_row(row)
-
-        del (aggs)
+        self._get_column_keys()
+        self._create_output(name)
+        self._get_counts()
 
     ################################################################
     #
@@ -157,6 +133,43 @@ class KeyCounterAlt(object) :
 
         csvdatatable.write(self.outputdata)
 
+    ################################################################
+    #
+    def _get_column_keys(self) :
+        cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
+        for cat in self.categories :
+            ct       = [ct for ct in cts if ct[0] == cat]
+            typ = ct[0][1]
+            selector = selectors.simple_column_selector(cat, typ)
+            tmp_table = self.inputdata.group_by('group_by_' + cat, [selector])
+            self.cat_values[cat] = tmp_table.get_values(cat)
+            self.cat_values[cat].append('***All***')
+        del (selector)
+
+    ################################################################
+    #
+    def _create_output(self, name) :
+        aggs = self.get_aggregators()
+        cols = self.categories[:]
+        cols.extend([a.get_name() for a in aggs])
+        self.outputdata = self.factory.new_table(name, cols)
+
+        del (aggs, cols)
+
+    ################################################################
+    #
+    def _get_counts(self) :
+        aggs = self.get_aggregators()
+
+        for x in itertools.product(*[v for v in self.cat_values.values()]) :
+            filterfn = self._make_filter_fn(x)
+            dt = self.inputdata.filter('temp', filterfn)
+            row = list(x)[:]
+            row.extend([a(dt) for a in aggs])
+            self.outputdata.add_row(row)
+
+        del (aggs)
+    
     ################################################################
     #
     def  _make_filter_fn(self, values) :
