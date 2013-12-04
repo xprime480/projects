@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+
 class NamedSelector(object) :
     def __init__(self, name, the_type, func) :
         self.name = name
@@ -18,8 +20,12 @@ class NamedSelector(object) :
 def simple_column_selector(name, the_type, rename=None) :
     if rename is None :
         rename = name
+        
+    def f(row) :
+        rv = row[name]
+        return rv
 
-    return NamedSelector(rename, the_type, lambda x : x[name])
+    return NamedSelector(rename, the_type, f)
 
 def get_non_nulls(ds, selector) :
     return [v for v in [selector(d) for d in ds] if v]
