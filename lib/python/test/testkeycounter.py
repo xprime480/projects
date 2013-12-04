@@ -16,31 +16,42 @@ class KeyCounterTest(unittest.TestCase) :
     #
     def __init__(self, n='runTest') :
         super().__init__(n)
+        self.read_base  = 'test1'
+        self.write_base = 'test2_keycounter'
+
+    ################################################################
+    #
+    def setUp(self) :
+        self.factory = datatablefactory.DataTableFactory()
+        self.factory.open()
+
+    ################################################################
+    #
+    def tearDown(self) :
+        self.factory.close() 
 
     ################################################################
     #
     def test_old(self) :
         kc = keycounter.KeyCounter(['Name', 'Rank'])
-        kc.read('test1.csv')
-        kc.write('test2.csv')
+        kc.read(self.read_base + '.csv')
+        kc.write(self.write_base + '.csv')
 
         self.validate()
 
     ################################################################
     #
     def test_new(self) :
-        kc = keycounter.KeyCounterAlt(['Name', 'Rank'])
-        kc.read('test1')
-        kc.write('test2')
+        kc = keycounter.KeyCounterAlt(['Name', 'Rank'], self.factory)
+        kc.read(self.read_base)
+        kc.write(self.write_base)
 
         self.validate()
 
     ################################################################
     #
     def validate(self) :
-        f = datatablefactory.DataTableFactory()
-        f.open()
-        dt = csvdatatable.read('test2', f)
+        dt = csvdatatable.read(self.write_base, self.factory)
 
         self.assertCountEqual(['Name','Rank','Count'], dt.get_cols())
         self.assertEqual(12, dt.get_row_count())
@@ -57,8 +68,7 @@ class KeyCounterTest(unittest.TestCase) :
             [int(x[0]) for x in dt.get_values('Count')]
         )
 
-        os.unlink('test2.csv')
-        f.close()
+        os.unlink(self.write_base + '.csv')
 
 ################################################################
 #
