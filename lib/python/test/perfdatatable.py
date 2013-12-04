@@ -26,13 +26,6 @@ def withtimer(f) :
 @withtimer
 def add_one_million_rows(factory) :
     dt = factory.new_table('random', [('Random', int)])
-    for x in range(1000000) :
-        dt.add_row([x])
-    return dt
-
-@withtimer
-def add_one_million_rows_range(factory) :
-    dt = factory.new_table('random', [('Random', int)])
     dt.add_rows([(x,) for x in range(1000000)])
     return dt
 
@@ -56,9 +49,8 @@ def alt_filter_one_million_rows() :
 def main() :
     factory = datatablefactory.DataTableFactory()
     factory.open()
-    add_one_million_rows(factory)
+    #add_one_million_rows(factory)
     filter_one_million_rows(factory)
-    add_one_million_rows_range(factory)
     factory.close()
 
 if __name__ == '__main__' :
