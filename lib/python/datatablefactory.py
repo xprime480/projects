@@ -20,3 +20,6 @@ class DataTableFactory(object) :
         self.table_id += 1
         name_with_id = '%s_%06d' % (name, self.table_id)
         return datatable.DataTable(self, self.con, name_with_id, cols)
+
+    def to_user_name(self, name) :
+        return name[:-7]
