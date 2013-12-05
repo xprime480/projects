@@ -10,24 +10,39 @@ import datatableresults
 ################################################################
 #
 class RowReference(object) :
+    ################################################################
+    #
     def __init__(self, cols, data) :
+        """Create the reference."""
+
         self.cols = cols
         self.data = data
 
+    ################################################################
+    #
     def __repr__(self) :
+        """Convert to a string for display."""
+
         return str(self.data)
 
+    ################################################################
+    #
     def values(self, cols=None) :
-        if not cols :
-            cols = self.cols
-        row = []
-        for col in cols :
-            if col in self.cols :
-                row.append(self.data[self.cols.index(col)])
-            else :
-                row.append(None)
-        return row
+        """Extract the columns in the order requested by the user."""
 
+        if not cols or cols == self.cols :
+            return self.data
+
+        def extractor(col) :
+            if col in self.cols :
+                return self.data[self.cols.index(col)]
+            else :
+                return None
+            
+        return [extractor(col) for col in cols]
+
+    ################################################################
+    #
     def as_dict(self) :
         return dict(zip(self.cols, self.data))
 
