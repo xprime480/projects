@@ -36,8 +36,10 @@ class DataTableAdapterTest(unittest.TestCase) :
         dt.add_row([101])
         dta = DataTableAdapter('anthrax', dt)
 
+        print('TBF:', dt.get_version(), file=sys.stderr)
+
         self.assertEqual('anthrax$void', dta.get_name())
-        self.assertEqual(2, dta.get_version())
+        self.assertEqual(1, dta.get_version())
 
         with self.assertRaises(DataTableBaseException) :
             dta.display()
@@ -72,7 +74,7 @@ class DataTableAdapterTest(unittest.TestCase) :
         self.check_passthru(dt1) # should be identical
 
     def check_passthru(self, dta) :
-        self.assertEqual(3, dta.get_version())        
+        self.assertEqual(2, dta.get_version())        
         self.assertEqual(3, dta.get_row_count())
         self.assertCountEqual(['id', 'datum'], dta.get_cols())
         self.assertCountEqual(
