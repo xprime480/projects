@@ -36,8 +36,6 @@ class DataTableAdapterTest(unittest.TestCase) :
         dt.add_row([101])
         dta = DataTableAdapter('anthrax', dt)
 
-        print('TBF:', dt.get_version(), file=sys.stderr)
-
         self.assertEqual('anthrax$void', dta.get_name())
         self.assertEqual(1, dta.get_version())
 
