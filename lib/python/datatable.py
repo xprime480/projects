@@ -44,18 +44,26 @@ class RowReference(object) :
     ################################################################
     #
     def as_dict(self) :
+        """Associate keys with values."""
+
         return dict(zip(self.cols, self.data))
 
 ################################################################
 #
 class DataTableIterator(object) :
+    """Iterator for a DataTable object."""
+
     def __init__(self, cur) :
+        """Initialize the iterator."""
+
         self.cur  = cur
         self.desc = [x[0] for x in self.cur.description]
         if '__ROWID' in self.desc :
             self.desc.remove('__ROWID')
 
     def __next__(self) :
+        """Get the next row."""
+
         data = self.cur.fetchone()
         if not data :
             raise StopIteration
@@ -68,6 +76,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def __init__(self, factory, con, name, cols=[]) :
+        """Initialize a SQLITE backed datatable."""
+
         super().__init__(name)
         self.factory = factory
         self.con     = con
@@ -80,6 +90,14 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def add_cols(self, source) :
+        """Add columns from a source.
+
+        SOURCE is any object supporting the DataTableBase interface.
+
+        The values from the source are inserted into the current
+        datatable.
+        """
+
         cols    = source.get_cols()
         types   = source.get_types()
 
@@ -119,6 +137,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def add_rows(self, rows) :
+        """Bulk addition of rows to the current data store."""
+
         converted = [self._convert_row(row) for row in rows]
         self._bulk_add_rows(converted)
         self.version += 1
@@ -126,6 +146,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def add_row(self, values, vers_inc=1) :
+        """Add a single row to the table."""
+
         if type(values) == type({}) :
             self._add_from_dict(values)
         elif type(values) == type([]) :
@@ -142,21 +164,29 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def get_cols(self) :
+        """Return the names of the non-hidden columns."""
+
         return list(self.cols)[1:]
 
     ################################################################
     #
     def get_types(self) :
+        """Return the types of the non-hidden columns."""
+
         return list(self.types)[1:]
 
     ################################################################
     #
     def get_name(self) :
-        return self.name[:-7]
+        """Get the user's name for the table."""
+
+        return self.factory.to_user_name(self.name)
 
     ################################################################
     #
     def get_row_count(self) :
+        """Return the current row count for the table."""
+
         count_sql = 'SELECT count(*) FROM "%s"' % (self.name,)
         cur = self.con.cursor()
         cur.execute(count_sql)
@@ -165,6 +195,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def get_value(self, col, i) :
+        """Get a single cell in the table."""
+
         if col not in self.cols :
             raise Exception('Column %s not in data' % col)
         if len(self.rows) <= i :
@@ -174,6 +206,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def get_values(self, col) :
+        """Get all values for a column."""
+
         if col not in self.cols :
             raise Exception('Column %s not in data' % col)
 
@@ -186,6 +220,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def get_rows(self, limit=None, hidden=1) :
+        """Get all the data, or if limit is set, the first LIMIT rows."""
+
         if limit is not None :
             select_sql = 'SELECT * FROM "%s" ORDER BY __ROWID ASC LIMIT %d' % (self.name, limit)
         else :
@@ -207,12 +243,13 @@ class DataTable(datatablebase.DataTableBase) :
 
     ################################################################
     #
-    def get_version(self) :
-        return self.version
-
-    ################################################################
-    #
     def project(self, name, cols) :
+        """Get all rows of a subset of the columns of the table.
+
+        Additional columns may be given, and they will all be 
+        assigned NULLS.
+        """
+
         ct   = [v 
                 for v in list(zip(self.get_cols(), self.get_types()))
                 if v[0] in cols]
@@ -233,6 +270,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def filter(self, name, filterfn) :
+        """Return a subset of the rows of the current table."""
+
         ct   = list(zip(self.get_cols(), self.get_types()))
         new_rows = [row for row in self if filterfn(row.as_dict())]
         new_table = self.factory.new_table(name, ct)
@@ -242,6 +281,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def select(self, name, *selectors) :
+        """Get results of applying various selectors to rows."""
+
         ct = [(s.get_name(), s.get_type()) for s in selectors]
         new_table = self.factory.new_table(name, ct)
         for row in self :
@@ -253,6 +294,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def group_by(self, name, keys, *aggregators) :
+        """Group rows by keys and run aggregations on the result sets."""
+
         ct = [(k.get_name(), k.get_type()) for k in keys]
         ct.extend([(a.get_name(), a.get_type()) for a in aggregators])
 
@@ -276,6 +319,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def order_by(self, name, *selectors) :
+        """Return rows in a user specified order."""
+
         temp = []
         for row in self :
             r = row.as_dict()
@@ -292,6 +337,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def __iter__(self) :
+        """Iterate over all rows in the table."""
+
         cur = self.con.cursor()
         row_sql = 'SELECT * FROM "%s"' % (self.name,)
         cur.execute(row_sql)
@@ -300,6 +347,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _create_table(self) :
+        """Create the SQLITE backing store for the table."""
+
         cur = self.con.cursor()
         delete_sql = 'DROP TABLE IF EXISTS "%s"' % self.name
         cur.execute(delete_sql)
@@ -312,6 +361,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _convert_row(self, row) :
+        """Format a data row for insertion in the backing store."""
+
         self.row_id += 1
         data = [self.row_id]
 
@@ -338,6 +389,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _bulk_add_rows(self, converted) :
+        """Add multiple data rows at once."""
+
         insert_sql = 'INSERT INTO "%s" VALUES (%s)' % (self.name, ','.join(['?'] * len(self.cols)))
         cur = self.con.cursor()
         cur.executemany(insert_sql, converted)
@@ -345,12 +398,16 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _add_from_dict(self, row) :
+        """Add a dictionary value."""
+
         data = [row.get(col, None) for col in self.cols]
         self._insert_internal(self.cols, data)
         
     ################################################################
     #
     def _add_from_list(self, row) :
+        """Add a list value."""
+
         data        = [0]
         data.extend(row[:len(self.cols)-1])
         cols        = self.cols[:len(data)]
@@ -359,6 +416,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _insert_internal(self, cols, vals) :
+        """Insert values into the backing store."""
+
         self.row_id += 1
         vals[0] = self.row_id
 
@@ -382,6 +441,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _alter_table(self, names, types) :
+        """Add a column to the backing store."""
+
         cur = self.con.cursor()
         for i in range(min(len(names), len(types))) :
             alter_sql = 'ALTER TABLE "%s" ADD COLUMN "%s" %s' % (self.name, names[i], types[i])
@@ -390,6 +451,8 @@ class DataTable(datatablebase.DataTableBase) :
     ################################################################
     #
     def _quoter(self, col) :
+        """Get the correct formatter for the data type."""
+
         j = self.cols.index(col)
         if self.types[j] == 'TEXT' :
             return '"%s"'
