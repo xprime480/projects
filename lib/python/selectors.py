@@ -23,7 +23,10 @@ def simple_column_selector(name, the_type, rename=None) :
         
     def f(row) :
         rv = row[name]
-        return rv
+        try :
+            return the_type(rv)
+        except TypeError :
+            return rv
 
     return NamedSelector(rename, the_type, f)
 
