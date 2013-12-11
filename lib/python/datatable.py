@@ -7,6 +7,7 @@ import sqlite3 as lite
 
 import datatablebase
 import datatableresults
+import selectors
 
 ################################################################
 #
@@ -337,6 +338,53 @@ class DataTable(datatablebase.DataTableBase) :
         new_table.add_rows([x[1] for x in temp])
         return new_table
 
+    ################################################################
+    #
+    def rollup(self, name, keys) :
+        """Create a rollup of counts of values."""
+
+        class Wildcard(object) :
+            def __repr__(self) :
+                return '*'
+        w = Wildcard()
+
+        aggregators = [selectors.count_aggregator()]
+        temp = self.group_by('temp', keys, *aggregators)
+        data = [r for r in temp]
+        cols = temp.get_cols()
+
+        vals  = []
+        l = logging.getLogger('main')
+        l.debug(str([k.get_name() for k in keys]))
+        for i in range(len(keys)) :
+            key = keys[i].get_name()
+            kvs = list(set([r[i] for r in data]))
+            kvs.append(w)
+            vals.append(kvs)
+
+        ps       = itertools.product(*vals)
+        new_keys = [p for p in ps if [x for x in p if x == w]]
+
+        rec  = [None] * len(keys)
+        rec.append(0)
+        agg = []
+
+        for ks in new_keys :
+            test_data = data[:]
+            for i in range(len(ks)) :
+                key = ks[i]
+                if key == w :
+                    rec[i] = '***All***'
+                else :
+                    rec[i] = key
+                    test_data = [d for d in test_data if d[i] == key]
+
+            rec[-1] = sum([d[-1] for d in test_data])
+            agg.append(rec[:])
+
+        data.extend(agg)
+        return datatableresults.DataTableResults(name, cols, data)
+        
     ################################################################
     #
     def __iter__(self) :
