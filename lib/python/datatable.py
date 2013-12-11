@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import itertools
+import logging
 import sys
 import sqlite3 as lite
 
@@ -77,6 +78,8 @@ class DataTable(datatablebase.DataTableBase) :
     #
     def __init__(self, factory, con, name, cols=[]) :
         """Initialize a SQLITE backed datatable."""
+
+        logging.getLogger('main').info('Creating table %s', name)
 
         super().__init__(name)
         self.factory = factory
