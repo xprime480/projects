@@ -22,12 +22,10 @@ class ApplicationBase(object) :
         if self.__setup_log('%s_log.conf' % self.name) :
             return
 
-        logging.getLogger('main').warn('Failed to configure logging; using default.')
-
         formatter = logging.Formatter('%(asctime)s: %(levelname)s: %(message)s')
 
         handler = logging.FileHandler('%s.log' % self.name )
-        handler.setLevel(logging.INFO)
+        handler.setLevel(logging.DEBUG)
         handler.setFormatter(formatter)
 
         fatalformatter = logging.Formatter('%(levelname)s: %(message)s')
@@ -39,7 +37,9 @@ class ApplicationBase(object) :
         logger = logging.getLogger('main')
         logger.addHandler(handler)
         logger.addHandler(fatalhandler)
+        logger.setLevel(logging.DEBUG)
 
+        logger.warn('Failed to configure logging; using default.')
         
     ################################################################
     #
