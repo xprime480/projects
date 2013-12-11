@@ -33,6 +33,8 @@ class KeyCounterTest(unittest.TestCase) :
     ################################################################
     #
     def test_old(self) :
+        """Test the old KeyCounter class."""
+
         kc = keycounter.KeyCounter(['Name', 'Rank'])
         kc.read(self.read_base + '.csv')
         kc.write(self.write_base + '.csv')
@@ -42,6 +44,8 @@ class KeyCounterTest(unittest.TestCase) :
     ################################################################
     #
     def test_new(self) :
+        """Test the new KeyCounter class."""
+
         kc = keycounter.KeyCounterAlt(['Name', 'Rank'], self.factory)
         kc.read(self.read_base)
         kc.write(self.write_base)
