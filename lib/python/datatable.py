@@ -340,7 +340,7 @@ class DataTable(datatablebase.DataTableBase) :
 
     ################################################################
     #
-    def rollup(self, name, keys) :
+    def rollup(self, name, keys, aggregators=None) :
         """Create a rollup of counts of values."""
 
         class Wildcard(object) :
@@ -348,41 +348,69 @@ class DataTable(datatablebase.DataTableBase) :
                 return '*'
         w = Wildcard()
 
-        aggregators = [selectors.count_aggregator()]
-        temp = self.group_by('temp', keys, *aggregators)
-        data = [r for r in temp]
-        cols = temp.get_cols()
+        # get the records for this table
+        #
+        rows = [d.as_dict() for d in self]
+        cols = [k.get_name() for k in keys]
+        indx = {}
+        for c in cols :
+            indx[c] = {}
+        for i in range(len(rows)) :
+            r = rows[i]
+            for c in cols :
+                v = r[c]
+                if v not in indx[c].keys() :
+                    indx[c][v] = set()
+
+                indx[c][v].add(i)
+
+        if not aggregators :
+            aggregators = [selectors.count_aggregator()]
+            agg_count  = 1
+            count_only = True
+        else :
+            agg_count  = len(aggregators)
+            count_only = False
 
         vals  = []
         l = logging.getLogger('main')
-        l.debug(str([k.get_name() for k in keys]))
-        for i in range(len(keys)) :
-            key = keys[i].get_name()
-            kvs = list(set([r[i] for r in data]))
+        l.debug('Rolling up on keys %s' % str([k.get_name() for k in keys]))
+
+        for i in range(len(cols)) :
+            key = cols[i]
+            kvs = list(indx[key].keys())
             kvs.append(w)
             vals.append(kvs)
-        new_keys = list(itertools.product(*vals))
+        row_keys = list(itertools.product(*vals))
 
         rec  = [None] * len(keys)
-        rec.append(0)
+        if count_only :
+            rec.append(0)
+        else :
+            rec.extend([None] * agg_count)
+        cols.extend([a.get_name() for a in aggregators ])
         agg = []
 
-        for ks in new_keys :
-            test_data = data[:]
-            for i in range(len(ks)) :
-                key = ks[i]
+        for rk in row_keys :
+            row_indx = set(range(len(rows)))
+            for i in range(len(rk)) :
+                key = rk[i]
                 if key == w :
                     rec[i] = '***All***'
                 else :
                     rec[i] = key
-                    test_data = [d for d in test_data if d[i] == key]
+                    key_indx = indx[cols[i]][key]
+                    row_indx.intersection_update(key_indx)
 
-            rec[-1] = sum([d[-1] for d in test_data])
+            if count_only :
+                rec[-1] = len(row_indx)
+            else :
+                raise ('Non-count aggregators not supported.')
+
             agg.append(rec[:])
 
-        #data.extend(agg)
         return datatableresults.DataTableResults(name, cols, agg)
-        
+
     ################################################################
     #
     def __iter__(self) :
