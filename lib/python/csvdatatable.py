@@ -20,5 +20,9 @@ def write(table, cols=None) :
     with csvfileio.CsvFileIo(f, True, cols) as rtr :
             rtr.writeheader()
             for row in table :
-                rtr.writerow(row.as_dict())
+                if type(row) == type([]) :
+                    d = dict(zip(cols, row))
+                else: 
+                    d = row.as_dict()
+                rtr.writerow(d)
 
