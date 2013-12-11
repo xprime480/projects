@@ -2,6 +2,7 @@
 
 import argparse
 import itertools
+import logging
 import sys
 
 import csvdatatable
@@ -105,6 +106,8 @@ class KeyCounterAlt(object) :
         for cat in self.categories :
             self.cat_values[cat] = {}
 
+        self.logger = logging.getLogger('main')
+
     ################################################################
     #
     def read(self, name) :
@@ -131,6 +134,7 @@ class KeyCounterAlt(object) :
     ################################################################
     #
     def _get_column_keys(self) :
+        total = 1
         cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
         for cat in self.categories :
             ct       = [ct for ct in cts if ct[0] == cat]
@@ -138,9 +142,16 @@ class KeyCounterAlt(object) :
             selector = selectors.simple_column_selector(cat, typ)
             results = self.inputdata.group_by('group_by_' + cat, [selector])
             values = results.get_values(cat)
+            msg = 'KeyCounterAlt: Category %s has values %s', cat, str(values)
+            self.logger.info(msg)
             self.cat_values[cat] = values[:]
+
             self.cat_values[cat].append('***All***')
 
+            total *= len(self.cat_values)
+
+        msg = 'KeyCounterAlt: Data has %d combinations of attributes.' % total
+        self.logger.info(msg)
         del (selector)
 
     ################################################################
