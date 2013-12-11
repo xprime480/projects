@@ -2,9 +2,11 @@
 
 import unittest
 
+import testapp
+
 from datatable import *
-from selectors import *
 from datatablefactory import DataTableFactory
+from selectors import *
 
 ##################################################################
 #
@@ -180,4 +182,5 @@ class DataTableTest(unittest.TestCase) :
 if '__main__' == __name__ :
     """Run the unit tests."""
 
-    unittest.main()
+    app = testapp.TestApp()
+    app.run()
