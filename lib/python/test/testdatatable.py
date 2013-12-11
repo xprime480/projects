@@ -28,25 +28,43 @@ class DataTableTest(unittest.TestCase) :
     ################################################################
     #
     def test_empty_table(self) :
+        """Test that a table with no rows or columns looks empty."""
+
         dt = self.factory.new_table('table')
 
         self.assertCountEqual([], dt.get_cols())
         self.assertEqual(0, dt.get_row_count())
 
+    ################################################################
+    #
     def test_duplicate_columns(self) :
+        """Test that createing a table with duplicate columns raises an exception."""
+
         with self.assertRaises(Exception) :
             dt = self.factory.new_table('table', ['cat', 'cat'])
 
+    ################################################################
+    #
     def test_basic(self) :
+        """Test that simple table creation works."""
+
         dt = self.make_dt_one()
         self.assert_dt_one(dt)
 
+    ################################################################
+    #
     def test_copy(self) :
+        """Test that copying a table works."""
+
         dt = self.factory.new_table('table')
         dt.add_cols(self.make_dt_one())
         self.assert_dt_one(dt)
 
+    ################################################################
+    #
     def test_dup_col_add(self) :
+        """Test that adding a duplicate column to existing table works."""
+
         d5 = self.factory.new_table('d5', ['Key', 'More'])
         d5.add_row(['Sam', 'Dave'])
         d5.add_row(['Mike', 'Abby'])
@@ -67,14 +85,22 @@ class DataTableTest(unittest.TestCase) :
             else :
                 self.assertFalse(True)
 
+    ################################################################
+    #
     def test_project(self) :
+        """Test that the projection operation works."""
+
         dt = self.make_dt_one()
         dp = dt.project('TestProjection', ['Key'])
 
         self.assertEqual(['Key'], dp.get_cols())
         self.assertCountEqual(['dog', 'cat'], dp.get_values('Key'))
 
+    ################################################################
+    #
     def test_filter(self) :
+        """Test that row filtering works."""
+
         dt = self.make_dt_one()
         def fn(d) :
             k = d['Key']
@@ -84,7 +110,11 @@ class DataTableTest(unittest.TestCase) :
         self.assertEqual(1, df.get_row_count())
         self.assertCountEqual([('dog', 7)], df.get_rows())
 
+    ################################################################
+    #
     def test_select(self) :
+        """Test that row selection works."""
+
         dt = self.make_dt_one()
         key_selector  = simple_column_selector('Key', str)
         transformer = lambda x : x['Value']**2+1
@@ -97,7 +127,11 @@ class DataTableTest(unittest.TestCase) :
             ds.get_rows()
         )
 
+    ################################################################
+    #
     def test_group_by(self) :
+        """Test that group by operations work."""
+
         dt = self.make_dt_one()
         rows = dt.get_rows()
         dt.add_rows(rows)
@@ -153,7 +187,11 @@ class DataTableTest(unittest.TestCase) :
             dg2.get_rows()
         )
 
+    ################################################################
+    #
     def test_order_by(self) :
+        """Test that row ordering works."""
+
         dt = self.make_dt_one()
 
         self.assertEqual([7, 3], dt.get_values('Value'))
@@ -163,13 +201,40 @@ class DataTableTest(unittest.TestCase) :
 
         self.assertEqual([3, 7], ds.get_values('Value'))
 
+    ################################################################
+    #
+    def test_rollup(self) :
+        """Test that the rollup operation works."""
+
+        dt = self.make_dt_one()
+        dt.add_row(['cat', 9])
+        key_selector  = simple_column_selector('Key', str)
+        keys = [key_selector]
+        dr = dt.rollup('RollupTest', keys)
+
+        self.assertEqual(3, dr.get_row_count())
+        self.assertCountEqual(
+            [['cat', 2], ['dog', 1], ['***All***', 3]],
+            dr.get_rows()
+        )
+
+        
+    ################################################################
+    ################################################################
+    #
     def make_dt_one(self) :
+        """Make the standard table."""
+
         dt = self.factory.new_table('table', [('Key'), ('Value', int)])
         dt.add_row(['dog', 7])
         dt.add_row(['cat', 3])
         return dt
 
+    ################################################################
+    #
     def assert_dt_one(self, dt) :
+        """Test that the standard table is the same as it was created."""
+
         self.assertCountEqual(['Key', 'Value'], dt.get_cols())
         self.assertCountEqual(
             [('dog', 7), ('cat', 3)],
