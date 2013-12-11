@@ -405,7 +405,8 @@ class DataTable(datatablebase.DataTableBase) :
             if count_only :
                 rec[-1] = len(row_indx)
             else :
-                raise ('Non-count aggregators not supported.')
+                sub_rows = [rows[i] for i in row_indx]
+                agv = [a(sub_rows) for a in aggregators]
 
             agg.append(rec[:])
 
