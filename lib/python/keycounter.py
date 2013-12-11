@@ -124,68 +124,14 @@ class KeyCounterAlt(object) :
         if not self.inputdata :
             return
 
-        if not self.outputdata :
-            self._get_column_keys()
-            self._create_output(name)
-            self._get_counts()
+        d = self.inputdata
+        c = self.categories
+        k = [k for k in zip(d.get_cols(), d.get_types()) if k[0] in c]
+        f = selectors.simple_column_selector
 
+        keys = list(itertools.starmap(f, k))
+        self.outputdata = self.inputdata.rollup(name, keys)
         csvdatatable.write(self.outputdata)
-
-    ################################################################
-    #
-    def _get_column_keys(self) :
-        total = 1
-        cts = list(zip(self.inputdata.get_cols(), self.inputdata.get_types()))
-        for cat in self.categories :
-            ct       = [ct for ct in cts if ct[0] == cat]
-            typ = ct[0][1]
-            selector = selectors.simple_column_selector(cat, typ)
-            results = self.inputdata.group_by('group_by_' + cat, [selector])
-            values = results.get_values(cat)
-            msg = 'KeyCounterAlt: Category %s has values %s', cat, str(values)
-            self.logger.info(msg)
-            self.cat_values[cat] = values[:]
-
-            self.cat_values[cat].append('***All***')
-
-            total *= len(self.cat_values)
-
-        msg = 'KeyCounterAlt: Data has %d combinations of attributes.' % total
-        self.logger.info(msg)
-        del (selector)
-
-    ################################################################
-    #
-    def _create_output(self, name) :
-        aggs = self.get_aggregators()
-        cols = self.categories[:]
-        cols.extend([a.get_name() for a in aggs])
-        self.outputdata = self.factory.new_table(name, cols)
-
-        del (aggs, cols)
-
-    ################################################################
-    #
-    def _get_counts(self) :
-        aggs = self.get_aggregators()
-
-        for x in itertools.product(*[v for v in self.cat_values.values()]) :
-            filterfn = self._make_filter_fn(x)
-            dt = self.inputdata.filter('temp', filterfn)
-            row = list(x)[:]
-            row.extend([a(dt) for a in aggs])
-            self.outputdata.add_row(row)
-
-        del (aggs)
-    
-    ################################################################
-    #
-    def  _make_filter_fn(self, values) :
-        named = zip(self.categories, values)
-        preds = [v for v in named if v[1] != '***All***']
-        def ffn(row) :
-            return all([row[p[0]] == p[1] for p in preds])
-        return ffn
 
 ################################################################
 #
