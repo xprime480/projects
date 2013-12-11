@@ -116,7 +116,7 @@ class KeyCounterAlt(object) :
     ################################################################
     #
     def get_aggregators(self) :
-        return [selectors.count_aggregator()]
+        return None
 
     ################################################################
     #
@@ -130,7 +130,8 @@ class KeyCounterAlt(object) :
         f = selectors.simple_column_selector
 
         keys = list(itertools.starmap(f, k))
-        self.outputdata = self.inputdata.rollup(name, keys)
+        aggs = self.get_aggregators()
+        self.outputdata = self.inputdata.rollup(name, keys, aggs)
         csvdatatable.write(self.outputdata)
 
 ################################################################
