@@ -361,9 +361,7 @@ class DataTable(datatablebase.DataTableBase) :
             kvs = list(set([r[i] for r in data]))
             kvs.append(w)
             vals.append(kvs)
-
-        ps       = itertools.product(*vals)
-        new_keys = [p for p in ps if [x for x in p if x == w]]
+        new_keys = list(itertools.product(*vals))
 
         rec  = [None] * len(keys)
         rec.append(0)
@@ -382,8 +380,8 @@ class DataTable(datatablebase.DataTableBase) :
             rec[-1] = sum([d[-1] for d in test_data])
             agg.append(rec[:])
 
-        data.extend(agg)
-        return datatableresults.DataTableResults(name, cols, data)
+        #data.extend(agg)
+        return datatableresults.DataTableResults(name, cols, agg)
         
     ################################################################
     #
