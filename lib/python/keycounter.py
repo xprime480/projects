@@ -120,18 +120,28 @@ class KeyCounterAlt(object) :
 
     ################################################################
     #
+    def callback(self) :
+        return True
+
+    ################################################################
+    #
     def write(self, name) :
         if not self.inputdata :
             return
 
         d = self.inputdata
         c = self.categories
-        k = [k for k in zip(d.get_cols(), d.get_types()) if k[0] in c]
-        f = selectors.simple_column_selector
 
+        cc = self.inputdata.get_cols()
+        ct = self.inputdata.get_types()
+        ct_map = dict(zip(cc, ct))
+
+        k = [(cn, ct_map[cn]) for cn in c]
+        f = selectors.simple_column_selector
         keys = list(itertools.starmap(f, k))
         aggs = self.get_aggregators()
-        self.outputdata = self.inputdata.rollup(name, keys, aggs)
+
+        self.outputdata = self.inputdata.rollup(name, keys, aggs, self.callback)
         csvdatatable.write(self.outputdata)
 
 ################################################################
