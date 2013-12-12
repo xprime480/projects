@@ -340,7 +340,7 @@ class DataTable(datatablebase.DataTableBase) :
 
     ################################################################
     #
-    def rollup(self, name, keys, aggregators=None) :
+    def rollup(self, name, keys, aggregators=None, callback=None) :
         """Create a rollup of counts of values."""
 
         class Wildcard(object) :
@@ -391,7 +391,14 @@ class DataTable(datatablebase.DataTableBase) :
         cols.extend([a.get_name() for a in aggregators ])
         agg = []
 
+        processed = 0
+        skipped   = 0
+        total     = len(row_keys)
         for rk in row_keys :
+            if callback and not callback(rk) :
+                skipped += 1
+                continue
+
             row_indx = set(range(len(rows)))
             for i in range(len(rk)) :
                 key = rk[i]
@@ -407,9 +414,12 @@ class DataTable(datatablebase.DataTableBase) :
             else :
                 sub_rows = [rows[i] for i in row_indx]
                 agv = [a(sub_rows) for a in aggregators]
+                rec[-agg_count:] = agv
 
             agg.append(rec[:])
+            processed += 1
 
+        l.info('DataTable.rollup: processed %d of %d keys; skipped %d' % (processed, total, skipped))
         return datatableresults.DataTableResults(name, cols, agg)
 
     ################################################################
