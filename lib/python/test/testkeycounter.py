@@ -12,12 +12,19 @@ import csvdatatable
 class KeyCounterTest(unittest.TestCase) :
     """Test KeyCounter class."""
 
+    __do_log_init = True
+
     ##################################################################
     #
     def __init__(self, n='runTest') :
         super().__init__(n)
         self.read_base  = 'test1'
         self.write_base = 'test2_keycounter'
+
+        if KeyCounterTest.__do_log_init :
+            import testapp
+            app = testapp.TestApp('testkeycounter')
+            KeyCounterTest.__do_log_init = False
 
     ################################################################
     #
@@ -83,5 +90,3 @@ class KeyCounterTest(unittest.TestCase) :
 #
 if '__main__' == __name__ :
     """Run the unit tests."""
-
-    unittest.main()
