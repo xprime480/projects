@@ -3,10 +3,10 @@
 import sys
 import unittest
 
-from datatable        import *
-from datatableadapter import *
-from datatablebase    import DataTableBaseException
-from datatablefactory import DataTableFactory
+from datatable         import *
+from datatable.adapter import *
+from datatable.base    import DataTableBaseException
+from datatable.factory import DataTableFactory
 
 ##################################################################
 #

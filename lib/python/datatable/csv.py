@@ -2,7 +2,7 @@
 
 import csvfileio
 import datatable
-import datatablefactory
+import datatable.factory
 
 def read(name, factory, cols=None) :
     f = name + '.csv'

@@ -5,9 +5,9 @@ import logging
 import sys
 import sqlite3 as lite
 
-import datatablebase
-import datatableresults
-import selectors
+import datatable.base
+import datatable.results
+import datatable.selectors
 
 ################################################################
 #
@@ -73,7 +73,7 @@ class DataTableIterator(object) :
     
 ################################################################
 #
-class DataTable(datatablebase.DataTableBase) :
+class DataTable(datatable.base.DataTableBase) :
     
     ################################################################
     #
@@ -241,7 +241,7 @@ class DataTable(datatablebase.DataTableBase) :
         typs = self._cols_to_types(cols)
         ct = list(zip(cols, typs))
 
-        return datatableresults.DataTableResults('temp', ct, vs)
+        return datatable.results.DataTableResults('temp', ct, vs)
 
         return vs
 
@@ -318,7 +318,7 @@ class DataTable(datatablebase.DataTableBase) :
             new_row.extend([a(rvals) for a in aggregators])
             new_data.append(new_row)
 
-        return datatableresults.DataTableResults(name, ct, new_data)
+        return datatable.results.DataTableResults(name, ct, new_data)
                  
     ################################################################
     #
@@ -365,7 +365,7 @@ class DataTable(datatablebase.DataTableBase) :
                 indx[c][v].add(i)
 
         if not aggregators :
-            aggregators = [selectors.count_aggregator()]
+            aggregators = [datatable.selectors.count_aggregator()]
             agg_count  = 1
             count_only = True
         else :
@@ -420,7 +420,7 @@ class DataTable(datatablebase.DataTableBase) :
             processed += 1
 
         l.info('DataTable.rollup: processed %d of %d keys; skipped %d' % (processed, total, skipped))
-        return datatableresults.DataTableResults(name, cols, agg)
+        return datatable.results.DataTableResults(name, cols, agg)
 
     ################################################################
     #

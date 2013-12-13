@@ -1,7 +1,7 @@
 
 import sys
 
-import datatablebase
+import datatable.base
 
 ################################################################
 #
@@ -11,7 +11,7 @@ class DataTableAdapterException(Exception) :
 
 ################################################################
 #
-class DataTableAdapter(datatablebase.DataTableBase) :
+class DataTableAdapter(datatable.base.DataTableBase) :
 
     ################################################################
     #

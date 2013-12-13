@@ -4,9 +4,9 @@ import unittest
 
 import testapp
 
-from datatable import *
-from datatablefactory import DataTableFactory
-from selectors import *
+from datatable           import *
+from datatable.factory   import DataTableFactory
+from datatable.selectors import *
 
 ##################################################################
 #

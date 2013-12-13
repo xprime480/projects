@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import datatablebase
+import datatable.base
 
 ################################################################
 #
-class DataTableResults(datatablebase.DataTableBase) :
+class DataTableResults(datatable.base.DataTableBase) :
 
     ################################################################
     #

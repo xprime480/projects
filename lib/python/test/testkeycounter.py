@@ -3,9 +3,10 @@
 import os
 import unittest
 
-import datatablefactory
-import keycounter
-import csvdatatable
+import datatable.csv
+
+from datatable.factory import DataTableFactory
+from datatable.keycounter import KeyCounter
 
 ##################################################################
 #
@@ -29,7 +30,7 @@ class KeyCounterTest(unittest.TestCase) :
     ################################################################
     #
     def setUp(self) :
-        self.factory = datatablefactory.DataTableFactory()
+        self.factory = datatable.factory.DataTableFactory()
         self.factory.open()
 
     ################################################################
@@ -42,7 +43,7 @@ class KeyCounterTest(unittest.TestCase) :
     def test_new(self) :
         """Test the new KeyCounter class."""
 
-        kc = keycounter.KeyCounter(['Name', 'Rank'], self.factory)
+        kc = KeyCounter(['Name', 'Rank'], self.factory)
         kc.read(self.read_base)
         results = kc.get_results()
         #kc.write(self.write_base)

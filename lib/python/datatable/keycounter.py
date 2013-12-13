@@ -5,11 +5,11 @@ import itertools
 import logging
 import sys
 
-import csvdatatable
 import csvprocessor
 import datatable
-import datatablefactory
-import selectors
+import datatable.csv
+import datatable.factory
+import datatable.selectors
 
 class KeyCounter(object) :
 
@@ -30,7 +30,7 @@ class KeyCounter(object) :
     ################################################################
     #
     def read(self, name) :
-        self.inputdata = csvdatatable.read(name, self.factory)
+        self.inputdata = datatable.csv.read(name, self.factory)
 
     ################################################################
     #
@@ -59,7 +59,7 @@ class KeyCounter(object) :
         ct_map = dict(zip(cc, ct))
 
         k = [(cn, ct_map[cn]) for cn in c]
-        f = selectors.simple_column_selector
+        f = datatable.selectors.simple_column_selector
         keys = list(itertools.starmap(f, k))
         aggs = self.get_aggregators()
 
