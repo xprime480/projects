@@ -34,7 +34,7 @@ class ApplicationBase(object) :
         fatalhandler.setLevel(logging.WARNING)
         fatalhandler.setFormatter(fatalformatter)
 
-        logger = logging.getLogger('main')
+        logger = logging.getLogger('root')
         logger.addHandler(handler)
         logger.addHandler(fatalhandler)
         logger.setLevel(logging.DEBUG)
@@ -44,12 +44,12 @@ class ApplicationBase(object) :
     ################################################################
     #
     def __setup_log(self, config_file) :
-        try : 
-            logging.config.fileConfig(config_file)
-            return True
-        except Exception as e :
-            pass
-            #print ('Logging configuration error:', e, file=sys.stderr)
+        try :
+            with open(config_file) as f :
+                logging.config.fileConfig(f)
+                return True
+        except IOError as e :
+            print (e, file=sys.stderr)
 
         return False
 
@@ -58,7 +58,7 @@ class ApplicationBase(object) :
     def run(self) :
         """Should do something useful."""
 
-        logger = logging.getLogger('main')
+        logger = logging.getLogger('root')
         logger.debug('This is a test')
         logger.fatal('To be or not to be')
 
