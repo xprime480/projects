@@ -1,3 +1,3 @@
 
-def first(val) :
+def fnfirst(val) :
     return 2 * val
