@@ -39,30 +39,19 @@ class KeyCounterTest(unittest.TestCase) :
 
     ################################################################
     #
-    def test_old(self) :
-        """Test the old KeyCounter class."""
-
-        kc = keycounter.KeyCounter(['Name', 'Rank'])
-        kc.read(self.read_base + '.csv')
-        kc.write(self.write_base + '.csv')
-
-        self.validate()
-
-    ################################################################
-    #
     def test_new(self) :
         """Test the new KeyCounter class."""
 
-        kc = keycounter.KeyCounterAlt(['Name', 'Rank'], self.factory)
+        kc = keycounter.KeyCounter(['Name', 'Rank'], self.factory)
         kc.read(self.read_base)
-        kc.write(self.write_base)
-
-        self.validate()
+        results = kc.get_results()
+        #kc.write(self.write_base)
+        self.validate(results)
 
     ################################################################
     #
-    def validate(self) :
-        dt = csvdatatable.read(self.write_base, self.factory)
+    def validate(self, dt) :
+        """Validate the data results."""
 
         self.assertCountEqual(['Name','Rank','Count'], dt.get_cols())
         self.assertEqual(12, dt.get_row_count())
@@ -83,8 +72,6 @@ class KeyCounterTest(unittest.TestCase) :
             ],
             [[row[0], row[1], int(row[2])] for row in dt.get_rows()]
         )
-
-        os.unlink(self.write_base + '.csv')
 
 ################################################################
 #
