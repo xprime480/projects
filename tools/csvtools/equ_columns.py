@@ -43,8 +43,11 @@ class Analyzer(csvprocessor.CsvProcessor) :
         return True
 
     def start_write(self) :
-        pct = 100.0 * (float(self.equal) / float(self.total))
-        print ('%d of %d rows equal (%6.2f%%)' % (self.equal, self.total, pct))
+        if self.total == 0 :
+            print ('No Rows were read')
+        else :
+            pct = 100.0 * (float(self.equal) / float(self.total))
+            print ('%d of %d rows equal (%6.2f%%)' % (self.equal, self.total, pct))
 
         return None
 
