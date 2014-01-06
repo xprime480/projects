@@ -235,11 +235,17 @@ class PlaylistMaker(object) :
 
     ################################################################
     #
-    def truncate(self, count) :
-        """Return a function that returns the first COUNT input values."""
+    def truncate(self, count, proportion=0.0) :
+        """Return a function that returns some prefix of the input.
+
+        COUNT      is the minimum length to return.
+        PROPORTION is what proportion of the input to return.
+
+        The maximum of COUNT and PROPORTION is used as the length."""
 
         def fn(tracks) :
-            temp = tracks[:count]
+            tcount = max(int(len(tracks)*proportion), count)
+            temp = tracks[:tcount]
             return temp
             
         return fn
