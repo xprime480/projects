@@ -124,6 +124,12 @@ class PlaylistMaker(object) :
 
     ################################################################
     #
+    def least_recently_played_stochastic(self, tracks) :
+        tracks.sort(key=lambda x : random.uniform(0, x.get_age()), reverse=True)
+        return tracks
+
+    ################################################################
+    #
     def apply_artist_correction(self, tracks) :
         """Move duplicate tracks by a given artist to the end of the list."""
         
