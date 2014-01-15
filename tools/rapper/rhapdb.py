@@ -7,7 +7,6 @@ import sqlite3 as lite
 
 import utils
 
-
 ################################################################
 #
 class RhapsodySong(object) :
@@ -15,6 +14,8 @@ class RhapsodySong(object) :
 
     COMMENT = 1
     RATINGS = 2
+
+    __time_mark = datetime.datetime.today()
 
     def __init__(self, song) :
         """Initialize an instance."""
@@ -61,9 +62,19 @@ class RhapsodySong(object) :
         t = self.song['LAST_PLAYED']
 
         if not t :
+            t = self.song['DATE_ADDED']
+
+        if not t :
             t = '19600117T121500'
 
         return datetime.datetime.strptime(t, '%Y%m%dT%H%M%S')
+
+    def get_age(self) :
+        t = self.get_last_played()
+        x = RhapsodySong.__time_mark - t
+        d = x.days
+        s = x.seconds / (24.0 * 60.0 * 60.0)
+        return d + s
 
     def get_play_count(self) :
         t = self.song['PLAY_COUNT']
