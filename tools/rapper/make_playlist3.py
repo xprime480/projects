@@ -34,6 +34,7 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
             self.truncate(25, 0.25),
             self.randomize,
             self.remove_duplicate_artists,
+            self.least_recently_played_stochastic,
             self.truncate(5)
         ]
 
@@ -48,8 +49,49 @@ class LocalPlaylistMaker(playlist_maker.PlaylistMaker) :
         temp.extend(basic_list[:])
         pickers.append(temp)
 
+        testlen = 0
         while len(self.tracks) > 0 and len(self.playlist) < self.length :
-            self.extend_playlist(*random.choice(pickers))
+            self.extend_playlist(*pickers[0])
+            self.extend_playlist(*pickers[5])
+            if len(self.playlist) == testlen :
+                break
+            i = random.randint(1,4)
+            self.extend_playlist(*pickers[i])
+            testlen = len(self.playlist)
+
+        ixs = list(range(1,5))
+        while len(self.tracks) > 0 and len(self.playlist) < self.length :
+            random.shuffle(ixs)
+            for ix in ixs :
+                self.extend_playlist(*pickers[ix])
+
+        if None :
+            random.shuffle(pickers)
+            for p in pickers[:-2] :
+                self.extend_playlist(*p)
+
+        if None :
+            a,b = pickers[0],pickers[1:]
+            random.shuffle(b)
+            pickers = b[:]
+            pickers.append(a)
+            self.extend_playlist(*a)
+
+    ################################################################
+    #
+    def least_recently_played_stochastic2(self, tracks) :
+        def keyfn(t) :
+            score = t.get_age()
+            stars = t.get_rating()
+            if stars == 0 :
+                score = score * 500
+            else :
+                score = score * 2 * (3.0 ** stars)
+
+            return random.uniform(0, score)
+
+        tracks.sort(key=keyfn, reverse=True)
+        return tracks
 
 ################################################################
 #
