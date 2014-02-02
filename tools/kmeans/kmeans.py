@@ -22,7 +22,6 @@ def weighted_random_index(weights) :
     return len(weights) - 1
 
 class KMeansSolver(ksolver.KSolver) :
-
     def __init__(self, count, cls) :
         super().__init__(count, cls)
 
@@ -45,7 +44,7 @@ class KMeansSolverPlus(KMeansSolver) :
         self.clusters = [Cluster(c) for c in self.centroids]
         self.assign_to_clusters()
 
-class Point2D(object) :
+class RealPoint2D(object) :
     def __init__(self) :
         pass
 
@@ -112,8 +111,8 @@ def main() :
     
     data = gen_data_1(RANDOM_POINT_COUNT, CLUSTER_COUNT)
     
-    solver1 = KMeansSolver(CLUSTER_COUNT, Point2D)
-    solver2 = KMeansSolverPlus(CLUSTER_COUNT, Point2D)
+    solver1 = KMeansSolver(CLUSTER_COUNT, RealPoint2D)
+    solver2 = KMeansSolverPlus(CLUSTER_COUNT, RealPoint2D)
 
     results1 = ksolver.run(solver1, data, REPEAT_COUNT)
     results2 = ksolver.run(solver2, data, REPEAT_COUNT)
