@@ -4,9 +4,8 @@
 # this file implements a generic k-modes classifier
 #
 
-from datareader import get_data
+import datareader
 
-import categorypoint2d
 import ksolver
 
 def main() :
@@ -14,12 +13,10 @@ def main() :
     CLUSTER_COUNT = 3
     REPEAT_COUNT = 50
 
-    data = get_data(
-        'datamakers.data_set_1', 
-        categorypoint2d.CategoryPoint2D
-    )
+    cls = datareader.get_method('categorypoint2d.CategoryPoint2D')
+    data = datareader.get_data('datamakers.data_set_1', cls)
     
-    solver1 = ksolver.KSolver(CLUSTER_COUNT, categorypoint2d.CategoryPoint2D)
+    solver1 = ksolver.KSolver(CLUSTER_COUNT, cls)
     results1 = ksolver.run(solver1, data, REPEAT_COUNT, 0)
 
     print (results1['distances'])
