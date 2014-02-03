@@ -19,3 +19,9 @@ class RealPoint2D(object) :
         return (sum([i[0] for i in items])/1.0/count, 
                 sum([i[1] for i in items])/1.0/count)
 
+    @classmethod
+    def convert(cls, item) :
+        """This would be the place for conversions and validations.
+        For now, just accept."""
+
+        return item

@@ -32,3 +32,9 @@ class CategoryPoint2D(object) :
 
         return c
                 
+    @classmethod
+    def convert(cls, item) :
+        """This would be the place for conversions and validations.
+        For now, just accept."""
+
+        return item
