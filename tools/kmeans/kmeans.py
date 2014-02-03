@@ -4,12 +4,13 @@
 # this file implements a generic k-means classifier
 #
 
-import math
 import random
 import sys
 
 from cluster import Cluster
+
 import ksolver
+import realpoint2d
 
 def weighted_random_index(weights) :
     sum_weights = sum(weights)
@@ -43,23 +44,6 @@ class KMeansSolverPlus(KMeansSolver) :
 
         self.clusters = [Cluster(c) for c in self.centroids]
         self.assign_to_clusters()
-
-class RealPoint2D(object) :
-    def __init__(self) :
-        pass
-
-    @classmethod
-    def distance(self, p1, p2) :
-        dx = 1.0 * (p2[0] - p1[0])
-        dy = 1.0 * (p2[1] - p1[1])
-        d  = math.sqrt(dx*dx + dy*dy)
-        return d
-
-    @classmethod
-    def centroid(self, items) :
-        count = len(items)
-        return (sum([i[0] for i in items])/1.0/count, 
-                sum([i[1] for i in items])/1.0/count)
 
 data_set_1 = [
     (1,2), (1,3), (1,4), (2,5), (2,0), (3,5), (3, 7)
@@ -111,8 +95,8 @@ def main() :
     
     data = gen_data_1(RANDOM_POINT_COUNT, CLUSTER_COUNT)
     
-    solver1 = KMeansSolver(CLUSTER_COUNT, RealPoint2D)
-    solver2 = KMeansSolverPlus(CLUSTER_COUNT, RealPoint2D)
+    solver1 = KMeansSolver(CLUSTER_COUNT, realpoint2d.RealPoint2D)
+    solver2 = KMeansSolverPlus(CLUSTER_COUNT, realpoint2d.RealPoint2D)
 
     results1 = ksolver.run(solver1, data, REPEAT_COUNT)
     results2 = ksolver.run(solver2, data, REPEAT_COUNT)
