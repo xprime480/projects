@@ -9,10 +9,6 @@ from datareader import get_data
 import categorypoint2d
 import ksolver
 
-class KModesSolver(ksolver.KSolver) :
-    def __init__(self, count, cls) :
-        super().__init__(count, cls)
-
 def main() :
     RANDOM_POINT_COUNT = 1000
     CLUSTER_COUNT = 3
@@ -23,8 +19,8 @@ def main() :
         categorypoint2d.CategoryPoint2D
     )
     
-    solver1 = KModesSolver(CLUSTER_COUNT, categorypoint2d.CategoryPoint2D)
-    results1 = ksolver.run(solver1, data, REPEAT_COUNT)
+    solver1 = ksolver.KSolver(CLUSTER_COUNT, categorypoint2d.CategoryPoint2D)
+    results1 = ksolver.run(solver1, data, REPEAT_COUNT, 0)
 
     print (results1['distances'])
     print (results1)
