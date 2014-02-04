@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
 
 import random
 import sys
 
 from cluster import Cluster
+
+import datareader
 
 def weighted_random_index(weights) :
     sum_weights = sum(weights)
@@ -145,3 +148,79 @@ def run(solver, data, repeat, init_method) :
         'last_improvement' : last_improvement
     }
 
+
+def main() :
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--points",
+        help="how many points to generate", 
+        default=1000,
+        nargs='?',
+        type=int
+    )
+    parser.add_argument(
+        "--clusters",
+        help="how many clusters", 
+        default=3,
+        nargs=1,
+        type=int
+    )
+    parser.add_argument(
+        "--repeat",
+        help="how many times to run algorithm, keeping best result", 
+        default=50,
+        nargs='?',
+        type=int
+    )
+    parser.add_argument(
+        "dataclass",
+        help="name of data class", 
+        nargs=1
+    )
+    parser.add_argument(
+        "datamaker",
+        help="name of data generating function", 
+        nargs=1
+    )
+    parser.add_argument(
+        "--init_max_distance",
+        help="use maximum distance cluster initialization", 
+        default=False,
+        nargs='?',
+        type=bool
+        
+    )
+
+    try :
+        args = parser.parse_args()
+        print (args)
+    except IOError as e :
+        print (e)
+        sys.exit(1)
+
+    cls = datareader.get_method(
+        args.dataclass[0]
+    )
+    data = datareader.get_data(
+        args.datamaker[0], 
+        cls, 
+        args.points, 
+        args.clusters
+    )
+    solver = KSolver(
+        args.clusters, 
+        cls
+    )
+    results = run(
+        solver, 
+        data, 
+        args.repeat, 
+        args.init_max_distance and 1 or 0
+    )
+
+    print (results)
+
+if __name__ == '__main__' :
+    main()
