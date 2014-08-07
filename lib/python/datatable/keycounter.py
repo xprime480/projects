@@ -67,7 +67,6 @@ class KeyCounter(object) :
 
         return self.outputdata
         
-
     ################################################################
     #
     def write(self, name) :
@@ -75,7 +74,7 @@ class KeyCounter(object) :
         if not results :
             return
 
-        csvdatatable.write(results)
+        datatable.csv.write(results)
 
 ################################################################
 #
