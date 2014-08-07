@@ -6,5 +6,3 @@ def basic(a, b) :
     from .second import fnsecond
 
     return fnfirst(a) + fnsecond(b)
-
-
