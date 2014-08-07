@@ -110,6 +110,25 @@ class PlaylistMaker(object) :
 
     ################################################################
     #
+    def extend_playlist_limited(self, limit, *rules) :
+        """Create a playlist by applying a set of RULES.
+        
+        RULES is a list of callables.
+
+        The first of the RULES is given the unused tracks in the
+        library.  Each succesive rule's input is the output from the
+        previous rule.  The output of the last rule is the returned
+        by this function.  Also, all the tracks in the return value
+        are removed from the list of available tracks."""
+
+        t = apply_rules(self.tracks, *rules)
+        t = t[:limit]
+        self.playlist.extend(t)
+        for s in t :
+            self.tracks.remove(s)
+
+    ################################################################
+    #
     def randomize(self, tracks) :
         """Returns its input in a random order."""
 
@@ -125,7 +144,7 @@ class PlaylistMaker(object) :
     ################################################################
     #
     def least_recently_played_stochastic(self, tracks) :
-        tracks.sort(key=lambda x : random.uniform(0, x.get_age()), reverse=True)
+        tracks.sort(key=lambda x : random.uniform(0, int(1+x.get_age())), reverse=True)
         return tracks
 
     ################################################################
