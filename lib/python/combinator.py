@@ -105,6 +105,18 @@ class ZeroPlusMatcher(Combinator) :
     
 ############################################
 
+class ZeroOneMatcher(Combinator) :
+    def __init__(self, parser) :
+        self.parser = parser
+
+    def match(self, input) :
+        m,o,rest = self.parser.match(input)
+        if m != None :
+            return (m,o,rest)
+        return ('', '', input)
+
+############################################
+
 class OnePlusMatcher(ZeroPlusMatcher) :
     def __init__(self, parser) :
         ZeroPlusMatcher.__init__(self, parser)

@@ -22,6 +22,7 @@ class CombinatorTest(unittest.TestCase) :
         self.cxs1 = OnePlusMatcher(self.cx)
         self.any  = AnyCharMatcher()
         self.all  = ZeroPlusMatcher(self.any)
+        self.opt  = ZeroOneMatcher(self.cx)
 
         self.digits  = CharSetMatcher(string.digits)
         self.digits2 = CharRangeMatcher('0', '9')
@@ -116,6 +117,18 @@ class CombinatorTest(unittest.TestCase) :
         self.assertEqual(
             ('', [], ''),
             self.all.match("")
+        )
+
+    ##################################################################
+    #
+    def test_opt_char_match(self) :
+        self.assertEqual(
+            ('', '', 'zx'),
+            self.opt.match("zx")
+        )
+        self.assertEqual(
+            ('x', 'x', 'z'),
+            self.opt.match("xz")
         )
 
     ##################################################################
