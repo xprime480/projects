@@ -12,20 +12,9 @@ def resolver(a, d) :
     else :
         return -1 * (abs(x) // 5)
 
-def get_sorted_dict_keys(d) :
-    ks = list(d.keys())
-    ks.sort()
-    return ks
-
-def display(d) :
-    ks = get_sorted_dict_keys(d)
-    for k in ks :
-        if round(d[k], 3) > 0 :
-            print ('%5d %f' % (k, d[k]))
-
 def resolve(a, d) :
     t2 = PdfUtils.merge(a, d, resolver)
-    display (t2)
+    PdfUtils.display (t2)
     print ("----------------------")
 
         

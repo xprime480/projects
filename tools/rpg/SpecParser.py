@@ -20,7 +20,7 @@ class SpecParserResult(object) :
 
 class SpecParser(object) :
     def __init__(self) :
-        self.pattern = re.compile('(\d*)d(\d+)(([+-])(\d+))?')
+        self.pattern = re.compile('(\d*)d(\d+)([+-]\d+)?')
 
     def parse(self, spec) :
         matcher = self.match(spec)
