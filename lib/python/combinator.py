@@ -131,8 +131,8 @@ class OnePlusMatcher(ZeroPlusMatcher) :
 
 class IntegerMatcher(Combinator) :
     def match(self, input) :
-        minus = SingleCharMatcher('-')
-        sign,_,rest = minus.match(input)
+        signMatcher = ZeroOneMatcher(CharSetMatcher('-+'))
+        sign,_,rest = signMatcher.match(input)
 
         digits = OnePlusMatcher(CharSetMatcher("0123456789"))
         m,o,rest = digits.match(rest)
@@ -143,6 +143,8 @@ class IntegerMatcher(Combinator) :
         if sign == '-' :
             m = sign + m
             val *= -1
+        elif sign == '+' :
+            m = sign + m
             
         return (m, val, rest)
 

@@ -151,6 +151,10 @@ class CombinatorTest(unittest.TestCase) :
             self.ints.match("623x")
         )
         self.assertEqual(
+            ('+623', 623, 'x'),
+            self.ints.match("+623x")
+        )
+        self.assertEqual(
             ('-1234623', -1234623, 'x'),
             self.ints.match("-1234623x")
         )
