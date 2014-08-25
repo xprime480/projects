@@ -5,8 +5,8 @@ import SpecParser
 
 class DicePdf(object) :
     def __init__(self, spec="d6") :
-        parser = SpecParser.SpecParser()
-        parsed = parser.parse(spec)
+        parser = SpecParser.SpecParser(spec)
+        parsed = parser.parse()
         self.make_probs(parsed)
 
     def get(self) :

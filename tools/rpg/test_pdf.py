@@ -77,8 +77,8 @@ class TestDicePdf(unittest.TestCase) :
         self.assertFalse(4 in p.keys())
 
     def test_base_probs_1(self) :
-        parser = SpecParser.SpecParser()
-        result = parser.parse("2d6+1")
+        parser = SpecParser.SpecParser("2d6+1")
+        result = parser.parse()
         pdf    = DicePdf.DicePdf()
         p      = pdf.make_base_probs(result)
         self.assertFalse(1  in p.keys())
