@@ -16,7 +16,7 @@ class Deduper(object) :
         return linesSortedByIndex
 
 class FileDeduper(object) :
-    def __init__(fileName) :
+    def __init__(self, fileName) :
         deduper = Deduper()
         with open(fileName) as fileHandle :
             for line in fileHandle.readlines() :
@@ -28,7 +28,7 @@ class FileDeduper(object) :
 
 def dedupFile(fileName) :
     deduper = FileDeduper(fileName)
-    for line in deduper.getLines :
+    for line in deduper.getLines() :
         print line
 
 if __name__ == '__main__' :
