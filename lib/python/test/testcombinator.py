@@ -39,6 +39,7 @@ class CombinatorTest(unittest.TestCase) :
                                            )))
         self.seq     = SequenceMatcher(self.alpha, self.digits2)
         self.sm      = StringMatcher("base")
+        self.intlist = ListMatcher(self.digits2,SingleCharMatcher(','))
 
     ##################################################################
     #
@@ -198,6 +199,27 @@ class CombinatorTest(unittest.TestCase) :
             (None, None, 'offbase'),
             self.sm.match("offbase")
         )
+
+    ##################################################################
+    #
+    def test_list_match(self) :
+        self.assertEqual(
+            ('2', ['2'], ''),
+            self.intlist.match('2')
+        )
+        self.assertEqual(
+            ('2,3', ['2','3'], ''),
+            self.intlist.match('2,3')
+        )
+        self.assertEqual(
+            ('2,3', ['2','3'], ','),
+            self.intlist.match('2,3,')
+        )
+        self.assertEqual(
+            ('2,3', ['2','3'], 'u'),
+            self.intlist.match('2,3u')
+        )
+
 
 ################################################################
 #

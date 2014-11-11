@@ -183,6 +183,34 @@ class StringMatcher(Combinator) :
 
         return (None, None, input)
         
+############################################
+
+class ListMatcher(Combinator) :
+    def __init__(self, items, seps) :
+        self.items = items
+        self.seps  = seps
+
+    def match(self, input) :
+        m = ''
+        os = []
+
+        matched,o,rest = self.items.match(input)
+        if matched is None :
+            return None,None,input
+
+        m = m + matched
+        os.append(o)
+
+        opt_items = SequenceMatcher(self.seps,self.items)
+        while True :
+            save = rest[:]
+            matched,o,rest = opt_items.match(save)
+            if matched is None :
+                return m,os,save
+
+            m = m + matched
+            os.append(o[1])
+        
 ################################################################
 #
 if __name__ == '__main__' :
