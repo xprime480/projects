@@ -167,6 +167,25 @@ class SequenceMatcher(Combinator) :
 
 ############################################
 
+class SequenceMatcher2(Combinator) :
+    def __init__(self, *parsers) :
+        self.parsers = parsers
+
+    def match(self, input) :
+        m = ""
+        os = []
+        rest = input
+        for p in self.parsers :
+            matched,o,rest = p.match(rest)
+            if matched is None :
+                return (None,None,input)
+            m = m + matched
+            os.append(o)
+
+        return (m, os, rest)
+
+############################################
+
 class StringMatcher(Combinator) :
     def __init__(self, string) :
         self.string = string
