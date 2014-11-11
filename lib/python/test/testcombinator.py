@@ -37,7 +37,7 @@ class CombinatorTest(unittest.TestCase) :
                                                self.alpha, 
                                                self.digits2
                                            )))
-        self.seq     = SequenceMatcher2(self.alpha, self.digits2)
+        self.seq     = SequenceMatcher(self.alpha, self.digits2)
         self.sm      = StringMatcher("base")
 
     ##################################################################
@@ -175,11 +175,9 @@ class CombinatorTest(unittest.TestCase) :
     ##################################################################
     #
     def test_keyword_match(self) :
-        self.assertEqual(
-            ('DogBerry99', 'DogBerry99', '$2'),
-            self.keyword.match("DogBerry99$2")
-        )
-
+        s = self.keyword.match("DogBerry99$2")
+        self.assertEqual('DogBerry99', s[0])
+        self.assertEqual('$2', s[2])
 
     ##################################################################
     #
