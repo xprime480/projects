@@ -2,35 +2,9 @@
 
 import combinator
 
-## forward declaration
+import class_decl
+import forward_decl
 
-class ForwardDeclaration(SyntaxElement) :
-    def __init__(self, name) :
-        super().__init__()
-        self.name = name
-
-    def __repr__(self) :
-        return 'forward declaration %s %s' % (self.name, super().__repr__())
-    
-class ForwardDeclarationParser(combinator.Combinator) :
-    def __init__(self) :
-        self.parser = combinator.SequenceMatcher(
-            optional_whitespace,
-            kwClass,
-            optional_whitespace,
-            identifier,
-            optional_whitespace,
-            semicolon
-        )
-
-    def match(self, input) :
-        m,os,r = self.parser.match(input)
-        if m :
-            name = syntax_element.seq_to_string(os[3])
-            o = ForwardDeclaration(name)
-            return m,o,r
-
-        return m,os,r
 
 ## class delcaration
 
@@ -39,8 +13,8 @@ class ForwardDeclarationParser(combinator.Combinator) :
 class ClassDeclScanner(object) :
     def __init__(self) :
         self.parser = combinator.AnyOfMatcher(
-            ForwardDeclarationParser(),
-            ClassDeclarationParser()
+            forward_decl.ForwardDeclarationParser(),
+            class_decl.ClassDeclarationParser()
         )
 
     def scan(self, input) :
@@ -60,7 +34,9 @@ if __name__ == '__main__' :
     
     test_inputs = [
         'class Test;',
-        'class Test {};'
+        'class Test {};',
+        'class Test : public One {};',
+        'class Test : public One, public Too {};'
     ]
     row = 1;
     for input in test_inputs :

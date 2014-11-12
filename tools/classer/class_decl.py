@@ -34,7 +34,7 @@ class BaseListParser(combinator.Combinator) :
             syntax_element.optional_whitespace,
             syntax_element.kwPublic,
             syntax_element.optional_whitespace,
-            syntax_element.identifier_with_namespace
+            syntax_element.IdentifierWithNamespace()
         )
         self.parser = combinator.ZeroOneMatcher(
             combinator.SequenceMatcher(
@@ -49,7 +49,7 @@ class BaseListParser(combinator.Combinator) :
         if not m :
             return '',[],input
         
-        os = [syntax_element.seq_to_string(x[3][0]) for x in os[2]]
+        os = [x[3] for x in os[2]]
         return m,os,r
 
 class ClassDeclarationParser(combinator.Combinator) :
@@ -60,7 +60,7 @@ class ClassDeclarationParser(combinator.Combinator) :
             syntax_element.optional_whitespace,
             syntax_element.kwClass,
             syntax_element.optional_whitespace,
-            syntax_element.identifier,
+            syntax_element.Identifier(),
             bases,
             syntax_element.optional_whitespace,
             syntax_element.right_bracket
@@ -69,12 +69,12 @@ class ClassDeclarationParser(combinator.Combinator) :
     def match(self, input) :
         m,os,r = self.parser.match(input)
         if m : 
-            name = syntax_element.seq_to_string(os[3])
+            name = os[3]
             o = ClassDeclaration(name)
             for b in os[4] :
                 o.add_base(b)
             return m,o,r
-
+g
         return m,os,r
 
 if __name__ == '__main__' :
