@@ -74,7 +74,7 @@ class ClassDeclarationParser(combinator.Combinator) :
             for b in os[4] :
                 o.add_base(b)
             return m,o,r
-g
+
         return m,os,r
 
 if __name__ == '__main__' :
