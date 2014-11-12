@@ -113,7 +113,7 @@ class ZeroOneMatcher(Combinator) :
         m,o,rest = self.parser.match(input)
         if m != None :
             return (m,o,rest)
-        return ('', '', input)
+        return ('', None, input)
 
 ############################################
 

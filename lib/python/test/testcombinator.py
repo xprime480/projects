@@ -125,7 +125,7 @@ class CombinatorTest(unittest.TestCase) :
     #
     def test_opt_char_match(self) :
         self.assertEqual(
-            ('', '', 'zx'),
+            ('', None, 'zx'),
             self.opt.match("zx")
         )
         self.assertEqual(
