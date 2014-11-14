@@ -149,23 +149,15 @@ class RegexpMatcher(Combinator) :
 ############################################
 
 class IntegerMatcher(Combinator) :
+    def __init__(self) :
+        self.parser = RegexpMatcher('[+-]?[0-9]+')
+
     def match(self, input) :
-        signMatcher = ZeroOneMatcher(CharSetMatcher('-+'))
-        sign,_,rest = signMatcher.match(input)
+        m,o,r = self.parser.match(input)
+        if not m :
+            return None, None, input
 
-        digits = OnePlusMatcher(CharSetMatcher("0123456789"))
-        m,o,rest = digits.match(rest)
-        if m == None :
-            return (m,o,input)
-
-        val = int(m)
-        if sign == '-' :
-            m = sign + m
-            val *= -1
-        elif sign == '+' :
-            m = sign + m
-            
-        return (m, val, rest)
+        return m, int(m), r
 
 ############################################
 

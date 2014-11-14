@@ -241,6 +241,10 @@ class CombinatorTest(unittest.TestCase) :
         self.assertEqual('b', s)
         self.assertEqual('', r)
 
+        s,_,r = self.re1.match('xb')
+        self.assertEqual('', s)
+        self.assertEqual('xb', r)
+
         s,m,r = self.re2.match('axxxa')
         self.assertEqual('axxx', s)
         self.assertEqual('a', r)
