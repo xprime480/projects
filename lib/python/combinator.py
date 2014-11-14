@@ -1,5 +1,7 @@
 #!/usr/local/bin/python
 
+import re
+
 ############################################
 
 class Combinator :
@@ -126,6 +128,23 @@ class OnePlusMatcher(ZeroPlusMatcher) :
         if m != None and len(o) > 0:
             return (m,o,rest)
         return (None, None, input)
+
+############################################
+
+class RegexpMatcher(Combinator) :
+    def __init__(self, regexp, flags=0) :
+        self.re = re.compile(regexp, flags)
+
+    def match(self, input) :
+        if not self.validate(input) :
+            return None, None, input
+
+        m = self.re.match(input)
+        if not m :
+            return None, None, input
+
+        t = m.group(0)
+        return t, m, input[len(t):]
 
 ############################################
 

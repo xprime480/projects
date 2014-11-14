@@ -40,6 +40,8 @@ class CombinatorTest(unittest.TestCase) :
         self.seq     = SequenceMatcher(self.alpha, self.digits2)
         self.sm      = StringMatcher("base")
         self.intlist = ListMatcher(self.digits2,SingleCharMatcher(','))
+        self.re1     = RegexpMatcher('[abc]*')
+        self.re2     = RegexpMatcher('([abc]{1,3})(x+)')
 
     ##################################################################
     #
@@ -218,6 +220,45 @@ class CombinatorTest(unittest.TestCase) :
         self.assertEqual(
             ('2,3', ['2','3'], 'u'),
             self.intlist.match('2,3u')
+        )
+
+    ##################################################################
+    #
+    def test_re_match(self) :
+        s,_,r = self.re1.match('abcdef')
+        self.assertEqual('abc', s)
+        self.assertEqual('def', r)
+
+        s,_,r = self.re1.match('x')
+        self.assertEqual('', s)
+        self.assertEqual('x', r)
+
+        s,_,r = self.re1.match('cccadef')
+        self.assertEqual('ccca', s)
+        self.assertEqual('def', r)
+
+        s,_,r = self.re1.match('b')
+        self.assertEqual('b', s)
+        self.assertEqual('', r)
+
+        s,m,r = self.re2.match('axxxa')
+        self.assertEqual('axxx', s)
+        self.assertEqual('a', r)
+        self.assertEqual(('a', 'xxx'), m.group(1,2))
+
+        self.assertEqual(
+            (None, None, 'xxx'),
+            self.re2.match('xxx')
+        )
+
+        self.assertEqual(
+            (None, None, 'abcabcxxx'),
+            self.re2.match('abcabcxxx')
+        )
+
+        self.assertEqual(
+            (None, None, 'a'),
+            self.re2.match('a')
         )
 
 
