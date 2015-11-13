@@ -37,19 +37,36 @@ alias blue='colorize bbddff'
 #alias myps='ps -ef | grep ^I809989'
 #alias semclean="ipcs | sed -n /Semaphore/,/^$/p | grep I809989 | cut -f 2 -d' ' | xargs -n1 -r ipcrm -s "
 #
-#export DBCONN='--dbConnection wamu_heloc/wamu_heloc@fspilot'
 
 EMACS_EXE=/usr/bin/emacs
 alias ema='(cd ${HOME} && ${EMACS_EXE} -f bookmark-bmenu-list &)'
 
+#alias fixm='fixmode.py'
 
-alias ghelp='git --help'
-alias gcommit='git commit -a'
-alias gdiff='git diff'
-alias gpush='git push origin master'
-alias gstatus='git status'
-alias gadd='git add'
-alias fixm='fixmode.py'
+#PY=/usr/bin/python3
+#alias pdb='${PY} -m pdb '
 
-PY=/usr/bin/python3
-alias pdb='${PY} -m pdb '
+alias buildafl='time ( hmdep && hmo :AFL/UDF_CORE/UDF_CORE.vprj )'
+alias buildtest='time ( hmdep && hmo :AFL/UDF_CORE/UDFCoreTests.vprj )'
+alias gstat='git status'
+alias gcomm='git commit --amend'
+alias gadda='git add -A'
+alias testf='/home/i809989/SAPDevelop/HDB/git/gen/opt/test/gmock/UDF_CORE/test_facade --gtest_filter=$FACADE_UNIT_TEST'
+alias b='lg build'
+alias ba='lg buildclean'
+alias i='lg install'
+alias ia='lg installall'
+alias g='lg gmock'
+alias E='lg err hlo -E all'
+alias j='rsync -amz -e ssh jenkins@llbpal21.pal.sap.corp:/home/jenkins/jenkins/workspace/udf_afl_compile/sys/wrk/thirdparty/ $OWN/sys/wrk/thirdparty'
+alias cleanbak="find . \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) \! -regex .*_SYS_REGI_settings.* -delete"
+
+alias git-ids="git log -5 | sed -ne '/^commit/s/commit \(......\).*/\1/p'"
+alias imp='source /home/i809989/SAPDevelop/AFL/git/env/impenv.sh'
+alias dedup="history -a && ~i809989/bin/dedup.py ~/.bash_history > /tmp/X && mv /tmp/X ~/.bash_history"
+
+alias hpy="PYTHONPATH=/usr/sap/hdbclient/hdbcli:/usr/sap/hdbclient /usr/sap/hdbclient/Python/bin/python2.6"
+alias e20='emacs -font 10x20 '
+alias pc2=procedure-callers2.sh
+alias fixdtd='cp build/Optimized/install/installer.wrk/lib/installcfg.dtd /home/i809989/SAPDevelop/AFL/git/sys/src/build/Optimized/gen/product_specific_afls/UDF_installer/installer/packages/installcfg.dtd'
+

@@ -43,6 +43,12 @@ if [ \! -z "${DISPLAY}" ]; then
     blue
 fi
 
-
 export http_proxy=proxy.phl.sap.corp:8080
 #export http_proxy=usscfblue1.scf.sap.corp:8083
+
+export SAP_RETRIEVAL_PATH=/usr/sap/MD1/02/HDB02/llbpal25
+
+# happy make (installed on 2015-10-05 15:37:48.824021)
+export HAPPY_MAKE_HOME=/home/i809989/.HappyMake
+export HAPPY_MAKE_CACHE="${HAPPY_MAKE_HOME}/cache"
+export PATH=/home/i809989/.HappyMake/bin:"${PATH}"
