@@ -1,3 +1,4 @@
+;; Mike Davis .emacs file based loosely on
 ;; Red Hat Linux default .emacs initialization file
 
 ;; Are we running XEmacs or Emacs?
@@ -12,8 +13,7 @@
 
 ;; Turn on font-lock mode for Emacs
 (cond ((and (not running-xemacs) (eq window-system 'x))
-       (global-font-lock-mode t)
-))
+       (global-font-lock-mode t)))
 
 ;; Always end a file with a newline
 ;;(setq require-final-newline t)
@@ -29,8 +29,7 @@
 
 (setq enable-recursive-minibuffers t)
 
-
-(push (concat (getenv "HOME") "/elisp") load-path)
+(push "/home/i809989/elisp" load-path)
 (load-library "local-defs")
 (load-library "madbuild")
 ;;(set-build-env)
@@ -54,22 +53,15 @@
 
 (setq hostname (nth 0 (split-string (getenv "HOSTNAME") "\\.")))
 
-;;;(add-to-list 'default-frame-alist '(font . "8x13"))
-(add-to-list 'default-frame-alist '(font . "9x15"))
+(add-to-list 'default-frame-alist '(font . "10x20"))
 (add-to-list 'default-frame-alist '(geometry . "80x25+50+50"))
 (if (eq window-system 'x) 
     (add-to-list 'default-frame-alist (cons 'background-color 
 					    (cond
-					     ((string= "maxwell" hostname) "#ffeeff")
-					     ((string= "kyle" hostname) "#eeffff")
-					     ((string= "piodev01"  hostname) "lightyellow")
-					     ((string= "piodev02"  hostname) "#ecffff")
-					     ((string= "chef"  hostname) "#ffeecc")
 					     (t "white")))))
 
 (display-time)
 
-(put 'narrow-to-region 'disabled nil)
 (read-abbrev-file)
 (setq vc-diff-switches "-w")		; ignore whitespace
 
@@ -93,7 +85,8 @@
 			    (lambda (p) (compile "make"))))
 
 
-(setq py-python-command "/usr/bin/python24")
+;;(setq py-python-command "/usr/bin/python24")
+(setq py-python-command "/usr/bin/python")
 
 (setq command-switch-alist
       (append (list (cons "--work" 'proc-work-switch)
@@ -118,7 +111,7 @@
  )
 
 (savehist-mode 1)
-(setq scheme-program-name "guile")
+;;(setq scheme-program-name "guile")
 
 (add-hook 'compilation-mode-hook '(lambda () 
 				    (setq compile-history
@@ -129,15 +122,6 @@
        (push dir load-path)
        (require sym)))
 
-;; Cscope source code navigation
-(safe-require "/mnt/install/tools/cscope/elisp" 'xcscope)
-
-;; Perforce revision control.  This uses an improved variant of "p4.el".
-(safe-require "/mnt/install/tools/p4/elisp" 'mlu.perforce)
-
-;; R statistics system.
-(safe-require "/mnt/install/tools/ess/share/emacs/site-lisp" 'ess-site)
-
 ;; start the Emacs server, will be of help to Perforce/Emacs integration.
 (if (< 1 0)
     (progn
@@ -145,3 +129,7 @@
       (server-start))
   (message "Omitting server-start"))
 
+
+(put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
