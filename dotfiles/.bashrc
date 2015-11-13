@@ -40,7 +40,7 @@ export HISTCONTROL=ignoreboth
 # skip this on non -X windows
 #
 if [ \! -z "${DISPLAY}" ]; then
-    #blue
+    echo blue
 fi
 
 export http_proxy=proxy.phl.sap.corp:8080
