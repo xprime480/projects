@@ -91,8 +91,10 @@ The default user is specified by the variable mail-user."
   (let ((b (get-buffer name)))
     (and (bufferp b) (kill-buffer b))))
 
-(defvar mad-gdb-directory "~/pio/review/pio/pio/dev/src/retail/mdo/scheduler/")
-(defvar mad-gdb-program "ExecutionScheduler_full")
+;;(defvar mad-gdb-directory "~/pio/review/pio/pio/dev/src/retail/mdo/scheduler/")
+(defvar mad-gdb-directory nil)
+;;(defvar mad-gdb-program "ExecutionScheduler_full")
+(defvar mad-gdb-program nil)
 
 (defun include-guard ()
   "Add include guards to a C/C++ file"
@@ -116,6 +118,20 @@ The default user is specified by the variable mail-user."
       (insert "// $DateTime: " (current-time-string) " $\n")
       (insert "\n")))
 
+(defun insert-time-string ()
+  (interactive)
+  (insert (format "%s.%03d"
+		  (format-time-string "%Y-%m-%d %T" (current-time))
+		  (mod (random) 1000))))
+
+(defun random-line-from-buffer ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (forward-line (mod (random) (count-lines (point-min) (point-max))))
+    (message (format "%s" (buffer-substring-no-properties
+			   (line-beginning-position)
+			   (line-end-position))))))
 
 (progn 
   (global-set-key "a" 'remove-ansi-escapes-from-buffer)
@@ -150,6 +166,7 @@ The default user is specified by the variable mail-user."
 			  (bash-region t)))
   (global-set-key '[f8] 'bash-line)
   (global-set-key '[f9] 'find-file-at-point)
+  (global-set-key "t" 'insert-time-string)
   nil)
  
 (load-library "dbutils")

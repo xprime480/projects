@@ -1,0 +1,21 @@
+(defun dequote-entity (src dst)
+  (interactive)
+  (let ((pattern (concat "&" src ";")))
+    (replace-string pattern dst nil (point-min) (point-max))))
+
+(defun dequote ()
+  (interactive)
+  (dequote-entity "quot" "\"")
+  (dequote-entity "apos" "\'")
+  (dequote-entity "lt" "<")
+  (dequote-entity "gt" ">")
+)
+
+(defun fixup-buffer ()
+  (interactive)
+  (save-excursion
+    (dequote)
+    (beginning-of-buffer)
+    (replace-string "SAP_DDF" "SAPRTI" t (point-min) (point-max))
+    (beginning-of-buffer)
+    (replace-string "SESSION_CONTEXT('CLIENT')" "'800'" nil (point-min) (point-max))))
