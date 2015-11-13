@@ -35,12 +35,12 @@ fi
 
 export LC_ALL=C
 export HISTCONTROL=ignoreboth
-export PS1='\u@\h: \W \$ '
+#export PS1='\u@\h: \W \$ '
 
 # skip this on non -X windows
 #
 if [ \! -z "${DISPLAY}" ]; then
-    blue
+    #blue
 fi
 
 export http_proxy=proxy.phl.sap.corp:8080
