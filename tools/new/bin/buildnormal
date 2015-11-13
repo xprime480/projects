@@ -1,0 +1,7 @@
+#!/bin/bash
+
+hmdep
+hmo all
+#hmo ::AFL/UDF_CORE/UDF_CORE
+#hmo ::AFL/UDF_CORE/UDFCoreTests
+#hmo ::nutest/createTestPackages

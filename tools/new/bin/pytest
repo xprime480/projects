@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CMD="make -f /usr/sap/MD1/home/tests/Makefile $@"
+echo "executing \"${CMD}\""
+lg pytest su - md1adm -c "${CMD}"
+lg
+

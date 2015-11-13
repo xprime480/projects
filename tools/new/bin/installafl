@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $OWN/gen/opt/product_specific_afls/UDF_installer/installer
+sudo -u lroot ./hdbinst -s MD1
+

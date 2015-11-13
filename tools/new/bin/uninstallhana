@@ -1,0 +1,8 @@
+#!/bin/bash
+
+INSTALL_DIR=$(grep HANA_ARCHIVE /home/i809989/SAPDevelop/AFL/git/sys/wrk/opt/log/preparing.vprj.x0 | awk -F'server' '{print $1}' | cut -d'=' -f2)
+echo "Installing from ..." $INSTALL_DIR
+cd $INSTALL_DIR
+
+
+sudo -u lroot ./hdbuninst --keep_user_home_dir --keep_user --sid=MD1

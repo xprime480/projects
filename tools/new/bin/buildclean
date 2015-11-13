@@ -1,0 +1,5 @@
+#!/bin/bash
+
+hmclean
+rsync -amz -e ssh jenkins@llbpal21.pal.sap.corp:/home/jenkins/jenkins/workspace/udf_afl_compile/sys/wrk/thirdparty/ $OWN/sys/wrk/thirdparty
+buildnormal

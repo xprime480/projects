@@ -1,0 +1,19 @@
+#!/bin/bash
+
+sudo -u lroot rm -r /usr/sap/MD1/HDB02/exe/testscripts
+sudo -u lroot rm -r /usr/sap/MD1/HDB02/exe/testbins
+sudo -u lroot rm -r /usr/sap/MD1/HDB02/exe/testbins_gmock
+
+cd $OWN/gen/opt/product_specific_afls/UDF_installer/installer
+sudo -u lroot ./hdbinst -s MD1 -p md1admpw --nostart
+cd $OWN/gen/opt/test/tests
+sudo -u lroot ./installTestPkg.sh -s MD1 afl_testpack.tgz
+cd $OWN/gen/opt/test/tests_gmock
+sudo -u lroot ./installTestPkg.sh -s MD1 afl_testgmockpack.tgz 
+
+
+
+
+
+
+

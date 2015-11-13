@@ -1,0 +1,43 @@
+
+
+LOG_DIR=$(HOME)/tmp/logs
+GMOCK_DIR=$(OWN)/gen/dbg/test/gmock/UDF_CORE
+#sar_testpack/testbins_gmock/UDF_CORE
+
+all : none
+
+none :
+	@echo "No command"
+
+tags :
+	@-rm TAGS
+	@find $(SRC)/AFL/UDF_CORE \( -name '*.cpp' -o -name '*.h' \) \! -regex '.*/test.*' | xargs etags --append
+	@find $(SRC)/../wrk/opt/incl_POOL/sys/src -name '*.h' | xargs etags --append
+
+co-dev :
+	@git checkout UDF_dev
+
+build :
+	@hmdep
+	@hmo all
+
+install :
+	@installafl
+	@installtests
+
+installall :
+	@installall
+
+
+gmock :
+	$(GMOCK_DIR)/test_base
+	$(GMOCK_DIR)/test_coordinator
+	$(GMOCK_DIR)/test_facade
+	$(GMOCK_DIR)/test_integration
+	$(GMOCK_DIR)/test_kernelIT
+	$(GMOCK_DIR)/test_kernelUT
+	$(GMOCK_DIR)/test_matrix
+	$(GMOCK_DIR)/test_translate
+	$(GMOCK_DIR)/test_types
+
+.PHONY : gmock

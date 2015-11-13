@@ -1,0 +1,10 @@
+#!/bin/bash
+
+INSTALL_DIR=$(grep HANA_ARCHIVE /home/i809989/SAPDevelop/AFL/git/sys/wrk/opt/log/preparing.vprj.x0 | awk -F'server' '{print $1}' | cut -d'=' -f2)
+echo "Installing from ..." $INSTALL_DIR
+
+
+cd $INSTALL_DIR
+sudo -u lroot   ./hdbupd -s MD1 -p md1admpw --system_user_password=manager --ignore=check_version,check_plugin_dependencies,check_busy_files --import_content=off --nostart -b 
+cd ../test/python_support_internal/
+sudo -u lroot ./installTestPkg.sh -s MD1 python_support_internal.tgz

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export DIR_EXECUTABLE=$SRC/nutest
+for x in /home/i809989/SAPDevelop/AFL/git/gen/opt/test/gmock/UDF_CORE/test_* ; do
+    L=`basename $x`
+    $x > $HOME/tmp/logs/${L}.log 2>&1 
+    C=$?
+    echo "finished $L with exit code $C"
+done

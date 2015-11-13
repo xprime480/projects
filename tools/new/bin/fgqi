@@ -1,0 +1,9 @@
+#!/bin/bash
+
+RE=${1:-.}
+shift
+DIRS=${@:-.}
+
+cmd="find ${DIRS} ! -type d -exec grep -qi ${RE} {} ; -print"
+#echo $cmd
+$cmd 2>&1 | tee ~/tmp/logs/fgqi.log

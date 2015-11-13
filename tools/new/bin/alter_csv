@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+BASE=${HOME}/SAPDevelop/AFL/git/sys/src/nutest/testscripts/UDF_CORE
+RE=${1}
+
+function append_column () {
+    CSV=${BASE}/${1}
+    head -1 ${CSV} | grep -qi ${RE}
+    STS=${?}
+    if [ 0 -eq ${STS} ] ; then
+	return
+    fi
+
+    TMP=/tmp/find3${PID}.csv
+    sed -e '1s/$/,${RE}/' -e '2,$s/$/,""/' <${CSV} >${TMP}
+    mv ${TMP} ${CSV}
+} 
+
+FILES=${2}
+if [ \! -f ${FILES} ]; then
+   echo "File list ${FILES} not found" 
+    exit 1
+fi
+
+for file in $(cat ${FILES}); do
+    append_column ${file}
+done
