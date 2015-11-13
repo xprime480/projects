@@ -1,0 +1,12 @@
+export FORCE_TESTPACK_GENERATION=1
+sh -f /home/i809989/SAPDevelop/AFL/git/afl_env.sh
+
+NUTEST=$SRC/nutest/testscripts/UDF_CORE
+RD1_DDF_TEST=$NUTEST/UDF_DDF_RD1
+RD1_UDF_TEST=$NUTEST/UDF_CORE_RD1
+
+HCO=$SRC/AFL/UDF_CORE/hana_content
+RD1_DDF=$HCO/RD1/sap/is/ddf/udf
+RD1_UDF=$HCO/RD1/sap/is/udf/cor
+
+UDF_CORE_DIR=${SRC}/AFL/UDF_CORE
