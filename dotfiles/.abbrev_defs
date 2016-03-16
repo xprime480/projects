@@ -1,4 +1,13 @@
 ;;-*-coding: emacs-mule;-*-
+(define-abbrev-table 'html-mode-abbrev-table '(
+    ))
+
+(define-abbrev-table 'sgml-mode-abbrev-table '(
+    ))
+
+(define-abbrev-table 'vc-git-log-view-mode-abbrev-table '(
+    ))
+
 (define-abbrev-table 'apropos-mode-abbrev-table '(
     ))
 

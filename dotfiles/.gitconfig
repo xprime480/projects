@@ -1,4 +1,23 @@
 [user]
+	name = Michael Davis
+	email = mi.davis@sap.com
+[core]
+	autocrlf = input
+	pager = less -r
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[merge]
+	tool = p4merge
+[alias]
+	names = show --name-only
+	rb = pull --rebase
+	amend = commit --amend
+	newc = commit -s
+[push]
+	default = simple
+[user]
 	name = Mike Davis
 	email = mi.davis@sap.com
 [core]

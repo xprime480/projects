@@ -69,4 +69,4 @@ alias hpy="PYTHONPATH=/usr/sap/hdbclient/hdbcli:/usr/sap/hdbclient /usr/sap/hdbc
 alias e20='emacs -font 10x20 '
 alias pc2=procedure-callers2.sh
 alias fixdtd='cp build/Optimized/install/installer.wrk/lib/installcfg.dtd /home/i809989/SAPDevelop/AFL/git/sys/src/build/Optimized/gen/product_specific_afls/UDF_installer/installer/packages/installcfg.dtd'
-
+alias ls='ls --color=never'

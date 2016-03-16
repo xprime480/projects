@@ -35,6 +35,7 @@ fi
 
 export LC_ALL=C
 export HISTCONTROL=ignoreboth
+export HISTTIMEFORMAT="%F %T>    "
 #export PS1='\u@\h: \W \$ '
 
 # skip this on non -X windows
