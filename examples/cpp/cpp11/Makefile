@@ -6,26 +6,25 @@ TESTS=pointertest treetest lambdatest
 LIB=libcpp11.a
 LIBSRC=$(shell ls *.cpp | grep -v ^main_)
 LIBOBJ=$(LIBSRC:.cpp=.o)
-HDRS=(shell *.h)
+LIBDEP=$(LIBSRC:.cpp=.d)
+HDRS=$(shell ls *.h)
 
 all : $(TESTS)
 
-pointertest : $(LIB) main_pointertest.cpp
-	$(CPP) $(CPPFLAGS) -o pointertest main_pointertest.cpp -L. -lcpp11
+$(TESTS) : % : main_%.cpp $(LIB) 
+	$(CPP) $(CPPFLAGS) -o $* $< -L. -lcpp11
 
-treetest : $(LIB) main_treetest.cpp
-	$(CPP) $(CPPFLAGS) -o treetest main_treetest.cpp -L. -lcpp11
-
-lambdatest : $(LIB) main_lambdatest.cpp
-	$(CPP) $(CPPFLAGS) -o lambdatest main_lambdatest.cpp -L. -lcpp11
-
-$(LIB) : $(LIBSRC) $(HDRS)
-	$(CPP) $(CPPFLAGS) -c counted.cpp
-	$(CPP) $(CPPFLAGS) -c pointertest.cpp
-	$(CPP) $(CPPFLAGS) -c treetest.cpp
-	$(CPP) $(CPPFLAGS) -c lambdatest.cpp
+$(LIB) : $(LIBOBJ)
 	@-rm $(LIB)
 	ar cr $(LIB) $(LIBOBJ)
 
+$(LIBOBJ) : %.o : %.cpp
+	$(CPP) $(CPPFLAGS) -c $<
 
+$(LIBDEP) : %.d : %.cpp $(HDRS)
+	$(CPP) $(CPPFLAGS) -MM $< -o $*.d
 
+clean : 
+	@-rm *~ *.o *.d $(LIB)
+
+include $(LIBDEP)
