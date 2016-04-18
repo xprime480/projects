@@ -3,116 +3,13 @@
 #include <memory>
 #include <vector>
 
+#include "treenode.h"
+#include "sequence.h"
+
 using std::shared_ptr;
 using std::cout;
 using std::endl;
 using std::vector;
-
-/**
- * Class to hold a node of a binary tree
- */
-template <typename T>
-class TreeNode
-{
-public:
-  using value_type = T;
-  using node_type  = shared_ptr<TreeNode<value_type> >;
-
-  TreeNode()
-    : value(0)
-    , left()
-    , right()
-  {
-  }
-
-  explicit TreeNode(T const & v)
-    : value(v)
-    , left()
-    , right()
-  {
-  }
-
-  ~TreeNode()
-  {
-  }
-
-  void set_left(node_type & n)
-  {
-    left = n;
-  }
-
-  void set_right(node_type & n)
-  {
-    right = n;
-  }
-
-  template<typename U>
-  void preorder(U f) const
-  {
-    f(value);
-    if ( left.get() ) {
-      left->preorder(f);
-    }
-    if ( right.get() ) {
-      right->preorder(f);
-    }
-  }
-
-  template<typename U>
-  void inorder(U f) const
-  {
-    if ( left.get() ) {
-      left->inorder(f);
-    }
-    f(value);
-    if ( right.get() ) {
-      right->inorder(f);
-    }
-  }
-
-  template<typename U>
-  node_type transform(U f) const
-  {
-    node_type newnode(new TreeNode(f(value)));
-    if ( left.get() ) {
-      node_type t = left->transform(f);
-      newnode->set_left(t);
-    }
-    if ( right.get() ) {
-      node_type t = right->transform(f);
-      newnode->set_right(t);
-    }
-    return newnode;
-  }
-
-private:
-  value_type value;
-  node_type left;
-  node_type right;
-};
-
-template<typename T>
-struct Sequence
-{
-  Sequence(T l, T h, T s)
-    : lo(l)
-    , hi(h)
-    , step(s)
-  {
-  }
-
-  T operator()()
-  {
-    if ( lo >= hi ) 
-      throw "Out of bounds";
-    T rv = lo;
-    lo += step;
-    return rv;
-  }
-
-private:
-  T lo,hi,step;
-};
 
 template<typename T, typename G>
 typename TreeNode<T>::node_type make_tree(G gen)
@@ -185,10 +82,15 @@ void test(G gen)
   cout << "transformed total = " << sumtree(newtree) << endl;
 }
 
-int main(int argc, char ** argv)
+void treetest()
 {
   test<int>(Sequence<int>(0,10,2));
   test<double>(Sequence<double>(1,10,0.25));
+}
+
+int main(int argc, char ** argv)
+{
+  treetest();
 
   return 0;
 }
