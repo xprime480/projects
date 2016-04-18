@@ -87,10 +87,3 @@ void treetest()
   test<int>(Sequence<int>(0,10,2));
   test<double>(Sequence<double>(1,10,0.25));
 }
-
-int main(int argc, char ** argv)
-{
-  treetest();
-
-  return 0;
-}

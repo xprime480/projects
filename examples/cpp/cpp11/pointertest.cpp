@@ -44,9 +44,3 @@ void pointertest()
   GlobalMap1.clear();
   GlobalMap2.reset();
 }
-
-int main(int argc, char ** argv)
-{
-  pointertest();
-  return 0;
-}
