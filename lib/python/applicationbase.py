@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
+from __future__ import print_function
+
 """Module for wrapping the logging functionality."""
 
 import logging
 import logging.config
 import sys
+
 
 ################################################################
 #

@@ -2,14 +2,35 @@ git --help
 git --help add
 git --help checkout
 git --help commit
+git branch --set-upstream zero-sales-bug  UDF_dev 
+git checkout UDF_dev
 git clone ~/projects.git/
 git clone ~/projects.git/ random_test
 git commit --amend --reset-author
 git commit -a -m 'Write outliers data to csv file'
 git config --global user.email mi.davis@sap.com
 git config --global user.name "Mike Davis"
+git config --list
+git config merge.renameLimit 10000
+git diff @{2015-07-01}.. AFL/UDF_CORE/hana_content/RD1/sap/is/{ddf/udf,udf/cor}/*.procedure
+git diff @{yesterday}..
+git diff HEAD@{1}..HEAD@{0}
+git diff HEAD@{3 months ago}..HEAD
 git diff makedata.py 
+git difftool -t emerge HEAD multimodel-2 AFL/UDF_CORE/hana_content
+git difftool -y
+git difftool -y HEAD~1.. AFL/UDF_CORE
+git fetch ssh://i809989@hdbgerrit.wdf.sap.corp:29418/afl refs/changes/17/316417/3 && git cherry-pick FETCH_HEAD
 git init --bare
+git log --first-parent 
+git merge --no-ff --no-commit origin/UDF_dev
+git mergetool --tool=kdiff3
+git push gerrit HEAD:refs/for/UDF_dev
 git push origin master
+git rebase --skip
+git rev-list HEAD~20.. --topo-order
+git rev-list HEAD~20.. AFL/UDF_CORE/
 git rm -f *.py
+git stash save -u "performance improvements to map prod-loc to model-def"
+git stash show -p stash@{0} | grep diff | cut -d' ' -f 4 | sed -e 's|^b/||' > tarbean.sh
 git status
