@@ -29,6 +29,6 @@ $(LIBDEP) : %.d : %.cpp
 	$(CPP) $(CPPFLAGS) -MM $< -o $*.d
 
 clean : 
-	@-rm *~ *.o *.d $(LIB) main_*.cpp
+	@-rm *~ *.o *.d $(LIB) main_*.cpp $(TESTS)
 
 include $(LIBDEP)
