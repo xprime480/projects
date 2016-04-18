@@ -21,7 +21,7 @@ $(LIB) : $(LIBOBJ)
 $(LIBOBJ) : %.o : %.cpp
 	$(CPP) $(CPPFLAGS) -c $<
 
-$(LIBDEP) : %.d : %.cpp $(HDRS)
+$(LIBDEP) : %.d : %.cpp
 	$(CPP) $(CPPFLAGS) -MM $< -o $*.d
 
 clean : 
