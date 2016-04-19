@@ -2,7 +2,7 @@
 
 CPP=/sapmnt/appl_sw/gcc-4.7/bin/g++
 CPPFLAGS=-g -std=c++11
-TESTS=pointertest treetest lambdatest
+TESTS=pointertest treetest lambdatest generatortest
 MAINS=$(patsubst %,main_%.cpp,$(TESTS))
 LIB=libcpp11.a
 LIBSRC=$(shell ls *.cpp | grep -v ^main_)

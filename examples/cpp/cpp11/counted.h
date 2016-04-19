@@ -1,3 +1,5 @@
+#if ! defined(COUNTED_H)
+#define COUNTED_H 1
 
 class Counted
 {
@@ -10,3 +12,4 @@ private:
   static int counter;
 };
 
+#endif /* COUNTED_H */

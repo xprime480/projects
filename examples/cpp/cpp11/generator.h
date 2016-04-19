@@ -1,4 +1,5 @@
-
+#if ! defined(GENERATOR_H)
+#define GENERATOR_H 1
 
 struct GeneratorException {};
 
@@ -9,8 +10,10 @@ struct Generator
   {
   }
 
-  T operator()()
+  virtual T operator()()
   {
     throw GeneratorException();
   }
 };
+
+#endif /* GENERATOR_H */

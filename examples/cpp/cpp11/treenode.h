@@ -1,3 +1,5 @@
+#if ! defined(TREENODE_H)
+#define TREENODE_H 1
 
 #include <memory>
 
@@ -80,3 +82,5 @@ private:
   node_type left;
   node_type right;
 };
+
+#endif /* TREENODE_H */

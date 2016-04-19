@@ -1,3 +1,5 @@
+#if ! defined(RANGE_H)
+#define RANGE_H 1
 
 #include "generator.h"
 
@@ -25,3 +27,5 @@ struct Range : public Generator<T>
 private:
   T lo,hi,step;
 };
+
+#endif /* RANGE_H */
