@@ -30,4 +30,5 @@ void generatortest()
   dump_stream(take(2, drop(6, Range<int>(1,13,1))));
   dump_stream(filter([] (int i) {return i%2 == 1;}, Range<int>(1,13,1)));
   dump_stream(take(2, drop(6, Range<double>(1.0,13.0,1.234))));
+  dump_stream(take(3, [] () { return "cat"; }));
 }
