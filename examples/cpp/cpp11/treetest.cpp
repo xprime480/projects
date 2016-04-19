@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "treenode.h"
-#include "sequence.h"
+#include "range.h"
 
 using std::shared_ptr;
 using std::cout;
@@ -84,6 +84,6 @@ void test(G gen)
 
 void treetest()
 {
-  test<int>(Sequence<int>(0,10,2));
-  test<double>(Sequence<double>(1,10,0.25));
+  test<int>(Range<int>(0,10,2));
+  test<double>(Range<double>(1,10,0.25));
 }

@@ -1,8 +1,12 @@
 
+#include "generator.h"
+
+struct RangeException : public GeneratorException {};
+
 template<typename T>
-struct Sequence
+struct Range : public Generator<T>
 {
-  Sequence(T l, T h, T s)
+  Range(T l, T h, T s)
     : lo(l)
     , hi(h)
     , step(s)
@@ -12,7 +16,7 @@ struct Sequence
   T operator()()
   {
     if ( lo >= hi ) 
-      throw "Out of bounds";
+      throw RangeException();
     T rv = lo;
     lo += step;
     return rv;
