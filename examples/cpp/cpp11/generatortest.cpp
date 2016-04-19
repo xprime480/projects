@@ -24,11 +24,17 @@ void dump_stream(T gen)
 
 void generatortest()
 {
-  dump_stream(Range<int>(1,5,1));
-  dump_stream(take(6, Range<int>(1,10000,1)));
-  dump_stream(drop(6, Range<int>(1,13,1)));
-  dump_stream(take(2, drop(6, Range<int>(1,13,1))));
-  dump_stream(filter([] (int i) {return i%2 == 1;}, Range<int>(1,13,1)));
+  Range<int> basic(1,13,1);
+
+  dump_stream(basic);
+  dump_stream(take(6, basic));
+  dump_stream(drop(6, basic));
+  dump_stream(take(2, drop(6, basic)));
+  dump_stream(filter([] (int i) {return i%2 == 1;}, basic));
   dump_stream(take(2, drop(6, Range<double>(1.0,13.0,1.234))));
   dump_stream(take(3, [] () { return "cat"; }));
+  int x = 10;
+  auto p = [x] (int i) {return i < x;};
+  x = 0;
+  dump_stream(takewhile(p, basic));
 }

@@ -96,6 +96,40 @@ auto filter(F pred, U gen) -> Filterer<decltype(gen()), F, U>
   return Filterer<Q, F, U>(pred, gen);
 }
 
+template <typename T, typename F, typename U>
+struct Whiler : public Generator<T>
+{
+  Whiler(F _pred, U _gen)
+    : pred(_pred)
+    , gen(_gen)
+  {
+  }
+
+  T operator()()
+  {
+    T t = gen();
+    if ( pred(t) ) {
+      return t;
+    }
+    else {
+      throw GeneratorException();
+    }
+  }
+
+private:
+  F pred;
+  U gen;
+};
+
+template <typename F, typename U>
+auto takewhile(F pred, U gen) -> Whiler<decltype(gen()), F, U>
+{
+  using Q = decltype(gen());
+  return Whiler<Q, F, U>(pred, gen);
+}
+
+
+
 
 
 #endif
