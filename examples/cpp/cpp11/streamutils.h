@@ -97,9 +97,9 @@ auto filter(F pred, U gen) -> Filterer<decltype(gen()), F, U>
 }
 
 template <typename T, typename F, typename U>
-struct Whiler : public Generator<T>
+struct TakeWhiler : public Generator<T>
 {
-  Whiler(F _pred, U _gen)
+  TakeWhiler(F _pred, U _gen)
     : pred(_pred)
     , gen(_gen)
   {
@@ -122,10 +122,53 @@ private:
 };
 
 template <typename F, typename U>
-auto takewhile(F pred, U gen) -> Whiler<decltype(gen()), F, U>
+auto takewhile(F pred, U gen) -> TakeWhiler<decltype(gen()), F, U>
 {
   using Q = decltype(gen());
-  return Whiler<Q, F, U>(pred, gen);
+  return TakeWhiler<Q, F, U>(pred, gen);
+}
+
+template <typename T, typename F, typename U>
+struct DropWhiler : public Generator<T>
+{
+  DropWhiler(F _pred, U _gen)
+    : pred(_pred)
+    , gen(_gen)
+    , first(true)
+  {
+  }
+
+  T operator()()
+  {
+    if ( first ) {
+      first = false;
+      return skipvals();
+    }
+    return gen();
+  }
+
+private:
+  F pred;
+  U gen;
+  bool first;
+
+  T skipvals()
+  {
+    for ( ;; ) {
+      T val = gen();
+      if ( ! pred(val) ) {
+	return val;
+      }
+    }
+    return gen();  // should never execute
+  }
+};
+
+template <typename F, typename U>
+auto dropwhile(F pred, U gen) -> DropWhiler<decltype(gen()), F, U>
+{
+  using Q = decltype(gen());
+  return DropWhiler<Q, F, U>(pred, gen);
 }
 
 
