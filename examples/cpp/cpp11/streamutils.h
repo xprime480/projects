@@ -1,6 +1,9 @@
 #if ! defined(STREAMUTILS_H)
 #define STREAMUTILS_H 1
 
+#include <iostream>
+#include <vector>
+
 #include "generator.h"
 
 template <typename T, typename U>
@@ -171,7 +174,52 @@ auto dropwhile(F pred, U gen) -> DropWhiler<decltype(gen()), F, U>
   return DropWhiler<Q, F, U>(pred, gen);
 }
 
+template <typename T, typename U, typename V>
+void process_stream(T && gen, U element_handler, V end_handler)
+{
+  try {
+    while ( true ) {
+      auto e = gen();
+      element_handler(e);
+    }
+  }
+  catch ( GeneratorException ex ) {
+    end_handler();
+  }
+}
 
+namespace std
+{
+  template<typename F, typename S, typename O>
+  O & operator << (O & os, const pair<F, S> & p) 
+  {
+    return os << '<' << p.first << ": " << p.second << '>';
+  }
+}
+
+template <typename T>
+void dump_stream(T && gen)
+{
+  using E = decltype(gen());
+
+  auto elem_handler = [] (E const & e) { std::cout << e << " "; };
+  auto end_handler  = [] () { std::cout << std::endl; };
+
+  process_stream(gen, elem_handler, end_handler);
+}
+
+template <typename T>
+auto collect(T & gen) -> std::vector<decltype(gen())>
+{
+  using E = decltype(gen());
+  std::vector<E> vec;
+
+  auto elem_handler = [&vec] (E const & e) { vec.push_back(e); };
+  auto end_handler  = [] () {};
+  process_stream(gen, elem_handler, end_handler);
+
+  return vec;
+}
 
 
 
