@@ -22,7 +22,7 @@ struct DV<T, true, usenoarg>
 {
   static T get_default_value()
   {
-    static T value(0);
+    static T value{ 0 };
     return value;
   }
 };
@@ -41,22 +41,26 @@ template <typename T>
 T get_default_value()
 {
   constexpr bool int_constr   = is_constructible<T, int>::value;
-  constexpr bool noarg_constr = is_constructible<T>::value;
+  constexpr bool noarg_constr = ! int_constr && is_constructible<T>::value;
+  using builder = DV<T, int_constr, noarg_constr>;
 
-  return DV<T, int_constr, noarg_constr>::get_default_value();
+  return builder::get_default_value();
 }
 
 struct Foo
 {
-  explicit Foo(string const & arg) {}
+  static string const unspecified;
+  explicit Foo(string const & arg = unspecified) : name(arg) {}
+  string name;
 };
+string const Foo::unspecified{ "generic Foo" };
 
 namespace std
 {
   template <typename O>
-  O & operator<< (O & os, Foo const &)
+  O & operator<< (O & os, Foo const & f)
   {
-    return os << "Foo";
+    return os << f.name;
   }
 }
 
