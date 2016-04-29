@@ -122,7 +122,7 @@ void test()
   bool dummy2[N] = { (sumsizes<Ts>::sum > 0)... };
   auto all = [](bool a, bool b) { return a && b; };
   cout << boolalpha << accumulate(&dummy2[0], &dummy2[N], true, all) << endl;
-  
+
   cout << endl;
 }
 
