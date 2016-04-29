@@ -1,90 +1,15 @@
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <algorithm>
+
+#include "sumsizes.h"
+#include "rb.h"
 
 using std::cout;
 using std::endl;
 using std::boolalpha;
 using std::string;
-using std::stringstream;
 using std::accumulate;
-
-template <typename T, typename... Ts>
-struct sumsizes
-{
-  static constexpr size_t sum = sizeof(T) + sumsizes<Ts...>::sum;
-};
-
-template <typename T>
-struct sumsizes<T>
-{
-  static constexpr size_t sum = sizeof(T);
-};
-
-template <typename... Ts>
-struct sumsizes<void, Ts...>
-{
-  static constexpr size_t sum = sumsizes<Ts...>::sum;
-};
-
-template <>
-struct sumsizes<void>
-{
-  static constexpr size_t sum = 0;
-};
-
-template <typename T, typename... Ts>
-class RB : public RB<Ts...>
-{
-private:
-  using my_base = RB<Ts...>;
-
-public:
-  static string show()
-  {
-    stringstream s;
-    s << "(" << sizeof(T) << " " << my_base::show() << ")";
-    return s.str();
-  }
-};
-
-template <typename T>
-class RB<T>
-{
-public:
-  static string show()
-  {
-    stringstream s;
-    s << "(" << sizeof(T) << ")";
-    return s.str();
-  }
-};
-
-template <typename... Ts>
-class RB<void, Ts...> : public RB<Ts...>
-{
-private:
-  using my_base = RB<Ts...>;
-
-public:
-  static string show()
-  {
-    stringstream s;
-    s << "(" << my_base::show() << ")";
-    return s.str();
-  }
-};
-
-template <>
-class RB<void>
-{
-public:
-  static string show()
-  {
-    return "()";
-  }
-};
 
 struct Foo
 {

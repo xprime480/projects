@@ -1,51 +1,12 @@
 
 #include <iostream>
-#include <type_traits>
 #include <string>
+
+#include "default_values.h"
 
 using std::cout;
 using std::endl;
-using std::is_constructible;
 using std::string;
-
-template <typename T, bool useint, bool usenoarg>
-struct DV
-{
-  static T get_default_value()
-  {
-    throw "No suitable default value";
-  }
-};
-
-template <typename T, bool usenoarg>
-struct DV<T, true, usenoarg>
-{
-  static T get_default_value()
-  {
-    static T value{ 0 };
-    return value;
-  }
-};
-
-template <typename T>
-struct DV<T, false, true>
-{
-  static T get_default_value()
-  {
-    static T value;
-    return value;
-  }
-};
-
-template <typename T>
-T get_default_value()
-{
-  constexpr bool int_constr   = is_constructible<T, int>::value;
-  constexpr bool noarg_constr = ! int_constr && is_constructible<T>::value;
-  using builder = DV<T, int_constr, noarg_constr>;
-
-  return builder::get_default_value();
-}
 
 struct Foo
 {
