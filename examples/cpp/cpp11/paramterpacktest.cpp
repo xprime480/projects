@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::stringstream;
+using std::accumulate;
 
 template <typename T, typename... Ts>
 struct sumsizes
@@ -103,16 +105,6 @@ public:
   vptr aPtr, bPtr, cPtr;
 };
 
-template <typename T>
-T prod(T * a, size_t N)
-{
-  T rv = 1;
-  for ( size_t i = 0 ; i < N && rv > 0 ; ++i ) {
-    rv *= a[i];
-  }
-  return rv;
-}
-
 template <typename... Ts>
 void test()
 {
@@ -122,7 +114,8 @@ void test()
 
   constexpr size_t N = sizeof...(Ts);
   size_t dummy[N] = { sumsizes<Ts>::sum... };
-  cout << prod(dummy, N) << endl;
+  auto prod = [](size_t a, size_t b) { return a * b; };
+  cout << accumulate(&dummy[0], &dummy[N], 1, prod) << endl;
 }
 
 void parameterpacktest()
