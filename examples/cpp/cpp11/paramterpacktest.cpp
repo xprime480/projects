@@ -128,8 +128,8 @@ void test()
 
 void parameterpacktest()
 {
-  test<int, double, int>();
-  test<int&, double&, int&>();
+  test<int, double, char>();
+  test<int&, double&, char&>();
   test<Foo>();
   test<int>();
   test<void>();
