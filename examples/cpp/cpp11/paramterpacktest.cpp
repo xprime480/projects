@@ -5,6 +5,7 @@
 
 using std::cout;
 using std::endl;
+using std::boolalpha;
 using std::string;
 using std::stringstream;
 using std::accumulate;
@@ -113,14 +114,22 @@ void test()
        << ": " << RB<Ts...>::show() << endl;
 
   constexpr size_t N = sizeof...(Ts);
-  size_t dummy[N] = { sumsizes<Ts>::sum... };
+
+  size_t dummy1[N] = { sumsizes<Ts>::sum... };
   auto prod = [](size_t a, size_t b) { return a * b; };
-  cout << accumulate(&dummy[0], &dummy[N], 1, prod) << endl;
+  cout << accumulate(&dummy1[0], &dummy1[N], 1, prod) << endl;
+
+  bool dummy2[N] = { (sumsizes<Ts>::sum > 0)... };
+  auto all = [](bool a, bool b) { return a && b; };
+  cout << boolalpha << accumulate(&dummy2[0], &dummy2[N], true, all) << endl;
+  
+  cout << endl;
 }
 
 void parameterpacktest()
 {
   test<int, double, int>();
+  test<int&, double&, int&>();
   test<Foo>();
   test<int>();
   test<void>();
