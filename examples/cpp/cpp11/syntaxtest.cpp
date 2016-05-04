@@ -64,12 +64,12 @@ void test2a(const vectype & vi)
   for ( auto i : keep ) {
     groups[i] = vectype{};
   }
-  
+
   int n { 11 };
   auto mod_n = [&n] (int i) { return i%n; };
   auto insert_by_key = [&groups] (int key, int val) {
     if (groups.find(key) != groups.end()) {
-      groups[key].push_back(val); 
+      groups[key].push_back(val);
     }
   };
   partition_by(vi, mod_n, insert_by_key);
@@ -91,17 +91,17 @@ bool isprime(int i)
       return false;
     }
   }
-  
+
   return true;
 }
 
 void test2b(const vectype & vi)
 {
   vectype primes{};
-  
+
   auto insert_primes = [&primes] (bool prime, int val) {
     if (prime) {
-      primes.push_back(val); 
+      primes.push_back(val);
     }
   };
   partition_by(vi, isprime, insert_primes);
@@ -118,9 +118,57 @@ void test2()
   test2b(vi);
 }
 
+int foo(int v)
+{
+  return v;
+}
+
+enum class F { A = 1, B = 2 };
+
+int foo(F f)
+{
+  return static_cast<int>(f);
+}
+
+
+template <typename OS>
+OS & operator<<(OS & os, F const & f)
+{
+  switch ( f ) {
+  case F::A :
+    return os << "F::A";
+    break;
+  case F::B :
+    return os << "F::B";
+    break;
+  }
+  return os << "F error <" << static_cast<int>(f) << ">";
+}
+
+enum G { X = 1, Y = 2 };
+
+void test3()
+{
+  F f1{F::A};
+  F f2{F::B};
+  F f3{};
+  cout << f1 << " " << f2 << " " << f3 << endl;
+
+  G g1{X};
+  G g2{};
+  cout << g1 << " " << g2 << endl;
+
+  cout << foo(f3) << " " << foo(g1) << endl;
+
+  using maptype = map<F, int>;
+  maptype m { {f1,1}, {f3,7} };
+  cout << m.size() << endl;
+}
+
 void syntaxtest()
 {
   test1();
   cout << endl;
   test2();
+  test3();
 }
