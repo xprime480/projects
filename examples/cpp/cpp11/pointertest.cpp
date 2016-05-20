@@ -36,7 +36,7 @@ void populate_GM2()
   }
 }
 
-void pointertest()
+void pointertest(int argc, char ** argv)
 {
   SPC c1(new Counted());
   populate_GM1();

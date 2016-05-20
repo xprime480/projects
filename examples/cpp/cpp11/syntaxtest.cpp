@@ -165,7 +165,7 @@ void test3()
   cout << m.size() << endl;
 }
 
-void syntaxtest()
+void syntaxtest(int argc, char ** argv)
 {
   test1();
   cout << endl;

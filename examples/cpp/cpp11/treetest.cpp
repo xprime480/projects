@@ -82,7 +82,7 @@ void test(G gen)
   cout << "transformed total = " << sumtree(newtree) << endl;
 }
 
-void treetest()
+void treetest(int argc, char ** argv)
 {
   test<int>(Range<int>(0,10,2));
   test<double>(Range<double>(1,10,0.25));

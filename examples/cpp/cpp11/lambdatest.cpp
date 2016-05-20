@@ -8,7 +8,7 @@ void f0(T t)
   std::cout << t(0) << std::endl;
 }
 
-void lambdatest()
+void lambdatest(int argc, char ** argv)
 {
   std::cout << std::boolalpha;
 

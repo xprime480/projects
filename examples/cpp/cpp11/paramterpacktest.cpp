@@ -51,7 +51,7 @@ void test()
   cout << endl;
 }
 
-void parameterpacktest()
+void parameterpacktest(int argc, char ** argv)
 {
   test<int, double, char>();
   test<int&, double&, char&>();

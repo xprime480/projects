@@ -221,6 +221,39 @@ auto collect(T & gen) -> std::vector<decltype(gen())>
   return vec;
 }
 
+template <typename U>
+struct Uncollector : public Generator<typename U::value_type>
+{
+  using T = typename U::value_type;
+  using Iter = typename U::const_iterator;
+
+  Uncollector(const U & _src)
+    : src(_src)
+    , beg(src.begin())
+    , end(src.end())
+  {
+  }
+
+  T operator()()
+  {
+    if ( beg != end ) {
+      return *beg++;
+    }
+    throw GeneratorException();
+  }
+
+private:
+  U src;
+  Iter beg, end;
+};
+
+template <typename U>
+auto uncollect(const U & src) -> Generator<typename U::value_type>
+{
+  Uncollector<U> uc(src);
+  return uc;
+}
+
 
 
 #endif

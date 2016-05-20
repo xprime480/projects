@@ -37,7 +37,7 @@ void check_default(char const * type)
   }
 }
 
-void metaprogtest()
+void metaprogtest(int argc, char ** argv)
 {
   check_default<int>("int");
   check_default<double>("double");

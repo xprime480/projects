@@ -38,7 +38,7 @@ void test1()
   }
 }
 
-void regextest()
+void regextest(int argc, char ** argv)
 {
   test1();
 }

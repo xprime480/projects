@@ -86,7 +86,7 @@ void fibonaccitest()
   dump_stream(take(20, fibs));
 }
 
-void generatortest()
+void generatortest(int argc, char ** argv)
 {
   Range<int> basic(1,13,1);
 

@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-void tokentest()
+void tokentest(int argc, char ** argv)
 {
   FileTokenStream ts(std::string("test_input.txt"));
   dump_stream(ts);
