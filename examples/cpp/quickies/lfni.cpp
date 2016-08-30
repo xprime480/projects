@@ -157,7 +157,7 @@ struct drop_adapter : public sequence_adapter<Iter>
     : from(f)
     , to(t)
   {
-    for ( int i = 0 ; i < count ; ++i ) {
+    for ( unsigned int i = 0 ; i < count ; ++i ) {
       if ( has_next() ) {
 	next();
       }

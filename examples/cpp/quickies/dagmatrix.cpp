@@ -274,7 +274,7 @@ void populate(std::set<Matrix<N> > & matrices)
   int const bits = N * (N-1) / 2;
   unsigned long max = 1 << bits;
 
-  for ( int i = 0 ; i < max ; ++i ) {
+  for ( unsigned int i = 0 ; i < max ; ++i ) {
     int j = i;
     Matrix<N> m;
     for ( int row = 0 ; row < N && j != 0; ++row ) {

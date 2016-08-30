@@ -19,6 +19,7 @@ void a()
 {
   X x;				// destructor never called.
   b();
+  std::cout << sizeof(x) <<std::endl; // never reaches here
 }
 
 int main( int, char ** )

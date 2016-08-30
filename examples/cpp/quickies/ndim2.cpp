@@ -71,7 +71,8 @@ int main()
    *
    */
   PosetIter end = poset.end();
-  PointType ref = { 0 };		// initialization guarantees all 0
+  PointType ref;
+  std::fill(ref.idx, ref.idx + PointType::NDIMS, 0);
 
   for ( size_t idx = 0 ; idx < NDIMS ; ++idx ) {
     for ( size_t val = ref.idx[ idx ] ; val < MAX_DIM ; ++val ) {

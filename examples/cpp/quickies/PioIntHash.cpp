@@ -231,7 +231,7 @@ void test(size_t TestSize, char const * p_Name)
   printf("Test %s ...\n", p_Name);
 
   timer.Start();
-  for ( int i = 1; i <= TestSize; ++i ) {
+  for ( unsigned int i = 1; i <= TestSize; ++i ) {
     table[i] = i;
   }
   printf("  Time to prepare table:              %7d\n", (int) timer.GetElapseTime());
@@ -239,7 +239,7 @@ void test(size_t TestSize, char const * p_Name)
   sum = 0;
   timer.Start();
   Size = (int) table.size();
-  for ( int i = 1; i <= Size; ++i ) {
+  for ( unsigned int i = 1; i <= Size; ++i ) {
     sum += table[i];
   }
   printf("  Time to access table via index:     %7d --- %15lu\n", (int) timer.GetElapseTime(), sum);
@@ -247,7 +247,7 @@ void test(size_t TestSize, char const * p_Name)
   sum = 0;
   timer.Start();
   Size = (int) table.size();
-  for ( int i = 1; i <= Size; ++i ) {
+  for ( unsigned int i = 1; i <= Size; ++i ) {
     sum += table.find(i)->second;
   }
   printf("  Time to access table via find:      %7d --- %15lu\n", (int) timer.GetElapseTime(), sum);
@@ -262,7 +262,7 @@ void test(size_t TestSize, char const * p_Name)
 
 int main(int argc, char** argv)
 {
-  int TestSize = 10000;
+  unsigned TestSize = 10000;
   if ( argc == 2 ) {
     TestSize = atoi(argv[1]);
     if ( TestSize == 0 ) {
