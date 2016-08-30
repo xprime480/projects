@@ -1,12 +1,28 @@
 #!/bin/bash
-echo "SID:"
-read SID
-echo "HDB instance:"
-read HDBInstance
-echo "Debug|Optimized|Release:"
-read buildType
+
+SID=${1}
+if [ -z "${SID}" ]; then
+    SID=MD1
+    #echo "SID:"
+    #read SID
+fi
+
+HDBInstance=${2}
+if [ -z "${HDBInstance}" ]; then
+    HDBInstance=02
+    #echo "HDB instance:"
+    #read HDBInstance
+fi
+
+buildType=${3}
+if [ -z "${buildType}" ]; then
+    buildType=Optimized
+    #echo "Debug|Optimized|Release:"
+    #read buildType
+fi
+
 testPackInstallerDir=$(cat $SRC/build/Optimized/imports/hana_pool | awk '{print $1 "/__installer.HDB"}')
-sudo $testPackInstallerDir/../test/python_support_internal/installTestPkg.sh -s $SID $testPackInstallerDir/../test/python_support_internal/python_support_internal.tgz
+sudo -S $testPackInstallerDir/../test/python_support_internal/installTestPkg.sh -s $SID $testPackInstallerDir/../test/python_support_internal/python_support_internal.tgz < ~/.spw
 echo "Python support installed"
 sudo -u lroot $SRC/build/$buildType/packages/installTestPkg.sh -s $SID $SRC/build/$buildType/packages/afl_testpack.tgz
 echo "Python tests installed"

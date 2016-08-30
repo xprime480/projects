@@ -1,0 +1,98 @@
+#!/bin/bash
+
+DIR=${LOGGING_DIR:-${HOME}/tmp/logs}
+if [ -z "${1}" ]; then
+    LOG=`ls -1tr ${DIR} | tail -1`
+    if [ -z "${LOG}" ]; then
+	echo "No current logs in ${DIR}"
+    else
+	echo "Last log is ${LOG}; last 20 lines:"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo 
+	tail -20 ${DIR}/${LOG}
+    fi
+    exit 2
+fi
+
+APPEND=""
+
+BASE=${1}
+shift
+if [ "${BASE}" = "-a" ]; then
+    APPEND=--append
+    BASE=${1}
+    shift
+fi
+
+LOG_BASE=${BASE}
+CMD="$@"
+
+if [ "${BASE}z" = "--helpz" ]; then
+    echo "lg filename [simple command]"
+    echo ""
+    echo "runs simple commands and tees the output to filename.log"
+    echo "if simple command is empty the following commands are used"
+    echo "based on filename:"
+    echo ""
+    echo "    given filename   command used   actual filename"
+    echo "    --------------   ------------   ---------------"
+    echo "             build    buildnormal"
+    echo "        buildclean     buildclean         build.log"
+    echo "               err     hmo -E all"
+    echo "           install  installnormal"
+    echo "        installall     installall       install.log"
+    echo "               log        git log"
+    echo "             gmock       gmockall"
+    echo ""
+    echo "For any other bare filename, the filename is also used as"
+    echo "the name of the command."
+    echo ""
+    echo "Simple commands are those with no file redirection, pipes,"
+    echo "or subshells, or other expansions that take place before"
+    echo "command line substitution unless the entire command line"
+    echo "is quoted."
+    exit 1
+fi
+
+if [ -z "${CMD}" ]; then
+    case ${BASE} in
+	build)
+	    CMD=buildnormal
+	    ;;
+	buildclean)
+	    CMD=buildclean
+	    LOG_BASE=build
+	    ;;
+	err)
+	    CMD="hlo -E all"
+	    ;;
+	install)
+	    CMD=installnormal
+	    ;;
+	installall)
+	    CMD=installall
+	    LOG_BASE=install
+	    ;;
+	log)
+	    CMD="git log"
+	    ;;
+	gmock)
+	    CMD="gmockall"
+	    ;;
+	*)
+	    CMD=${BASE}
+	    ;;
+    esac
+fi
+
+LOG_FILE=${DIR}/${LOG_BASE}.log
+if [ -z "${APPEND}" ]; then
+    X=1
+    while [ -e ${LOG_FILE} ]; do
+	X=$(($X + 1))
+	printf -v LOG_FILE "%s/%s_%04d.log" ${DIR} ${LOG_BASE} $X
+    done
+fi
+( eval ${CMD} ) >> ${LOG_FILE} 2>&1
+
+exit $?

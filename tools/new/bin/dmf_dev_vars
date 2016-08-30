@@ -1,0 +1,3 @@
+BASEDIR=${HOME}/dmf/i809989_llbpal25/DMF/science/dev/src
+RFCDIR=${BASEDIR}/rfc/rfc_7.00/lib64
+NCSDIR=${BASEDIR}/ncs/lib64

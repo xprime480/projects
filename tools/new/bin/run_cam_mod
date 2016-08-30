@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ${HOME}/bin/dmf_dev_vars
+
+( cd ${BASEDIR}/bin && LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${RFCDIR}:${NCSDIR} ./dmf_cam_mod -gldcivmf.wdf.sap.corp -aI809989 -xsapgw20 )
