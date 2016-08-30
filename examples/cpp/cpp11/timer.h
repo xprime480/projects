@@ -2,42 +2,34 @@
 #define TIMER_H  1
 
 #include <chrono>
-#include <string>
-#include <sstream>
 
-template <typename Action>
 class Timer
 {
-  using time_pt = std::chrono::time_point<std::chrono::system_clock>;
-  using dur = std::chrono::duration<double>;
-
 public:
-  Timer(Action & a) 
-    : action(a)
+  Timer()
   {
-    start = std::chrono::system_clock::now();
   }
 
-  ~Timer()
+  void start()
   {
-    time_pt end = std::chrono::system_clock::now();
-    dur elapsed_seconds = end-start;
-
-    std::stringstream s;
-    s << elapsed_seconds.count() << " seconds";
-    std::string msg = s.str();
-    action(msg);
+    beg = std::chrono::system_clock::now();
   }
+
+  void stop()
+  {
+    end = std::chrono::system_clock::now();
+  }
+
+  using dur = std::chrono::duration<double>;
+  dur duration() const
+  {
+    return end-beg;
+  }
+
 private:
-  Action action;
-  time_pt start;
+  using time_pt = std::chrono::time_point<std::chrono::system_clock>;
+  time_pt beg;
+  time_pt end;
 };
-
-template <typename Action>
-auto make_timer(Action & a) -> Timer<Action>
-{
-  return Timer<Action>(a);
-}
-
 
 #endif // TIMER_H

@@ -1,2 +1,4 @@
 main_*.cpp
 *test
+.settings
+.cproject
