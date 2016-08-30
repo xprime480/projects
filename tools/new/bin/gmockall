@@ -1,9 +1,17 @@
 #!/bin/bash
 
-export DIR_EXECUTABLE=$SRC/nutest
-for x in /home/i809989/SAPDevelop/AFL/git/gen/opt/test/gmock/UDF_CORE/test_* ; do
-    L=`basename $x`
-    $x > $HOME/tmp/logs/${L}.log 2>&1 
-    C=$?
-    echo "finished $L with exit code $C"
-done
+#STARTDIR=$OWN
+STARTDIR=$SRC
+
+#TESTDIR=sys/src/AFL/UDF_CORE/dailyBuild/UDF_CORE_UnitTests
+#TESTPROG=executeUnitTests.sh
+
+TESTDIR=./AFL/UDF_CORE/tools/linuxScripts
+TESTPROG=udf_core_unit_test.sh
+
+RELEASE=Optimized
+#RELEASE=Debug
+#RELEASE=Release
+
+cd ${STARTDIR}
+./${TESTDIR}/${TESTPROG} -t ${RELEASE}

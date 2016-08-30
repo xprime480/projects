@@ -24,7 +24,7 @@ if [ "${BASE}" = "-a" ]; then
     shift
 fi
 
-LOG_FILE=${DIR}/${BASE}.log
+LOG_BASE=${BASE}
 CMD="$@"
 
 if [ "${BASE}z" = "--helpz" ]; then
@@ -61,7 +61,7 @@ if [ -z "${CMD}" ]; then
 	    ;;
 	buildclean)
 	    CMD=buildclean
-	    LOG_FILE=${DIR}/build.log
+	    LOG_BASE=build
 	    ;;
 	err)
 	    CMD="hlo -E all"
@@ -71,7 +71,7 @@ if [ -z "${CMD}" ]; then
 	    ;;
 	installall)
 	    CMD=installall
-	    LOG_FILE=${DIR}/install.log
+	    LOG_BASE=install
 	    ;;
 	log)
 	    CMD="git log"
@@ -85,8 +85,13 @@ if [ -z "${CMD}" ]; then
     esac
 fi
 
+LOG_FILE=${DIR}/${LOG_BASE}.log
 if [ -z "${APPEND}" ]; then
-    : > ${LOG_FILE}
+    X=1
+    while [ -e ${LOG_FILE} ]; do
+	X=$(($X + 1))
+	printf -v LOG_FILE "%s/%s_%04d.log" ${DIR} ${LOG_BASE} $X
+    done
 fi
 ( eval ${CMD} ) >> ${LOG_FILE} 2>&1
 
