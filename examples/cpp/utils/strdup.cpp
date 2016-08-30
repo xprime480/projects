@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#if 0
+
 char * strdup(char const * s) 
 {
   if ( ! s ) {
@@ -38,3 +40,4 @@ char * strndup(char const * s, size_t max)
   return news;
 }
 
+#endif
