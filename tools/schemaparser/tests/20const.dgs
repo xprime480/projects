@@ -1,0 +1,5 @@
+
+generated  : n, x
+
+n   : integer as range 1  10  2
+x   : float format '%4.2f' as 4 ** n
