@@ -4,7 +4,7 @@ all : $(MYEXE)
 
 BASEDIR    ?= .
 OBJS       ?= $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-CPP         = /sapmnt/appl_sw/gcc-4.7/bin/g++
+CPP         = /sapmnt/appl_sw/gcc-5/bin/g++
 CPP_FLAGS   = -std=c++11 -Wall -Werror -g -I$(BASEDIR)/include
 LINK_FLAGS  = -L$(BASEDIR)/lib -lutils -lstdc++
 

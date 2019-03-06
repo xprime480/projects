@@ -13,3 +13,6 @@ local_test : all
 
 clean :
 	make -f exe.mk clean
+
+% : %.cpp
+	MYEXE=$@ make -f exe.mk

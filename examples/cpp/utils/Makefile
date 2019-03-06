@@ -9,7 +9,7 @@ SRC = 	mathutils.cpp strdup.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CPP    = /sapmnt/appl_sw/gcc-4.7/bin/g++
+CPP    = /sapmnt/appl_sw/gcc-5/bin/g++
 CFLAGS = -std=c++11 -Wall -Werror -g
 
 $(LIB) : $(OBJ)
