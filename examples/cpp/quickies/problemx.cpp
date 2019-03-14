@@ -84,6 +84,13 @@ private:
     size_t left;
     size_t right;
 
+    /**
+     * extractCharsToCheck
+     *
+     * return - a set that includes all characters between the
+     *          current endpoints, excluding those characters
+     *          which we have already processed.
+     */
     set<char> extractCharsToCheck()
     {
         auto i = input.begin();
@@ -101,6 +108,19 @@ private:
         return charsToCheck;
     }
 
+    /**
+     * extendRight
+     *
+     * Extend the right endpoint by:
+     *   - First get a set of characters which are in the current
+     *     range but not yet processed.
+     *   - Extend the right endpoint to the rightmost of the current
+     *     right endpoint and the right endpoints of the ranges of
+     *     the characters processed by this call.
+     *
+     * Side Effects:  update the list of seen characters, and the 
+     *                right endpoint.
+     */
     void extendRight()
     {
         set<char> charsToCheck;
