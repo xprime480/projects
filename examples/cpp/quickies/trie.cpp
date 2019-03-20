@@ -2,6 +2,7 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <memory>
 
 using namespace std;
 
@@ -12,108 +13,138 @@ public:
   {
   }
 
-  virtual bool visit(char const * key, void * item) = 0;
+  virtual bool visit(char const * key, int value) = 0;
 };
 
-class Trie 
+class Trie
 {
 public:
-  Trie()
-  {
-  }
-
-  ~Trie()
-  {
-    map<char, Trie *>::iterator iter;
-    for ( iter = children.begin() ; iter != children.end() ; ++iter ) {
-      delete iter->second;
-    }
-    children.clear();
-  }
-
-  void add(char const * key, void * item)
-  {
-    if ( NULL == key || '\0' == *key ) {
-      items.insert(item);
-      return;
+    Trie()
+        : terminal(false)
+    {
     }
 
-    map<char, Trie *>::iterator iter = children.find(*key);
-    if ( iter == children.end() ) {
-      children[*key] = new Trie();
-    }
-    children[*key]->add(key+1, item);
-  }
+    void insert(char const * key, int item)
+    {
+        if ( NULL == key || '\0' == *key ) {
+            value = item;
+            terminal = true;
+            return;
+        }
 
-  void visit(TrieVisitor & visitor) 
-  {
-    static string rootKey = string("");
-    visit(rootKey, visitor);
-  }
+        map<char, unique_ptr<Trie>>::iterator iter = children.find(*key);
+        if ( iter == children.end() ) {
+            children[*key] = std::move(unique_ptr<Trie>(new Trie));
+        }
+        auto & child = children[*key];
+        child->insert(key+1, item);
+    }
+
+    void visit(TrieVisitor & visitor)
+    {
+        static string rootKey = string("");
+        visit(rootKey, visitor);
+    }
+
+    int get(char const * key)
+    {
+        if ( NULL == key || '\0' == *key ) {
+            return terminal ? value : -1;
+        }
+
+        auto iter = children.find(key[0]);
+        if ( children.end() == iter ) {
+            return -1;
+        }
+
+        return iter->second->get(key+1);
+    }
 
 private:
 
-  set<void *> items;
+    bool terminal;
+    int value;
+    map<char, unique_ptr<Trie>> children;
 
-  map<char, Trie *> children;
+    bool visit(string const & key, TrieVisitor & visitor)
+    {
+        if ( terminal ) {
+            if ( ! visitor.visit(key.c_str(), value) ) {
+                return false;
+            }
+        }
 
-  void visit(string const & key, TrieVisitor & visitor)
-  {
-    if ( ! visitor.visit(key.c_str(), (void *) 0) ) {
-      return;
+	for ( const auto & value : children ) {
+            string xkey = key + value.first;
+	    if ( ! value.second->visit(xkey, visitor) ) {
+		return false;
+	    }
+	}
+
+	return true;
     }
-
-    set<void *>::iterator iiter;
-    for ( iiter = items.begin() ; iiter != items.end() ; ++iiter ) {
-      if ( ! visitor.visit(key.c_str(), *iiter) ) {
-	return;
-      }
-    }
-
-    map<char, Trie*>::iterator citer;
-    for ( citer = children.begin() ; citer != children.end() ; ++citer ) {
-      string xkey = key + citer->first;
-      citer->second->visit(xkey, visitor);
-    }
-  }
-
 };
 
 class CountVisitor : public TrieVisitor
 {
 public:
-  CountVisitor()
-    : TrieVisitor()
-    , count(0)
-  {
-  }
-
-  virtual bool visit(char const * key, void * item)
-  {
-    if ( item ) {
-      ++count;
+    CountVisitor()
+        : TrieVisitor()
+        , count(0)
+    {
     }
-    return true;
-  }
 
-  size_t getCount()
-  {
-    return count;
-  }
+    virtual bool visit(char const * key, int value)
+    {
+        ++count;
+        return true;
+    }
+
+    size_t getCount()
+    {
+        return count;
+    }
 
 private:
-  size_t count;
-  
+    size_t count;
+};
+
+class LexicalVisitor : public TrieVisitor
+{
+public:
+    LexicalVisitor()
+        : TrieVisitor()
+    {
+    }
+
+    virtual bool visit(char const * key, int value)
+    {
+	cout << key << "\n";
+        return true;
+    }
 };
 
 int main(int argc, char ** argv)
 {
-  Trie t;
-  t.add("once", (void *) 1);
-  t.add("two",  (void *) 2);
-  t.add("one",  (void *) 3);
+    Trie t;
+    t.insert("once", 1);
+    t.insert("two",  2);
+    t.insert("one",  3);
+    t.insert("on",   4);
 
-  CountVisitor visitor;
-  t.visit(visitor);
-  cout << visitor.getCount() << " items" << endl;
+    CountVisitor visitor;
+    t.visit(visitor);
+    cout << visitor.getCount() << " items\n";
+    cout << "================\n";
+
+    LexicalVisitor lexical;
+    t.visit(lexical);
+    cout << "================\n";
+
+    const char * keys[] = { "on", "two", "only" };
+    for ( auto key : keys ) {
+        cout << key << " = " << t.get(key) << "\n";
+    }
+
+    return 0;
 }
