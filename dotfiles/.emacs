@@ -29,9 +29,8 @@
 
 (setq enable-recursive-minibuffers t)
 
-(push "/home/i809989/elisp" load-path)
+(push (concat (getenv "HOME") "/elisp") load-path)
 (load-library "local-defs")
-(load-library "madbuild")
 ;;(set-build-env)
 (load-library "savehist")
 
@@ -46,10 +45,6 @@
 (add-hook 'text-mode-hook 'auto-fill-mode)
 (add-hook 'sql-mode-hook (lambda () (setq tab-width 3)))
 (add-hook 'f90-mode-hook 'abbrev-mode)
-
-(progn (setq-default ediff-regexp-hide-A "^LOG")
-       (setq-default ediff-regexp-hide-B "^LOG")
-       (setq-default ediff-regexp-hide-C "^LOG"))
 
 (setq hostname (nth 0 (split-string (getenv "HOSTNAME") "\\.")))
 
@@ -128,7 +123,6 @@
       (defun server-ensure-safe-dir (dir) "NOOP" t)
       (server-start))
   (message "Omitting server-start"))
-
 
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)

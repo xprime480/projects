@@ -1,5 +1,6 @@
 
-FILES =	.abbrev_defs	\
+FILES ?= \
+        .abbrev_defs	\
 	.bash_logout	\
 	.bash_profile	\
 	.bashalias	\

@@ -133,6 +133,12 @@ The default user is specified by the variable mail-user."
 			   (line-beginning-position)
 			   (line-end-position))))))
 
+(defun repair-whitespace ()
+  (interactive)
+  (save-excursion
+    (delete-trailing-whitespace (point-min) (point-max))
+    (untabify (point-min) (point-max))))
+
 (progn 
   (global-set-key "a" 'remove-ansi-escapes-from-buffer)
   (global-set-key "c" 'compile)
@@ -156,6 +162,7 @@ The default user is specified by the variable mail-user."
 			  (interactive)
 			  (save-excursion
 			    (shell-command "p4update-merge"))))
+  (global-set-key '[f3] 'repair-whitespace)
   (global-set-key '[f4] 'string-insert-rectangle)
   (global-set-key '[f5] (lambda ()
 			  (interactive)
