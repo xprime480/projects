@@ -46,6 +46,8 @@
 (add-hook 'sql-mode-hook (lambda () (setq tab-width 3)))
 (add-hook 'f90-mode-hook 'abbrev-mode)
 
+(setq c-basic-offset 4)
+
 (setq hostname (nth 0 (split-string (getenv "HOSTNAME") "\\.")))
 
 (add-to-list 'default-frame-alist '(font . "10x20"))
